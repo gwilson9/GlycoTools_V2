@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\Any Cpu\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>..\bin\Any Cpu\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile>..\bin\Any Cpu\Release\CSMSL.XML</DocumentationFile>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Automated_Build|x64'">
+    <OutputPath>bin\x64\Automated_Build\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Automated_Build|x86'">
+    <OutputPath>bin\x86\Automated_Build\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Automated_Build|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Automated_Build\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\bin\Any Cpu\Release\CSMSL.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{3C8C9F05-9C19-4251-95FA-05D7EDC8CAE6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <OutputPath>..\bin\x64\Debug\</OutputPath>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSMSL</RootNamespace>
+    <AssemblyName>CSMSL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analysis\ExperimentalDesign\ExperimentalCondition.cs" />
+    <Compile Include="Analysis\ExperimentalDesign\ExperimentalSet.cs" />
+    <Compile Include="Analysis\ExperimentalDesign\Replicate.cs" />
+    <Compile Include="Analysis\ExperimentalDesign\Sample.cs" />
+    <Compile Include="Analysis\Identification\MorpheusSearchEngine.cs" />
+    <Compile Include="Analysis\Identification\MSSearchEngine.cs" />
+    <Compile Include="Analysis\Identification\PeptideSpectralMatch.cs" />
+    <Compile Include="Analysis\Identification\PeptideSpectralMatchScoreType.cs" />
+    <Compile Include="Analysis\Identification\SpectrumFragmentsMatch.cs" />
+    <Compile Include="Analysis\Quantitation\IntensityWeightingType.cs" />
+    <Compile Include="Analysis\Quantitation\IQuantitationChannel.cs" />
+    <Compile Include="Analysis\Quantitation\IsobaricTag.cs" />
+    <Compile Include="Analysis\Quantitation\IsobaricTagPurityCorrection.cs" />
+    <Compile Include="Analysis\Quantitation\QuantitationTypes.cs" />
+    <Compile Include="Analysis\Quantitation\QuantitationChannelSet.cs" />
+    <Compile Include="Analysis\Quantitation\QuantitationChannelSetMassType.cs" />
+    <Compile Include="Chemistry\ChemicalFormula.cs" />
+    <Compile Include="Chemistry\ChemicalFormulaGenerator.cs" />
+    <Compile Include="Chemistry\Element.cs" />
+    <Compile Include="Chemistry\IChemicalFormula.cs" />
+    <Compile Include="Chemistry\Isotope.cs" />
+    <Compile Include="Chemistry\IsotopicDistribution.cs" />
+    <Compile Include="Chemistry\PeriodicTable.cs" />
+    <Compile Include="ClassExtensions.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Chemistry\IMass.cs" />
+    <Compile Include="IO\CVParamater.cs" />
+    <Compile Include="IO\Dta.cs" />
+    <Compile Include="IO\DtaReader.cs" />
+    <Compile Include="IO\DtaWriter.cs" />
+    <Compile Include="IO\Fasta.cs" />
+    <Compile Include="IO\FastaReader.cs" />
+    <Compile Include="IO\FastaWriter.cs" />
+    <Compile Include="IO\IMSDataFile.cs" />
+    <Compile Include="IO\IMsnDataScan.cs" />
+    <Compile Include="IO\MSDataFile.cs" />
+    <Compile Include="IO\MsDataFileType.cs" />
+    <Compile Include="IO\IMSDataScan.cs" />
+    <Compile Include="IO\MzTab\MzTab.cs" />
+    <Compile Include="IO\MzTab\MzTabEntity.cs" />
+    <Compile Include="IO\MzTab\MzTabMetaData.cs" />
+    <Compile Include="IO\MzTab\MzTabMultipleSet.cs" />
+    <Compile Include="IO\MzTab\MzTabProtein.cs" />
+    <Compile Include="IO\MzTab\MzTabPeptide.cs" />
+    <Compile Include="IO\MzTab\MzTabPSM.cs" />
+    <Compile Include="IO\MzTab\MzTabReader.cs" />
+    <Compile Include="IO\MzTab\MzTabSection.cs" />
+    <Compile Include="IO\MzTab\MzTabSmallMolecule.cs" />
+    <Compile Include="IO\MzTab\MzTabSoftware.cs" />
+    <Compile Include="IO\MzTab\MzTabWriter.cs" />
+    <Compile Include="IO\PsmReader.cs" />
+    <Compile Include="DoubleRange.cs" />
+    <Compile Include="MassRange.cs" />
+    <Compile Include="MzRange.cs" />
+    <Compile Include="Proteomics\ChemicalFormulaFragment.cs" />
+    <Compile Include="Proteomics\ChemicalFormulaModification.cs" />
+    <Compile Include="Proteomics\IIsotopologue.cs" />
+    <Compile Include="Proteomics\Isotopologue.cs" />
+    <Compile Include="Proteomics\ModificationDictionary.cs" />
+    <Compile Include="Spectral\ChromatogramType.cs" />
+    <Compile Include="Spectral\ChromatographicElutionProfile.cs" />
+    <Compile Include="Spectral\ISpectrumTime.cs" />
+    <Compile Include="Spectral\SmoothingType.cs" />
+    <Compile Include="Spectral\Spectrum.cs" />
+    <Compile Include="ToleranceType.cs" />
+    <Compile Include="ToleranceUnit.cs" />
+    <Compile Include="Proteomics\DissociationType.cs" />
+    <Compile Include="Proteomics\FragmentCollection.cs" />
+    <Compile Include="Proteomics\IAminoAcid.cs" />
+    <Compile Include="Proteomics\IAminoAcidSequence.cs" />
+    <Compile Include="Proteomics\IProtease.cs" />
+    <Compile Include="Proteomics\Modification.cs" />
+    <Compile Include="Proteomics\ModificationCollection.cs" />
+    <Compile Include="Proteomics\ModificationSites.cs" />
+    <Compile Include="Proteomics\ProteinGroup.cs" />
+    <Compile Include="Analysis\Identification\FragmentSpectralMatch.cs" />
+    <Compile Include="IRange.cs" />
+    <Compile Include="Chemistry\Mass.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proteomics\AminoAcidPolymer.cs" />
+    <Compile Include="Proteomics\AminoAcid.cs" />
+    <Compile Include="Proteomics\Fragment.cs" />
+    <Compile Include="Proteomics\FragmentTypes.cs" />
+    <Compile Include="Proteomics\Peptide.cs" />
+    <Compile Include="Proteomics\Protease.cs" />
+    <Compile Include="Proteomics\Protein.cs" />
+    <Compile Include="Proteomics\Terminus.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="Tolerance.cs" />
+    <Compile Include="Spectral\Chromatogram.cs" />
+    <Compile Include="Spectral\ChromatographicPeak.cs" />
+    <Compile Include="Spectral\ISpectrum.cs" />
+    <Compile Include="Spectral\MassRangeChromatogram.cs" />
+    <Compile Include="Spectral\MZSpectrum.cs" />
+    <Compile Include="Spectral\IMassSpectrum.cs" />
+    <Compile Include="Spectral\IPeak.cs" />
+    <Compile Include="Spectral\MSDataScan.cs" />
+    <Compile Include="Spectral\MsnDataScan.cs" />
+    <Compile Include="Spectral\MZAnalyzerType.cs" />
+    <Compile Include="Spectral\MZPeak.cs" />
+    <Compile Include="Polarity.cs" />
+    <Compile Include="Util\Collections\SortedMaxSizedContainer.cs" />
+    <Compile Include="Util\Combinatorics.cs" />
+    <Compile Include="Util\LinearRegression.cs" />
+    <Compile Include="Analysis\Identification\FalseDiscoveryRate.cs" />
+    <Compile Include="Analysis\Identification\IFalseDiscovery.cs" />
+    <Compile Include="Util\Collections\VennDiagram.cs" />
+    <Compile Include="Util\Collections\VennSet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Elements.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Modifications.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Proteases.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

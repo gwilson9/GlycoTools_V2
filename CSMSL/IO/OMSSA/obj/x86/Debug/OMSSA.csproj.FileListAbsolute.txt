@@ -1,0 +1,8 @@
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\x86\Debug\CSMSL.OMSSA.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\x86\Debug\CSMSL.OMSSA.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\x86\Debug\CSMSL.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\x86\Debug\CSMSL.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\obj\x86\Debug\CSMSL.OMSSA.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\obj\x86\Debug\CSMSL.OMSSA.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\x86\Debug\CSMSL.xml
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\obj\x86\Debug\OMSSA.csprojResolveAssemblyReference.cache

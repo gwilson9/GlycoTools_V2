@@ -1,0 +1,16 @@
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\Debug\CSMSL.OMSSA.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\Debug\CSMSL.OMSSA.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\Debug\CSMSL.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\Debug\CSMSL.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\obj\Debug\CSMSL.OMSSA.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\obj\Debug\CSMSL.OMSSA.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\obj\Debug\OMSSA.csprojResolveAssemblyReference.cache
+C:\Users\Nick\CSMSL\CSMSL\IO\OMSSA\bin\Debug\CSMSL.xml
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\bin\Debug\CSMSL.OMSSA.dll
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\bin\Debug\CSMSL.OMSSA.pdb
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\bin\Debug\CSMSL.dll
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\bin\Debug\CSMSL.pdb
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\bin\Debug\CSMSL.xml
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\obj\Debug\OMSSA.csprojResolveAssemblyReference.cache
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\obj\Debug\CSMSL.OMSSA.dll
+C:\Users\Nick\Documents\CSMSL from NickK\CSMSL\IO\OMSSA\obj\Debug\CSMSL.OMSSA.pdb

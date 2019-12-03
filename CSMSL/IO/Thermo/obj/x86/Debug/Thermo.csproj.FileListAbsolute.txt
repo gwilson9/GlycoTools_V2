@@ -1,0 +1,30 @@
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.Thermo.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.Thermo.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x86\Debug\Thermo.csprojResolveAssemblyReference.cache
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x86\Debug\Interop.MSFileReaderLib.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x86\Debug\Thermo.csproj.ResolveComReference.cache
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x86\Debug\CSMSL.Thermo.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x86\Debug\CSMSL.Thermo.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.xml
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.Thermo.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.Thermo.pdb
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.pdb
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.xml
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Debug\Thermo.csprojResolveAssemblyReference.cache
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Debug\Interop.MSFileReaderLib.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Debug\Thermo.csproj.ResolveComReference.cache
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Debug\CSMSL.Thermo.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Debug\CSMSL.Thermo.pdb
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.Thermo.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.Thermo.pdb
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.pdb
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Debug\CSMSL.xml
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Debug\Thermo.csprojResolveAssemblyReference.cache
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Debug\Interop.MSFileReaderLib.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Debug\Thermo.csproj.ResolveComReference.cache
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Debug\CSMSL.Thermo.dll
+D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Debug\CSMSL.Thermo.pdb

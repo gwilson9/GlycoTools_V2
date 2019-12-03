@@ -1,0 +1,5 @@
+C:\Users\Nick\CSMSL\bin\x64\Debug\CSMSL.dll
+C:\Users\Nick\CSMSL\bin\x64\Debug\CSMSL.pdb
+C:\Users\Nick\CSMSL\CSMSL\obj\x64\Debug\CSMSL.csprojResolveAssemblyReference.cache
+C:\Users\Nick\CSMSL\CSMSL\obj\x64\Debug\CSMSL.dll
+C:\Users\Nick\CSMSL\CSMSL\obj\x64\Debug\CSMSL.pdb

@@ -1,0 +1,10 @@
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x64\Debug\CSMSL.Thermo.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x64\Debug\CSMSL.Thermo.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x64\Debug\CSMSL.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x64\Debug\CSMSL.pdb
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\bin\x64\Debug\CSMSL.xml
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x64\Debug\Thermo.csprojResolveAssemblyReference.cache
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x64\Debug\Interop.MSFileReaderLib.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x64\Debug\Thermo.csproj.ResolveComReference.cache
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x64\Debug\CSMSL.Thermo.dll
+C:\Users\Nick\CSMSL\CSMSL\IO\Thermo\obj\x64\Debug\CSMSL.Thermo.pdb
