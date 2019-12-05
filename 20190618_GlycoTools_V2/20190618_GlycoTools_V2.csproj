@@ -154,6 +154,7 @@
     <Compile Include="FragmentDataReturnArgs.cs" />
     <Compile Include="FragmentMatch.cs" />
     <Compile Include="Glycan.cs" />
+    <Compile Include="GlycanConstants.cs" />
     <Compile Include="GlycanMethods.cs" />
     <Compile Include="glycoFragmentFinder.cs" />
     <Compile Include="Glycopeptide.cs" />

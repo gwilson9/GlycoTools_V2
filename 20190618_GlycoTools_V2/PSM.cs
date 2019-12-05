@@ -9,7 +9,7 @@ using CSMSL.Proteomics;
 
 namespace _20190618_GlycoTools_V2
 {
-    public class PSM
+    public class PSM : IEquatable<PSM>
     {
         //String PID;                                                                      
         public string protRank { get; set; }
@@ -73,6 +73,7 @@ namespace _20190618_GlycoTools_V2
         public List<RTPeak> peakElution { get; set; }
         public List<double> localMaxima { get; set; }
         public List<Glycan> glycans { get; set; }
+        public int scanNumberofMaxElutionIntensity { get; set; }
 
         public PSM(string PQMsID, string sequence, string peptidesToBeParsed, int peptideStartPosition,
                     double PEP2D, double PEP1D, double score, double deltaScore, double deltaModScore,
@@ -113,6 +114,16 @@ namespace _20190618_GlycoTools_V2
             this.evidenceType = "";
             glycans = new List<Glycan>();
             this.sequenceNoMods = peptidesToBeParsed.Split(',')[0];
+        }
+
+        public bool Equals(PSM other)
+        {
+            return (this.scanNumber == other.scanNumber && this.File.Equals(other.File));
+        }
+
+        public override int GetHashCode()
+        {
+            return this.scanNumber.GetHashCode() * this.File.GetHashCode();
         }
 
         public void checkMods()
@@ -185,17 +196,22 @@ namespace _20190618_GlycoTools_V2
                 intensities += peak.Intensity.ToString() + ',';
             }
 
-            var absoluteMaxima = peakElution.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).RT;
-            var maxIntensity = peakElution.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).Intensity;
+            var absoluteMaxima = 0.0; //peakElution.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).RT;
+            var maxIntensity = 0.0; // peakElution.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).Intensity;
 
             var localMaxima = new List<double>();
             for(int i = 1; i < peakElution.Count()-1; i++)
             {
                 if (peakElution[i].Intensity > peakElution[i - 1].Intensity && peakElution[i].Intensity > peakElution[i + 1].Intensity && (peakElution[i].Intensity / maxIntensity) > 0.1)
                     localMaxima.Add(peakElution[i].RT);
-            }
 
-            
+                if (peakElution[i].Intensity > absoluteMaxima)
+                {
+                    absoluteMaxima = peakElution[i].RT;
+                    maxIntensity = peakElution[i].Intensity;
+                }
+                    
+            }            
 
             var glycanTypes = string.Join(";", glycans.Select(x => x.glycanType).ToArray());
 
@@ -204,14 +220,14 @@ namespace _20190618_GlycoTools_V2
                                                 "'{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}'," +
                                                 "'{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}'," +
                                                 "'{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}'" +
-                                                ",'{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}', '{45}'",
+                                                ",'{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}', '{45}', '{46}'",
                                                 sequence, peptidesToBeParsed, sequenceNoMods, peptideStartPosition, modsToBeParsed, glycansToBeParsed, // 0-5
                                                 glycanTypes, PEP2D, PEP1D, logProb, score, deltaScore, deltaModScore, charge, mzObs, mzCalc,    // 6-15
                                                 ppmError, obsMH, calcMH, cleavage, glycanPositions, protString, scanTimeInMin, scanNumber,            // 16-23
                                                 modsFixed, FDR2D, FDR1D, FDR2Dunique, FDR1Dunique, qvalue2D, qvalue1D, isGlycopeptide,      // 24-31
                                                 modsPassedCheck, positionsPassedCheck, DissociationType, MasterScan, intensity,             // 32-36
                                                 Path.GetFileNameWithoutExtension(File), Condition, Replicate, isControl, retentionTimes,    // 37-41
-                                                intensities, evidenceType, absoluteMaxima, string.Join(",",localMaxima));                                    // 42-45                 
+                                                intensities, evidenceType, scanNumberofMaxElutionIntensity, absoluteMaxima, string.Join(",",localMaxima));                                    // 42-45                 
 
 
 

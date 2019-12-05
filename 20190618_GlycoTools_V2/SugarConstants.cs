@@ -13,5 +13,7 @@ namespace _20190618_GlycoTools_V2
         public readonly SugarMoiety Fuc = new SugarMoiety("Fuc", "Triangle", "C6O4H10");
         public readonly SugarMoiety NeuAc = new SugarMoiety("NeuAc", "Diamond (Closed)", "C11O8NH17");
         public readonly SugarMoiety NeuGc = new SugarMoiety("NeuGc", "Diamond (Open)", "C11O9NH17");
+        public readonly SugarMoiety Phospho = new SugarMoiety("Phospho", "Circle", "C6O8H12P");
+        public readonly SugarMoiety Pent = new SugarMoiety("Pent", "Star", "C5H8O4");
     }
 }

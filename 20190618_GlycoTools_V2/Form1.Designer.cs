@@ -367,6 +367,7 @@
             this.button3.TabIndex = 30;
             this.button3.Text = "Details";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // IdentifyInsourceFragments
             // 
@@ -388,6 +389,7 @@
             this.button1.TabIndex = 14;
             this.button1.Text = "Details";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // PerformProteinInference
             // 
@@ -409,6 +411,7 @@
             this.button2.TabIndex = 28;
             this.button2.Text = "Details";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // PerformGlycanLocalization
             // 
@@ -420,6 +423,7 @@
             this.PerformGlycanLocalization.TabIndex = 27;
             this.PerformGlycanLocalization.Text = "Perform glycan localization";
             this.PerformGlycanLocalization.UseVisualStyleBackColor = true;
+            this.PerformGlycanLocalization.CheckedChanged += new System.EventHandler(this.PerformGlycanLocalization_CheckedChanged);
             // 
             // organismText
             // 
@@ -722,7 +726,7 @@
             // viewPeptidesDataGrid
             // 
             this.viewPeptidesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.viewPeptidesDataGrid.Location = new System.Drawing.Point(21, 152);
+            this.viewPeptidesDataGrid.Location = new System.Drawing.Point(32, 194);
             this.viewPeptidesDataGrid.Name = "viewPeptidesDataGrid";
             this.viewPeptidesDataGrid.ReadOnly = true;
             this.viewPeptidesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;

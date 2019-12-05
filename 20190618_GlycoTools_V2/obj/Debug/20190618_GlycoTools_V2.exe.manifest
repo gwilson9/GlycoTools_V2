@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="180648">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="213416">
       <assemblyIdentity name="20190618_GlycoTools_V2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+IkwRhqt7U8oOxshFSfdW6HADIFP/g1dsmx55sDKK2k=</dsig:DigestValue>
+        <dsig:DigestValue>4M358A09LcK3rQwQp59k9YNHWJSmjGCCxg0gDjweIZg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -79,13 +79,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSMSL.Thermo.dll" size="23040">
-      <assemblyIdentity name="CSMSL.Thermo" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+      <assemblyIdentity name="CSMSL.Thermo" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>B2wjE2cIgyT0MLG/VnW5xJggoSPc6DfYTZFNVHr/w1c=</dsig:DigestValue>
+        <dsig:DigestValue>IGy+SLi1Q8rnh/fu6aR/EGVwRPpo+rfhhD/ROpQVTRs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

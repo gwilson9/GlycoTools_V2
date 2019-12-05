@@ -52,6 +52,7 @@ namespace _20190618_GlycoTools_V2
         public string file;
         public string Condition;
         public string Replicate;
+        public string formattedVarMods;
 
         public GlycoPSM()
         {
@@ -149,18 +150,26 @@ namespace _20190618_GlycoTools_V2
                     int modPosition = GetModPosition(mod);
                     if (modName.Contains("Glycan"))
                     {
-                        if (!peptide.Sequence[modPosition-1].Equals('N'))
+                        if (!peptide.Sequence[glycanPosition - 1].Equals('N'))
                         {
-                            modName = "OGlycan";
+                            modName = "OGlycan";                            
                         }
                         else
                         {
                             modName = "NGlycan";
-                        }                           
+                        }
 
+                        var newVarMod = peptide.Sequence[glycanPosition-1].ToString() + glycanPosition.ToString() + '(' + modName + " / " + modMass + ')';
+                        formattedVarMods += ";" + newVarMod;
+                        formattedVarMods = formattedVarMods.Trim(';');
                         modName = modName + "_" + modMass;
                         glycanMasses.Add(modMass);
                         modPosition = glycanPosition;
+                    }
+                    else
+                    {
+                        formattedVarMods += ";" + mod;
+                        formattedVarMods = formattedVarMods.Trim(';');
                     }
 
                     if (modName.Contains("NGlycan"))

@@ -73,7 +73,7 @@ namespace _20190618_GlycoTools_V2
                     pep.stopLookupTime = stopTime;
                     pep.FirstScan = rawFile.GetSpectrumNumber(pep.startLookupTime);
                     pep.LastScan = rawFile.GetSpectrumNumber(pep.stopLookupTime);
-                    pep.lookupRange = DoubleRange.FromPPM(pep.UserMZ, 10);
+                    pep.lookupRange = DoubleRange.FromPPM(pep.UserMZ, 50);
                 }
 
                 foreach (var ms1 in msOneScanNumbers)
@@ -187,6 +187,7 @@ namespace _20190618_GlycoTools_V2
 
                     psms[i].intensity = intensity;
                     psms[i].peakElution = pepsWithSmooth[i].SmoothLibrary;
+                    psms[i].scanNumberofMaxElutionIntensity = rawFile.GetSpectrumNumber(pepsWithSmooth[i].SmoothLibrary.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).RT);
                     //psms[i].intensity = targetPeptides[i].apexPeakLibrary.Intensity;
                 }
 
@@ -251,8 +252,20 @@ namespace _20190618_GlycoTools_V2
                 TheoreticalMZ = psm.mzCalc
             };
 
-            pep.parentMS1 = rawFile.GetParentSpectrumNumber(pep.ms2ScanNumber);
-            pep.parentMS1Time = rawFile.GetRetentionTime(pep.parentMS1);
+            var parentScan = rawFile.GetParentSpectrumNumber(pep.ms2ScanNumber);
+            while (true)
+            {                
+                if (rawFile.GetMsnOrder(parentScan) == 2)
+                {
+                    parentScan = rawFile.GetParentSpectrumNumber(parentScan);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            pep.parentMS1 = psm.MasterScan;
+            pep.parentMS1Time = rawFile.GetRetentionTime(psm.MasterScan);
             //pep.UserMZ = psm.mzObs;
             pep.UserMZ = rawFile.GetPrecursorMz(pep.ms2ScanNumber);
 

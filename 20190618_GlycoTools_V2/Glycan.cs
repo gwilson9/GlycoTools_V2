@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _20190618_GlycoTools_V2
 {
-    public class Glycan
+    public class Glycan : IEquatable<Glycan>
     {
         public string _coreStructure;
         public string glycanType;
@@ -24,6 +24,16 @@ namespace _20190618_GlycoTools_V2
             ParseSugar();
             this.mass = _allSugars.Select(x => x.ChemicalFormula.MonoisotopicMass).Sum();  
             getType();            
+        }
+
+        public bool Equals(Glycan other)
+        {
+            return other._coreStructure.Equals(this._coreStructure);
+        }
+
+        public override int GetHashCode()
+        {
+            return this._coreStructure.GetHashCode();
         }
 
         public override string ToString()
@@ -71,6 +81,14 @@ namespace _20190618_GlycoTools_V2
 
                             case "NeuGc":
                                 _allSugars.Add(_sugarConstants.NeuGc);
+                                break;
+
+                            case "Phospho":
+                                _allSugars.Add(_sugarConstants.Phospho);
+                                break;
+
+                            case "Pent":
+                                _allSugars.Add(_sugarConstants.Pent);
                                 break;
                         }
                     }

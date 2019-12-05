@@ -28,7 +28,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Diagnostics;
 
-
 namespace _20190618_GlycoTools_V2
 {
     public partial class GlycoTools : Form
@@ -344,6 +343,7 @@ namespace _20190618_GlycoTools_V2
             bynReader.organism = organismText.Text;
             bynReader.performProteinInference = PerformProteinInference.Checked;
             bynReader.performGlycanLocalization = PerformGlycanLocalization.Checked;
+            bynReader.IdentifyForInsourceFragments = IdentifyInsourceFragments.Checked;
 
             if (PerformProteinInference.Checked)
             {
@@ -919,6 +919,17 @@ namespace _20190618_GlycoTools_V2
 
             connection.Close();
             GC.Collect();
+        }
+
+        private void addResultTable(string[] names)
+        {
+            if (InvokeRequired)
+            {
+                resultViewBox.Invoke(new Action<string[]>(addResultTable), names);
+                return;
+            }
+
+
         }
 
         private void fillStatsComboBox()
@@ -1940,7 +1951,7 @@ namespace _20190618_GlycoTools_V2
                     int modPosition = GetModPosition(mod);
                     if (modName.Contains("Glycan"))
                     {
-                        if (!peptide.Sequence[modPosition-1].Equals('N'))
+                        if (!peptide.Sequence[modPosition - 1].Equals('N'))
                         {
                             modName = "OGlycan";
                         }
@@ -2384,6 +2395,35 @@ namespace _20190618_GlycoTools_V2
         private void label12_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void PerformGlycanLocalization_CheckedChanged(object sender, EventArgs e)
+        {
+            if (PerformGlycanLocalization.Checked)
+            {
+                var comboboxOptions = new int[] { 1 };
+                this.modCountFilter.DataSource = comboboxOptions;
+            }
+            else
+            {
+                var comboboxOptions = new int[] { 1, 2, 3 };
+                this.modCountFilter.DataSource = comboboxOptions;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This feature will analyze each PSM to test whether the MS2 spectra is better explained by changing the placement of the glycan modification. The feature is only available for singly-glycosylated peptides. Enabling glycan localization will increase the processing time by ~4-fold.");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Byonic processes individual .raw files separately. Thus protein inference is not extended across an entire data set, resulting in cases of the same peptide sequence between result files having different protein assignments. This feature will perform protein inference across all Byonic result files, as wells as a list of additional peptide identifications provided as a .csv file. The additional peptides file must contain columns with 'Peptide' and 'PEP' headers. For example, one can provide peptide results from deamidated or whole proteome analyses. The additional peptides file is not required, however the user must provide a protein database in FASTA format and specify the correct protease and allowed number of miscleavages.");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Loss of sugar monomers from a glycopeptide during ionization and ion transmission can result in artifacts of in-source fragmentation being identified as bonafine glycopeptides. This feature will determine if an identification is the result of an in-source fragment of a larger glycopeptide by searching raw files for co-elution of a larger species.");
         }
     }
 }
