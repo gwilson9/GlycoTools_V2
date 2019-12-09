@@ -166,6 +166,7 @@
     <Compile Include="InferenceProteinGroup.cs" />
     <Compile Include="InferencePSM.cs" />
     <Compile Include="InferencePsmList.cs" />
+    <Compile Include="InsourceFragSearcher.cs" />
     <Compile Include="LFPeptide.cs" />
     <Compile Include="LFQProcessor.cs" />
     <Compile Include="Program.cs" />

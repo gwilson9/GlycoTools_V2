@@ -75,6 +75,11 @@ namespace _20190618_GlycoTools_V2
         public List<Glycan> glycans { get; set; }
         public int scanNumberofMaxElutionIntensity { get; set; }
 
+        public PSM()
+        {
+
+        }
+
         public PSM(string PQMsID, string sequence, string peptidesToBeParsed, int peptideStartPosition,
                     double PEP2D, double PEP1D, double score, double deltaScore, double deltaModScore,
                     int charge, double mzObs, double mzCalc, double obsMH, double calcMH, string cleavage,

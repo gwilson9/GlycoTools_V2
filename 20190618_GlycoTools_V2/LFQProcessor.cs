@@ -51,6 +51,12 @@ namespace _20190618_GlycoTools_V2
 
             foreach (PSM psm in psms)
             {
+
+                if (psm.scanNumber == 5424)
+                {
+                    var x = 0;
+                }
+
                 LFPeptide pep = psmToLFPeptide(psm, rawFile);
                 targetPeptides.Add(pep);
             }
@@ -73,7 +79,7 @@ namespace _20190618_GlycoTools_V2
                     pep.stopLookupTime = stopTime;
                     pep.FirstScan = rawFile.GetSpectrumNumber(pep.startLookupTime);
                     pep.LastScan = rawFile.GetSpectrumNumber(pep.stopLookupTime);
-                    pep.lookupRange = DoubleRange.FromPPM(pep.UserMZ, 50);
+                    pep.lookupRange = DoubleRange.FromPPM(pep.UserMZ, 20);
                 }
 
                 foreach (var ms1 in msOneScanNumbers)
@@ -99,11 +105,11 @@ namespace _20190618_GlycoTools_V2
 
                         }
                         catch (Exception e)
-                        {/**
+                        {
                             System.Windows.Forms.MessageBox.Show("XICLibraryCount: " + pep.XICLibrary.Count 
                                                                     + "Peptide: " + pep.sequence
                                                                     + "\n" + e.ToString());
-    **/
+    
                         }
                     }
                 }
@@ -211,6 +217,11 @@ namespace _20190618_GlycoTools_V2
             List<LFPeptide> currPeptides = targetPeptides.Where(x => x.FirstScan <= specNumber && x.LastScan >= specNumber).ToList();
             foreach (var pep in currPeptides)
             {
+                if(pep.ms2ScanNumber == 5424)
+                {
+                    var x = 0;
+                }
+
                 List<ThermoMzPeak> outPeaks = new List<ThermoMzPeak>();
                 if (currentSpectrum.TryGetPeaks(pep.lookupRange, out outPeaks))
                 {
@@ -228,6 +239,7 @@ namespace _20190618_GlycoTools_V2
 
         public static ThermoMzPeak GetClosestPeak(List<ThermoMzPeak> peaks, double expMZ)
         {
+            return peaks.OrderByDescending(x => x.Intensity).ToList()[0];
             double diff = double.MaxValue;
             ThermoMzPeak returnPeak = null;
             foreach (var peak in peaks)
@@ -264,10 +276,10 @@ namespace _20190618_GlycoTools_V2
                     break;
                 }
             }
-            pep.parentMS1 = psm.MasterScan;
-            pep.parentMS1Time = rawFile.GetRetentionTime(psm.MasterScan);
-            //pep.UserMZ = psm.mzObs;
-            pep.UserMZ = rawFile.GetPrecursorMz(pep.ms2ScanNumber);
+            pep.parentMS1 = parentScan;
+            pep.parentMS1Time = rawFile.GetRetentionTime(parentScan);
+            pep.UserMZ = psm.mzObs;
+            //pep.UserMZ = rawFile.GetPrecursorMz(pep.ms2ScanNumber);
 
             return pep;
         }

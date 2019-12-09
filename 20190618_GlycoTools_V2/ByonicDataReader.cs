@@ -207,227 +207,8 @@ namespace _20190618_GlycoTools_V2
 
                     if (IdentifyForInsourceFragments)
                     {
-                        var insourceFragsFound = 0;
-                        var searchResults = new Dictionary<PSM, List<Peptide>>();
-                        foreach (var psm in filteredGlycoPSMs)
-                        {
-                            var psmGlycans = psm.glycans;
-                            var glycanMasses = psm.glycans.Select(x => x.mass).ToList();
 
-                            // <ID'd mass, List<All larger glycan masses>
-                            var searchSpace = new Dictionary<Glycan, List<Glycan>>();
-
-                            var glycanStrings = new GlycanConstants();
-
-                            foreach (var psmGlycan in psmGlycans)
-                            {
-                                var monomers = psmGlycan._allSugars.Select(x => x.Name).ToList().Distinct();
-
-                                foreach (var glycanString in glycanStrings.glycans)
-                                {
-                                    var glycan = new Glycan(glycanString);
-
-                                    //Check to see if glycan to be considered would be a logical parent glycan of the ID's glycan
-                                    var passes = true;
-                                    foreach (var monomer in monomers)
-                                    {
-                                        var idMonomerCount = psmGlycan._allSugars.Where(x => x.Name.Equals(monomer)).ToList().Count();
-                                        var glycanMonomerCount = glycan._allSugars.Where(x => x.Name.Equals(monomer)).ToList().Count();
-                                        if (glycanMonomerCount < idMonomerCount || glycan.mass <= psmGlycan.mass)
-                                        {
-                                            passes = false;
-                                            break;
-                                        }
-                                    }
-
-                                    if (!passes)
-                                        continue;
-
-
-                                    if (searchSpace.ContainsKey(psmGlycan))
-                                    {
-                                        searchSpace[psmGlycan].Add(glycan);
-                                    }
-                                    else
-                                    {
-                                        searchSpace.Add(psmGlycan, new List<Glycan>());
-                                        searchSpace[psmGlycan].Add(glycan);
-                                    }
-                                }
-                            }
-
-                            
-
-                            var pepsToSearch = new List<Peptide>();
-
-                            if(psm.glycanPositions.Count() == 1 && searchSpace.Count() > 0)
-                            {
-                                foreach(var glycan in searchSpace[psm.glycans[0]])
-                                {
-                                    var pep = new Peptide(psm.sequenceNoMods);
-
-                                    if (!String.IsNullOrEmpty(psm.modsToBeParsed))
-                                    {
-                                        foreach(var mod in psm.modsToBeParsed.Split(';'))
-                                        {
-                                            if (!String.IsNullOrEmpty(mod) && !mod.Contains("Glycan"))
-                                            {
-                                                var modMass = Double.Parse(mod.Split(' ')[2].Trim(')'));
-                                                var modName = mod.Split('(')[1].Split(' ')[0];
-                                                var newMod = new Modification(modMass, modName);
-                                                pep.AddModification(newMod);
-                                            }                                            
-                                        }
-                                        foreach(var mod in psm.modsFixed.Split(';'))
-                                        {
-                                            if (!String.IsNullOrEmpty(mod) && !mod.Contains("Glycan"))
-                                            {
-                                                var massString = mod.Split(' ')[2].Trim(')');
-                                                var modMass = Double.Parse(massString);
-                                                var modName = mod.Split('(')[1].Split(' ')[0];
-                                                var newMod = new Modification(modMass, modName);
-                                                pep.AddModification(newMod);
-                                            }
-                                        }
-
-                                        var glyMod = new Modification(glycan.mass, glycan._coreStructure);
-                                        pep.AddModification(glyMod, Int32.Parse(psm.glycanPositions));
-
-                                        pepsToSearch.Add(pep);
-                                    }
-                                }
-                            }
-
-
-                            var raw = new ThermoRawFile(psm.rawFile);
-                            raw.Open();
-
-                            pepsToSearch = pepsToSearch.OrderByDescending(x => x.MonoisotopicMass).ToList();
-                            
-                            foreach(var pep in pepsToSearch)
-                            {
-                                var mz = (pep.MonoisotopicMass + (psm.charge * Constants.Hydrogen)) / psm.charge;
-
-                                var lastSpectrum = raw.LastSpectrumNumber;
-                                
-                                var centerSpectrum = raw.GetSpectrum(psm.scanNumberofMaxElutionIntensity);
-
-                                var left = psm.scanNumberofMaxElutionIntensity;
-                                while (true)
-                                {
-                                    if (raw.GetMsnOrder(--left) == 1)
-                                        break;
-                                }
-
-                                var right = psm.scanNumberofMaxElutionIntensity;
-                                while (true)
-                                {
-                                    if (raw.GetMsnOrder(++right) == 1)
-                                        break;
-                                }
-
-                                var leftSpectrum = raw.GetSpectrum(left);
-                                var rightSpectrum = raw.GetSpectrum(right);
-
-                                var centerIntensity = 0.0;
-                                var leftIntensity = 0.0;
-                                var rightIntensity = 0.0;
-
-                                var outpeaks = new List<ThermoMzPeak>();
-                                if(centerSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks))
-                                {
-                                    if(outpeaks.Count() > 0)
-                                    {
-                                        centerIntensity = outpeaks.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }                                
-
-                                var outpeaks2 = new List<ThermoMzPeak>();
-                                if (leftSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks2))
-                                {
-                                    if(outpeaks2.Count() > 0)
-                                    {
-                                        leftIntensity = outpeaks2.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }                                
-
-                                var outpeaks3 = new List<ThermoMzPeak>();
-                                if (rightSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks3))
-                                {
-                                    if(outpeaks3.Count() > 0)
-                                    {
-                                        rightIntensity = outpeaks3.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-
-                                
-
-                                var maxIntensity = psm.peakElution.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).Intensity;
-                                if (centerIntensity > maxIntensity && centerIntensity > leftIntensity && centerIntensity > rightIntensity)
-                                {
-                                    if (psm.sequence.Equals("VVN[+892.31722]STTGPGEHLR") && pep.SequenceWithModifications.Equals("VVN[HexNAc(3)Hex(3)]STTGPGEHLR"))
-                                    {
-                                        mz = mz;
-                                    }
-
-                                    insourceFragsFound++;
-
-                                    if (searchResults.ContainsKey(psm))
-                                    {
-                                        searchResults[psm].Add(pep);
-                                    }
-                                    else
-                                    {
-                                        searchResults.Add(psm, new List<Peptide>());
-                                        searchResults[psm].Add(pep);
-                                    }
-                                    
-                                    //break;
-                                }
-                            }
-                            raw.Dispose();                 
-                        }
-
-
-                        /////TEMP FOR VIEWING POSSIBLE INSOURCE FRAGS///////
-                        SQLiteConnection.CreateFile(outputPath + "\\InsourceFragView.sqlite");
-                        SQLiteConnection sqlWriter2 = new SQLiteConnection("Data Source=" + outputPath + "\\InsourceFragView.sqlite; Version=3;");
-                        sqlWriter2.Open();
-                        using (var transaction1 = sqlWriter2.BeginTransaction())
-                        {
-                            var commandString = "CREATE TABLE IF NOT EXISTS Data (ID STRING,ID_Glycan STRING,RT STRING,ID_MZ STRING,ID_SCANNUM STRING,PARENT STRING,PARENT_MZ STRING)";
-                            var command = new SQLiteCommand(commandString, sqlWriter2);
-                            command.ExecuteNonQuery();
-
-
-                            foreach (var result in searchResults)
-                            {
-                                foreach (var parent in result.Value)
-                                {
-                                    var parentMZ = (parent.MonoisotopicMass + (Constants.Hydrogen * result.Key.charge)) / result.Key.charge;
-
-                                    var insertCommandString = string.Format("INSERT into Data (`ID`, `ID_Glycan`, `RT`, `ID_MZ`, `ID_SCANNUM`, `PARENT`, `PARENT_MZ`) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')", result.Key.sequence, result.Key.glycansToBeParsed, (Double.Parse(result.Key.scanTime) / 60).ToString(), result.Key.mzObs, result.Key.scanNumber, parent.SequenceWithModifications, parentMZ);
-                                    var insertCommand = new SQLiteCommand(insertCommandString, sqlWriter2);
-                                    var reader = insertCommand.ExecuteReader();
-                                }
-                            }                            
-                            transaction1.Commit();                            
-                        }
-                        sqlWriter2.Close();
-                        
-                        ////////////////////////////////////////////////////////////////////
+                        SearchForSourceFrags(filteredGlycoPSMs);                        
 
                     }
 
@@ -495,6 +276,73 @@ namespace _20190618_GlycoTools_V2
                 GC.Collect();
                 onFinish(returnDict);
             }
+        }
+
+        private void SearchForSourceFrags(List<PSM> psms)
+        {
+            //var insourceFragsFound = 0;
+            var searchResults = new Dictionary<PSM, List<PSM>>();
+            foreach (var psm in psms)
+            {
+                OnUpdateProgress(string.Format("Working on {0}", psm.sequence));
+                var searcher = new InsourceFragSearcher(psm);
+                searcher.fillPossibleParents();
+                searcher.getPeakElutions();
+
+                foreach(var match in searcher.matchedParentPeaks)
+                {
+                    if (searchResults.ContainsKey(psm))
+                    {
+                        searchResults[psm].Add(match);
+                    }
+                    else
+                    {
+                        searchResults.Add(psm, new List<PSM>());
+                        searchResults[psm].Add(match);
+                    }                    
+                }
+                //if (searchResults.Count() > 0)
+                    //break;
+            }
+
+
+            /////TEMP FOR VIEWING POSSIBLE INSOURCE FRAGS///////
+            if (true)
+            {
+                SQLiteConnection.CreateFile(outputPath + "\\InsourceFragView.sqlite");
+                SQLiteConnection sqlWriter2 = new SQLiteConnection("Data Source=" + outputPath + "\\InsourceFragView.sqlite; Version=3;");
+                sqlWriter2.Open();
+                using (var transaction1 = sqlWriter2.BeginTransaction())
+                {
+                    var commandString = "CREATE TABLE IF NOT EXISTS Data (FILE STRING, ID STRING,ID_Glycan STRING, ID_GlycanType STRING,RT STRING,ID_MZ STRING,ID_SCANNUM STRING,ID_RTS STRING, ID_INTENSITIES STRING,PARENT STRING, PARENT_GLYCAN STRING, PARENT_GLYCANTYPE STRING, PARENT_MZ STRING, PARENT_RTS STRING, PARENT_INTENSITIES STRING)";
+                    var command = new SQLiteCommand(commandString, sqlWriter2);
+                    command.ExecuteNonQuery();
+
+
+                    foreach (var result in searchResults)
+                    {
+                        foreach (var parent in result.Value)
+                        {
+                            var idRTs = string.Join(";", result.Key.peakElution.Select(x => x.RT).ToList());
+                            var parentRTs = string.Join(";", parent.peakElution.Select(x => x.RT).ToList());
+                            var idInts = string.Join(";", result.Key.peakElution.Select(x => x.Intensity).ToList());
+                            var parentInts = string.Join(";", parent.peakElution.Select(x => x.Intensity).ToList());
+
+                            var idGlycanTypes = string.Join(";", result.Key.glycans.Select(x => x.glycanType).ToArray());
+
+                            var parentGlycan = new Glycan(parent.sequence.Split('[')[1].Split(']')[0]);
+
+                            var insertCommandString = string.Format("INSERT into Data ('FILE', `ID`, `ID_Glycan`, 'ID_GlycanType', `RT`, `ID_MZ`, `ID_SCANNUM`,'ID_RTS','ID_INTENSITIES', `PARENT`, 'PARENT_GLYCAN', 'PARENT_GLYCANTYPE', `PARENT_MZ`, 'PARENT_RTS', 'PARENT_INTENSITIES') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}')", result.Key.File, result.Key.sequence, result.Key.glycansToBeParsed, idGlycanTypes, (Double.Parse(result.Key.scanTime) / 60).ToString(), result.Key.mzObs, result.Key.scanNumber, idRTs, idInts, parent.sequence, parentGlycan.CoreStructure, parentGlycan.glycanType, parent.mzObs, parentRTs, parentInts);
+                            var insertCommand = new SQLiteCommand(insertCommandString, sqlWriter2);
+                            var reader = insertCommand.ExecuteReader();
+                        }
+                    }
+                    transaction1.Commit();
+                }
+                sqlWriter2.Close();
+            }
+
+            ////////////////////////////////////////////////////////////////////
         }
 
         private void GlycoFragDataHandler(object sender, FragmentDataReturnArgs e)
