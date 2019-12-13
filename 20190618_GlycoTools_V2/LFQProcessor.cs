@@ -36,27 +36,28 @@ namespace _20190618_GlycoTools_V2
 
         public List<PSM> crunch(List<PSM> psms)
         {
+            if(psms.Count() < 1)
+            {
+                return null;
+            }
+
             var rawFile = new ThermoRawFile(rawpath);
             rawFile.Open();
-
+            
             List<int> msOneScanNumbers = new List<int>();
             foreach (var scan in rawFile)
             {
                 if (scan.MsnOrder == 1)
                 {
                     msOneScanNumbers.Add(scan.SpectrumNumber);
+                    break;
                 }
             }
+            
             //ReadInTargets(peptidesPath, rawFile);
 
             foreach (PSM psm in psms)
             {
-
-                if (psm.scanNumber == 5424)
-                {
-                    var x = 0;
-                }
-
                 LFPeptide pep = psmToLFPeptide(psm, rawFile);
                 targetPeptides.Add(pep);
             }
@@ -82,23 +83,36 @@ namespace _20190618_GlycoTools_V2
                     pep.lookupRange = DoubleRange.FromPPM(pep.UserMZ, 20);
                 }
 
-                foreach (var ms1 in msOneScanNumbers)
+                var minScan = targetPeptides.OrderBy(x => x.FirstScan).ToList()[0].FirstScan;
+                var maxScan = targetPeptides.OrderByDescending(x => x.LastScan).ToList()[0].LastScan;
+
+                for (int ms1 = minScan; ms1 <= maxScan; ms1++)
                 {
-                    var spectrum = rawFile.GetSpectrum(ms1);
-                    GetXICs(spectrum, ms1, rawFile.GetRetentionTime(ms1));
-                    rawFile.ClearCachedScans();
+                    List<LFPeptide> donePeptides = targetPeptides.Where(x => x.LastScan <= ms1).ToList();
+                    foreach (var pep in donePeptides)
+                    {
+                        pep.doneBuildingXIC = true;
+                    }
+
+                    if (rawFile.GetMsnOrder(ms1) == 1)
+                    {                        
+                        var spectrum = rawFile.GetSpectrum(ms1);
+                        GetXICs(spectrum, ms1, rawFile.GetRetentionTime(ms1));
+                        rawFile.ClearCachedScans();     
+                    }
 
                     List<LFPeptide> peptidesForExtract = targetPeptides.Where(x => x.doneBuildingXIC && !x.extractedXIC).ToList();
                     foreach (var pep in peptidesForExtract)
                     {
                         try
                         {
-                            pep.SmoothLibrary = Smoothing.GetRollingAveragePeaks(pep, 11, true);
+                            pep.SmoothLibrary = Smoothing.GetRollingAveragePeaks(pep, 7, true);
                             if (pep.SmoothLibrary.Count != 0)
                             {
                                 ExtractFeatures.GetApexPeak(pep, true);
                                 ExtractFeatures.GetFWHMWindow(pep);
                                 LFPeptide pepSmooth = (LFPeptide)pep.Clone();
+                                //pepSmooth.SmoothLibrary = pep.XICLibrary; /////TEMP!!!//////
                                 pepsWithSmooth.Add(pepSmooth);
                                 pep.XICLibrary.Clear();
                             }
@@ -106,10 +120,10 @@ namespace _20190618_GlycoTools_V2
                         }
                         catch (Exception e)
                         {
-                            System.Windows.Forms.MessageBox.Show("XICLibraryCount: " + pep.XICLibrary.Count 
+                            System.Windows.Forms.MessageBox.Show("XICLibraryCount: " + pep.XICLibrary.Count
                                                                     + "Peptide: " + pep.sequence
                                                                     + "\n" + e.ToString());
-    
+
                         }
                     }
                 }
@@ -120,40 +134,6 @@ namespace _20190618_GlycoTools_V2
                 //for(int i = 0; i < psms.Count; i++)
                 for (int i = 0; i < pepsWithSmooth.Count; i++)
                 {
-                    /**
-                    if(psms[i].scanTime == 20.45)
-                    {
-                        double[] xs = new double[pepsWithSmooth[i].SmoothLibrary.Count];
-                        double[] ys = new double[pepsWithSmooth[i].SmoothLibrary.Count];
-
-                        StreamWriter writer = new StreamWriter(@"C:\Users\gwilson\Desktop\GlycoQuant - Injs\TLN[NGlycan_1216.42286271]CSGAHVK_0.5_2_PolynomialFit.csv");
-                        for (int k = 0; k < pepsWithSmooth[i].SmoothLibrary.Count; k++)
-                        {
-                            xs[k] = pepsWithSmooth[i].SmoothLibrary[k].RT;
-                            ys[k] = pepsWithSmooth[i].SmoothLibrary[k].Intensity;                            
-
-                            //writer.WriteLine(pepsWithSmooth[i].SmoothLibrary[k].RT + "," + pepsWithSmooth[i].SmoothLibrary[k].Intensity);
-                            
-                            
-                            if (pepsWithSmooth[i].SmoothLibrary[k].RT > targetPeptides[i].LeftFWHM.RT && pepsWithSmooth[i].SmoothLibrary[k].RT < targetPeptides[i].RightFWHM.RT)
-                            {
-                                writer.WriteLine(pepsWithSmooth[i].SmoothLibrary[k].RT + "," + pepsWithSmooth[i].SmoothLibrary[k].Intensity);
-                            }
-                            
-                        }
-                                                
-                        double[] p = Fit.Polynomial(xs, ys, 3)
-
-                        for(int j = 0; j < p.Length; j++)
-                        {
-                            //writer.WriteLine()
-                        }
-
-                        writer.Close();
-                    }
-                    **/
-
-
                     double intensity = 0;
 
                     try
@@ -192,8 +172,8 @@ namespace _20190618_GlycoTools_V2
                     }
 
                     psms[i].intensity = intensity;
-                    psms[i].peakElution = pepsWithSmooth[i].SmoothLibrary;
-                    psms[i].scanNumberofMaxElutionIntensity = rawFile.GetSpectrumNumber(pepsWithSmooth[i].SmoothLibrary.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).RT);
+                    psms[i].peakElution = pepsWithSmooth[i].SmoothLibrary; 
+                    psms[i].scanNumberofMaxElutionIntensity = rawFile.GetSpectrumNumber(pepsWithSmooth[i].SmoothLibrary.OrderByDescending(x=>x.Intensity).ToList()[0].RT);
                     //psms[i].intensity = targetPeptides[i].apexPeakLibrary.Intensity;
                 }
 
@@ -208,20 +188,11 @@ namespace _20190618_GlycoTools_V2
 
         public static void GetXICs(ThermoSpectrum currentSpectrum, int specNumber, double rt)
         {
-            List<LFPeptide> donePeptides = targetPeptides.Where(x => x.LastScan < specNumber).ToList();
-            foreach (var pep in donePeptides)
-            {
-                pep.doneBuildingXIC = true;
-            }
+            
 
             List<LFPeptide> currPeptides = targetPeptides.Where(x => x.FirstScan <= specNumber && x.LastScan >= specNumber).ToList();
             foreach (var pep in currPeptides)
             {
-                if(pep.ms2ScanNumber == 5424)
-                {
-                    var x = 0;
-                }
-
                 List<ThermoMzPeak> outPeaks = new List<ThermoMzPeak>();
                 if (currentSpectrum.TryGetPeaks(pep.lookupRange, out outPeaks))
                 {

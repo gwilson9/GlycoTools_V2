@@ -241,17 +241,26 @@ namespace _20190618_GlycoTools_V2
         public void getPeakElutions()
         {
             var lfqProcessor = new LFQProcessor(idPSM.rawFile);
-            var pepLFQs = lfqProcessor.crunch(possibleParentPeaks);
 
-            foreach(var pepLFQ in pepLFQs)
+            if (idPSM.sequence.Equals("GPGIKPN[+1458.44202]QTSK"))
             {
-                var matchMax = pepLFQ.peakElution.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                var idMax = idPSM.peakElution.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                if (pepLFQ.scanNumberofMaxElutionIntensity == idPSM.scanNumberofMaxElutionIntensity && idMax < matchMax)
+                var a = 0;
+            }
+
+            if(possibleParentPeaks.Count() > 0)
+            {
+                var pepLFQs = lfqProcessor.crunch(possibleParentPeaks);
+
+                foreach (var pepLFQ in pepLFQs)
                 {
-                    matchedParentPeaks.Add(pepLFQ);
+                    var matchMax = pepLFQ.peakElution.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
+                    var idMax = idPSM.peakElution.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
+                    if (pepLFQ.scanNumberofMaxElutionIntensity == idPSM.scanNumberofMaxElutionIntensity && idMax < matchMax)
+                    {
+                        matchedParentPeaks.Add(pepLFQ);
+                    }
                 }
-            }            
+            }         
         }
     }
 }

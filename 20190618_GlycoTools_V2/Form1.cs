@@ -415,7 +415,7 @@ namespace _20190618_GlycoTools_V2
             AddProgressText("\nFinished Reading Data.");
             fillFragHistPlot("", true);
             fillSeqCoveragePlot("", true);
-            //fillPrecursorMassErrorPlot("", true);
+            fillPrecursorMassErrorPlot("", true);
             fillGlycanTypePieChart("", true);
             dataUploaded = true;
         }

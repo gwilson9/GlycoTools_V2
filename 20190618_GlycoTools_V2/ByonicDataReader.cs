@@ -301,8 +301,6 @@ namespace _20190618_GlycoTools_V2
                         searchResults[psm].Add(match);
                     }                    
                 }
-                //if (searchResults.Count() > 0)
-                    //break;
             }
 
 

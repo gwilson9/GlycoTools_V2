@@ -1,0 +1,122 @@
+
+CENTERSPACE SOFTWARE - LICENSE AGREEMENT 
+ 
+IMPORTANT - READ BEFORE COPYING, INSTALLING OR USING. 
+
+Do not copy, install, or use the "Materials" provided under this license agreement 
+("Agreement"), until you have carefully read the following terms and conditions. 
+
+By copying, installing, or otherwise using the Materials, you agree to be bound 
+by the terms of this Agreement. If you do not agree to the terms of this Agreement, 
+do not copy, install, or use the Materials. 
+ 
+LICENSE GRANT: Subject to the License Restrictions below, CenterSpace Software LLC 
+("CenterSpace Software") grants to you (the "Licensee")the following 
+non-exclusive, non-assignable royalty-free copyright licenses in the "Materials" 
+below, which are identified specifically in License Definitions, and in any updates 
+thereto that CenterSpace Software may offer in the future.   
+ 
+LICENSE DEFINITIONS: Materials are defined as consisting of Source Code, Binary 
+Libraries, Sample Source, and Documentation. 
+
+Licensee:  One software developer using this software on one computer (one 
+workstation). Any software developer that works on a project that makes calls to 
+the Materials (in any non-executable form) shall be considered a Licensee, and must 
+either have their own individual license or be part of a group license. 
+
+Source Code: may include files containing programming statements that are 
+human-readable and are written in any .NET programming language, including the C# 
+(CSharp) and Managed C++ programming languages. You may use them internally, but 
+you may not copy or redistribute them.  
+
+Binary Libraries: may include dynamically linkable library files (.NET assemblies) 
+and support files. You may use them internally. You may redistribute Binary 
+Libraries with applications you develop that make use of or incorporate them, 
+provided such applications do not expose CenterSpace Software application 
+programming interfaces either directly or indirectly.   
+
+Sample Source: may include example interface or application source code. You may 
+copy, modify and compile the Sample Source. 
+
+Documentation: may include reference and user documentation. You may use them 
+internally for the purposes of evaluating the Materials as licensed hereunder, but 
+you may not copy or redistribute them. 
+
+LICENSE RESTRICTIONS: You may not reverse-assemble, reverse-compile, or otherwise 
+reverse-engineer any software provided solely in binary form. You may NOT post any 
+of the Materials to a bulletin-board site, or website without prior written consent. 
+In addition, YOU MAY NOT CREATE A UTILITY PROGRAM OF SIMILAR NATURE TO THIS PRODUCT. 
+
+EVALUATION PERIOD: This license if valid for a thirty-day (30-day)
+Evaluation Period. Upon expiration of the Evaluation Period, you must either purchase
+a license key or make reasonable efforts to destroy all Binaries, Sample Source, and
+Documentation.
+
+COPYRIGHT: Title to the Materials and all copies thereof remain with CenterSpace 
+Software. The Materials are copyrighted and are protected by United States 
+copyright laws and international treaty provisions. You will not remove any 
+copyright notice from the Materials. You agree to prevent any unauthorized copying 
+of the Materials. Except as expressly provided herein, CenterSpace Software does 
+not grant any express or implied right to you under CenterSpace Software patents, 
+copyrights, trademarks, or trade secret information.  
+
+REPLACEMENTS: The Materials are provided "AS IS" without warranty of any kind. If 
+the media on which the Materials are furnished are found to be defective in material 
+or workmanship under normal use for a period of ninety (90) days from the date of 
+receipt, CenterSpace Software's entire liability and your exclusive remedy shall 
+be the replacement of the media. This offer is void if the media defect results 
+from accident, abuse, or misapplication. 
+
+LIMITATION OF LIABILITY: THE ABOVE REPLACEMENT PROVISION IS THE ONLY WARRANTY OF 
+ANY KIND. CENTERSPACE SOFTWARE OFFERS NO OTHER WARRANTY EITHER EXPRESS OR IMPLIED 
+INCLUDING THOSE OF MERCHANTABILITY, NONINFRINGEMENT OF THIRD- PARTY INTELLECTUAL 
+PROPERTY OR FITNESS FOR A PARTICULAR PURPOSE. NEITHER CENTERSPACE SOFTWARE NOR ITS 
+SUPPLIERS SHALL BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT 
+LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF 
+BUSINESS INFORMATION, OR OTHER LOSS) ARISING OUT OF THE USE OF OR INABILITY TO USE 
+THE SOFTWARE, EVEN IF CENTERSPACE SOFTWARE HAS BEEN ADVISED OF THE POSSIBILITY OF 
+SUCH DAMAGES. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF 
+LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT 
+APPLY TO YOU. 
+
+USER SUBMISSIONS: You agree that any material, information or other communication, 
+including all data, images, sounds, text, and other things embodied therein, you 
+transmit or post to a CenterSpace Software email address or website will be 
+considered non-confidential ("Communications"). CenterSpace Software will have no 
+confidentiality obligations with respect to the Communications. You agree that 
+CenterSpace Software and its designees will be free to copy, modify, create 
+derivative works, publicly display, disclose, distribute, license and sublicense 
+through multiple tiers of distribution and licensees, incorporate and otherwise 
+use the Communications, including derivative works thereto, for any and all 
+commercial or non-commercial purposes. 
+
+TERMINATION OF THIS LICENSE: CenterSpace Software may terminate this license at 
+any time if you are in breach of any of its terms and conditions. Upon termination, 
+you will immediately destroy the Materials or return all copies of the Materials 
+to CenterSpace Software along with any copies you have made. 
+
+AUDIT: CenterSpace Software may upon 30 days' notice have access to your 
+computer systems and to all of your information, data, documentation, and 
+records regarding or relating to the Materials to verify your compliance with 
+this Agreement.
+
+ATTORNEY FEES: In the event that a dispute arises under the terms of this Agreement 
+or arising directly or indirectly out of this Agreement, then and in the event that 
+arbitration, suit, or action is instituted to enforce or interpret the terms of 
+this Agreement, the prevailing party in such arbitration, suit, or action, or on 
+the appeal of such arbitration, suit, or action, shall be entitled to an award of 
+their reasonable attorney fees, as set by the arbitrator, court, or appeal court 
+in which the matter is heard or appealed, and their costs, including reasonable 
+attorney fees and costs in collection of any judgment. 
+
+U.S. GOVERNMENT RESTRICTED RIGHTS: The Materials are provided with "RESTRICTED 
+RIGHTS." Use, duplication or disclosure by the Government is subject to 
+restrictions set forth in FAR52.227-14 and DFAR252.227-7013 et seq. or its 
+successor. Use of the Materials by the Government constitutes acknowledgment of 
+CenterSpace Software's rights in them. 
+
+APPLICABLE LAWS: Any claim arising under or relating to this Agreement shall be 
+governed by the internal substantive laws of the State of Oregon or federal courts 
+located in Oregon, without regard to principles of conflict of laws. You may not 
+export the Materials in violation of applicable export laws.
+

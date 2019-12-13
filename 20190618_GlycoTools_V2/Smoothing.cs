@@ -3,13 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CenterSpace.NMath.Core;
+using CenterSpace.NMath.Stats;
 
 namespace _20190618_GlycoTools_V2
 {
     class Smoothing
     {
+
+        public static List<RTPeak> SavitskyGolaySmooth(LFPeptide targetPeptide, int left, int right, int polyN)
+        {
+            var c = MovingWindowFilter.SavitzkyGolayCoefficients(left, right, polyN);
+
+            var filter = new MovingWindowFilter(left, right, c);
+
+            var x = new DoubleVector(targetPeptide.XICLibrary.Select(a => a.RT).ToList().ToArray());
+
+            var y = new DoubleVector(targetPeptide.XICLibrary.Select(a => a.Intensity).ToList().ToArray());
+
+            var yFiltered = filter.Filter(y, MovingWindowFilter.BoundaryOption.PadWithZeros);
+
+            var returnList = new List<RTPeak>();
+
+            for (int i = 0; i < x.Count(); i++)
+            {
+                var peak = new RTPeak(targetPeptide.UserMZ, yFiltered[i], x[i]);
+
+                returnList.Add(peak);
+            }
+
+            return returnList;
+        }
+
         public static List<RTPeak> GetRollingAveragePeaks(LFPeptide targetPeptide, int period, bool isLibrary = true)
         {
+            return new List<RTPeak>(targetPeptide.XICLibrary); ////TEMP!!!!///
+
             //add three null points to the beginning and end of the peptide
             //you should update this so you can change the smoothing
             RTPeak start = new RTPeak(0, 0, 0);
