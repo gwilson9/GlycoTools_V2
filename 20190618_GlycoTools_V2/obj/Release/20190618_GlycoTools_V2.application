@@ -7,14 +7,14 @@
     <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="20190618_GlycoTools_V2.exe.manifest" size="23752">
+    <dependentAssembly dependencyType="install" codebase="20190618_GlycoTools_V2.exe.manifest" size="25803">
       <assemblyIdentity name="20190618_GlycoTools_V2.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>VeOmpKfR5AIkDRgYHNMhWdPJ42ba17zPIvV8sZZP0iQ=</dsig:DigestValue>
+        <dsig:DigestValue>HET7APAl72cYmgm1X7iP6zKBV0ht6sHtgynJyducvac=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

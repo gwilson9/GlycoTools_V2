@@ -38,7 +38,7 @@ namespace _20190618_GlycoTools_V2
         private BindingSource bindingSource2 = new BindingSource();
         private SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter();
         private bool dataUploaded = false;
-
+        private BindingSource inSourceFragBindingSource = new BindingSource();
 
         public GlycoTools()
         {
@@ -49,6 +49,46 @@ namespace _20190618_GlycoTools_V2
             this.modCountFilter.DataSource = comboboxOptions;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             dataTree.Tag = false;
+            inSourceFragData.Dock = DockStyle.Fill;
+            inSourceFragData.DataSource = inSourceFragBindingSource;
+            inSourceFragChart.Dock = DockStyle.Fill;
+
+            inSourceFragChart.AxisY.Clear();
+            inSourceFragChart.AxisY.Add(new LiveCharts.Wpf.Axis
+            {
+                Title = "Intensity",
+                MinValue = 0.0,
+                FontSize = 15,
+                Foreground = System.Windows.Media.Brushes.Black,
+                Sections = new SectionsCollection
+                {
+                    new AxisSection
+                    {
+                        Value = 0.00001,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64,79,86))
+                    }
+                }
+            });
+
+            inSourceFragChart.AxisX.Clear();
+            inSourceFragChart.AxisX.Add(new LiveCharts.Wpf.Axis
+            {
+                Title = "Time (min.)",
+                FontSize = 15,
+                Foreground = System.Windows.Media.Brushes.Black,
+                Sections = new SectionsCollection
+                {
+                    new AxisSection
+                    {
+                        Value = 0.00001, //Does not show when set to 0
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
+                    }
+
+                }
+            });
+
             dataTree.Dock = DockStyle.Fill;
             elutionPlot.Dock = DockStyle.Fill;
             elutionPlot.Hoverable = false;
@@ -79,12 +119,12 @@ namespace _20190618_GlycoTools_V2
                 Sections = new SectionsCollection
                 {
                     new AxisSection
-                    {                        
+                    {
                         Value = 0.00001, //Does not show when set to 0
                         StrokeThickness = 1,
                         Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
                     }
-                    
+
                 }
 
             });
@@ -273,6 +313,7 @@ namespace _20190618_GlycoTools_V2
 
 
             BuildSQLiteResults();
+                        
 
             //ToSkip Data upload, comment out BuildSQLiteResults() and uncomment below
             //ChangeButtonStatus(true);
@@ -283,13 +324,14 @@ namespace _20190618_GlycoTools_V2
             //statsComboBox.SelectedItem = statsComboBox.Items[statsComboBox.Items.IndexOf("All Files")];
             //fillResultTable("SELECT * FROM AllGlycoPSMs");
             //fillViewPeptidesDataGrid("SELECT * FROM AllGlycoPSMs");
-            ////BatchAnnotateSpectra();
-            //AddProgressText("\nFinished Reading Data.");
+            ////BatchAnnotateSpectra();            
             //fillFragHistPlot("", true);
             //fillSeqCoveragePlot("", true);
             //fillPrecursorMassErrorPlot("", true);
             //fillGlycanTypePieChart("", true);
             //dataUploaded = true;
+            //fillInSourceFragData();
+            //AddProgressText("\nFinished Reading Data.");
         }
 
         private void byrsltFiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -317,7 +359,7 @@ namespace _20190618_GlycoTools_V2
         private void BuildSQLiteResults()
         {
             // files: { FilePath, Condition, Replicate, isControl }
-            var files = new List<string[] >();
+            var files = new List<string[]>();
 
             for (int i = 0; i < dataUpload.Rows.Count; i++)
             {
@@ -326,19 +368,19 @@ namespace _20190618_GlycoTools_V2
                                   dataUpload.Rows[i].Cells[1].Value.ToString(),
                                   dataUpload.Rows[i].Cells[2].Value.ToString(),
                                   dataUpload.Rows[i].Cells[3].Value.ToString(),
-                                  (dataUpload.Rows[i].Cells[4].Value != System.DBNull.Value).ToString()                                  
+                                  (dataUpload.Rows[i].Cells[4].Value != System.DBNull.Value).ToString()
                                 };
 
                 files.Add(file);
             }
-            
+
             // Perform SQLite Table Build in Separate Thread
             AddProgressText("Starting data upload...");
             var bynReader = new ByonicDataReader(files, outputPath.Text);
-            bynReader.scoreFilter = (double) scoreFilter.Value;
-            bynReader.deltaModFilter = (double) deltaModScoreFilter.Value;
-            bynReader.logProbFilter = (double) logProbFilter.Value;
-            bynReader.pepLengthFilter = (int) pepLengthFilter.Value;
+            bynReader.scoreFilter = (double)scoreFilter.Value;
+            bynReader.deltaModFilter = (double)deltaModScoreFilter.Value;
+            bynReader.logProbFilter = (double)logProbFilter.Value;
+            bynReader.pepLengthFilter = (int)pepLengthFilter.Value;
             bynReader.glycanCountFilter = Int32.Parse(modCountFilter.Text);
             bynReader.organism = organismText.Text;
             bynReader.performProteinInference = PerformProteinInference.Checked;
@@ -352,7 +394,7 @@ namespace _20190618_GlycoTools_V2
                 bynReader.proteaseString = ProteaseCB.Items[ProteaseCB.SelectedIndex].ToString();
                 bynReader.MaxMissedCleavage = Int32.Parse(miscleaveCB.Items[miscleaveCB.SelectedIndex].ToString());
             }
-            
+
             bynReader.UpdateProgress += HandleUpdateProgress;
             bynReader.finish += HandleFinishedUpload;
             Thread thread = new Thread(bynReader.getNewData);
@@ -379,7 +421,7 @@ namespace _20190618_GlycoTools_V2
             //SetSize();
         }
 
-        private void CreateGraph( ZedGraphControl zgc)
+        private void CreateGraph(ZedGraphControl zgc)
         {
 
         }
@@ -403,9 +445,9 @@ namespace _20190618_GlycoTools_V2
 
         private void HandleFinishedUpload(object sender, DataReturnArgs e)
         {
-            ChangeButtonStatus(true);                        
+            ChangeButtonStatus(true);
             //populateTreeView(e.data);            
-            fillTableNames();            
+            fillTableNames();
             resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
             fillStatsComboBox();
             statsComboBox.SelectedItem = statsComboBox.Items[statsComboBox.Items.IndexOf("All Files")];
@@ -418,7 +460,29 @@ namespace _20190618_GlycoTools_V2
             fillPrecursorMassErrorPlot("", true);
             fillGlycanTypePieChart("", true);
             dataUploaded = true;
+            if (IdentifyInsourceFragments.Checked)
+            {
+                fillInSourceFragData();
+            }
         }
+
+        private void fillInSourceFragData()
+        {
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\InsourceFragView.sqlite"));
+
+            var selectCommand = "SELECT * FROM Data";
+            dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
+
+            DataTable table = new DataTable
+            {
+                Locale = CultureInfo.InvariantCulture
+            };
+
+            dataAdapter.Fill(table);
+            inSourceFragBindingSource.DataSource = table;
+            inSourceFragData.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+        }
+
 
         private void fillFragHistPlot(string file, bool allFiles)
         {
@@ -596,7 +660,7 @@ namespace _20190618_GlycoTools_V2
             statsPlot1.DefaultLegend.BorderBrush = System.Windows.Media.Brushes.Gray;
             statsPlot1.LegendLocation = LiveCharts.LegendLocation.Bottom;
 
-            
+
         }
 
         private void fillSeqCoveragePlot(string file, bool allFiles)
@@ -639,7 +703,7 @@ namespace _20190618_GlycoTools_V2
                 glyCommandString = string.Format("SELECT * FROM AnnotatedPeptides WHERE AnnotatedPeptides.File='{0}'", file);
             }
             var glyCommand = new SQLiteCommand(glyCommandString, connection);
-            var glyReader = glyCommand.ExecuteReader();            
+            var glyReader = glyCommand.ExecuteReader();
             var glycanHistData = GetBinCountsFromSqlReader(30, glyReader, 0, 1, "GlycanSeqCoverage");
             glyReader.Close();
 
@@ -831,7 +895,7 @@ namespace _20190618_GlycoTools_V2
                 }
 
 
-                
+
             }
 
             statsPlot4.DefaultLegend.FontSize = 15;
@@ -971,14 +1035,14 @@ namespace _20190618_GlycoTools_V2
             bindingSource2.DataSource = table;
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
-            foreach(DataGridViewColumn column in viewPeptidesDataGrid.Columns)
+            foreach (DataGridViewColumn column in viewPeptidesDataGrid.Columns)
             {
                 column.Width = 100;
             }
 
             connection.Close();
             GC.Collect();
-            
+
         }
 
         private void fillResultTable(string selectCommand)
@@ -997,7 +1061,7 @@ namespace _20190618_GlycoTools_V2
             bindingSource1.DataSource = table;
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
-            foreach(DataGridViewColumn column in dataGridView1.Columns)
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
                 column.Width = 100;
             }
@@ -1025,7 +1089,7 @@ namespace _20190618_GlycoTools_V2
                 return;
             }
             progressText.AppendText(string.Format("\n{0}", progressValue));
-            progressText.AppendText(Environment.NewLine);            
+            progressText.AppendText(Environment.NewLine);
         }
 
         private void dataUpload_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -1095,7 +1159,7 @@ namespace _20190618_GlycoTools_V2
             int i = 0;
 
             //For each file
-            foreach(KeyValuePair<string, Dictionary<string, List<string>>> file in data)
+            foreach (KeyValuePair<string, Dictionary<string, List<string>>> file in data)
             {
                 dataTree.Nodes.Add(file.Key);
 
@@ -1112,20 +1176,20 @@ namespace _20190618_GlycoTools_V2
                         dataTree.Nodes[i].Nodes[j].Nodes.Add(pair.Value[k]);
                     }
                     j++;
-                }                
+                }
                 i++;
             }
         }
 
         private void dataTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {            
-            if(e.Node.Level == 2)
+        {
+            if (e.Node.Level == 2)
             {
                 var sequence = e.Node.Text;
                 var prot = e.Node.Parent.Text;
                 var file = e.Node.Parent.Parent.Text;
                 //getPlotData(sequence, prot, file);
-            }            
+            }
         }
 
         private void getPlotDataFromSQL(int scanNum, string file)
@@ -1176,23 +1240,31 @@ namespace _20190618_GlycoTools_V2
             GC.Collect();
             elutionPlot.Series = ChangeElutionPlot(RTs, elutionIntensities, file, scanNum);
             updateSpectrumPlotFromSQL(scanNum, file);
-            
+
         }
 
         private void updateSpectrumPlotFromSQL(int scanNum, string file)
         {
             var rawFilePath = "";
+
+            //var fileNoExt = Path.GetFileNameWithoutExtension(file);
+
             foreach (DataGridViewRow row in dataUpload.Rows)
             {
-                if (Path.GetFileNameWithoutExtension(row.Cells[0].Value.ToString()).Equals(file))
+                var rowNoExt = Path.GetFileNameWithoutExtension(row.Cells[0].Value.ToString());
+                if (rowNoExt.Equals(file))
                 {
                     rawFilePath = row.Cells[1].Value.ToString();
                 }
             }
+
+            if (rawFilePath.Equals(""))
+                return;
+
             var raw = new ThermoRawFile(rawFilePath);
             raw.Open();
             var spectrum = raw.GetSpectrum(scanNum);
-            raw.Dispose(); 
+            raw.Dispose();
 
             var sqlPath = string.Format("Data Source={0}\\MyDatabase.sqlite; Version=3;", outputPath.Text);
             SQLiteConnection sqlReader = new SQLiteConnection(sqlPath);
@@ -1239,7 +1311,7 @@ namespace _20190618_GlycoTools_V2
             var spectrumData = new List<List<FragmentMatch>>() { pepFrags, yIons, oxoniumIons };
             drawSpectrum(spectrum, spectrumData);
 
-            
+
         }
 
         private void drawSpectrum(ThermoSpectrum spectrum, List<List<FragmentMatch>> spectrumData)
@@ -1254,7 +1326,7 @@ namespace _20190618_GlycoTools_V2
             var mzs = spectrum.GetMasses();
             var intensities = spectrum.GetIntensities();
             spectrumPlot.Series = new SeriesCollection();
-            
+
             var plotData = new ChartValues<ObservablePoint>();
 
             for (int i = 0; i < mzs.Count(); i++)
@@ -1267,7 +1339,7 @@ namespace _20190618_GlycoTools_V2
             }
 
             spectrumPlot.Series.Add(new ColumnSeries
-            {                
+            {
                 Values = plotData,
                 ColumnPadding = -0.5,
                 Stroke = System.Windows.Media.Brushes.Black,
@@ -1370,7 +1442,7 @@ namespace _20190618_GlycoTools_V2
 
             var query = string.Format("SELECT * FROM AllGlycoPSMs WHERE AllGlycoPSMs.Sequence='{0}' AND AllGlycoPSMs.ProteinFasta='{1}' AND AllGlycoPSMs.File='{2}' ORDER BY AllGlycoPSMs.Score DESC", sequence, protein, file);
             var command = new SQLiteCommand(query, sqlReader);
-            var reader = command.ExecuteReader();            
+            var reader = command.ExecuteReader();
 
             //For annotating MS Spectrum
             var pepSequence = "";
@@ -1390,24 +1462,24 @@ namespace _20190618_GlycoTools_V2
                 glycans = reader["Glycans"].ToString().Split(';').ToList();
                 mods = reader["ModsVar"].ToString().Split(';').ToList();
                 charge = Int32.Parse(reader["Charge"].ToString());
-                spectrumNumber = Int32.Parse(reader["ScanNum"].ToString());                             
+                spectrumNumber = Int32.Parse(reader["ScanNum"].ToString());
                 file = reader["File"].ToString();
                 RTs = reader["RetentionTimes"].ToString().Split(',').ToList();
                 elutionIntensities = reader["Intensities"].ToString().Split(',').ToList();
 
-                break;              
+                break;
             }
 
             // Moved to separate method to neaten up
             elutionPlot.Series = ChangeElutionPlot(RTs, elutionIntensities, file, spectrumNumber);
 
             var fragFinder = new glycoFragmentFinder(rawFilePath, glycoPSM);
-            fragFinder.ReturnData += HandleFragmentMatchDataReturn; 
+            fragFinder.ReturnData += HandleFragmentMatchDataReturn;
             Task thread = new Task(fragFinder.crunch);
             thread.Start();
 
 
-        } 
+        }
 
         private void HandleFragmentMatchDataReturn(object sender, FragmentDataReturnArgs e)
         {
@@ -1421,7 +1493,7 @@ namespace _20190618_GlycoTools_V2
                     AddProgressText(string.Format("Spectra from {0} annotated in {1}", e.file, e.timeTaken));
                     break;
             }
-            
+
         }
 
         private void UpdateSpectrumPlotWithFragDataReturn(FragmentDataReturnArgs data)
@@ -1431,7 +1503,7 @@ namespace _20190618_GlycoTools_V2
                 spectrumPlot.Invoke(new Action<FragmentDataReturnArgs>(UpdateSpectrumPlotWithFragDataReturn), data);
                 return;
             }
-            
+
             var intensities = data.spectrum.GetIntensities();
             var mzs = data.spectrum.GetMasses();
 
@@ -1441,14 +1513,14 @@ namespace _20190618_GlycoTools_V2
             //var data = new ChartValues<ObservablePoint>();
             var plotData = new ChartValues<ObservablePoint>();
 
-            
+
             for (int i = 0; i < mzs.Count(); i++)
             {
                 plotData.Add(new ObservablePoint
-                {                            
+                {
                     X = mzs[i],
                     Y = intensities[i],
-                    
+
                 });
             }
 
@@ -1458,16 +1530,16 @@ namespace _20190618_GlycoTools_V2
                 ColumnPadding = -0.2,
                 Stroke = System.Windows.Media.Brushes.Black,
                 StrokeThickness = 1000,
-                Width = 100,               
-    
+                Width = 100,
+
             });
-            
+
 
             // Return is [0] List of intact peptide frags [1] Neutral loss peptide frags [2] PepHexMatches [3] Y ions [4] oxonium ions
             //var spectrumData = GetSpectrumAnnotations(pepSequence, spectrum, mods, glycans, charge);
 
             var spectrumData = new List<List<FragmentMatch>>() { data.peptideFragments, data.peptideNeutralLossFragments, data.peptideFragmentsMustIncludeGlycan, data.YIons, data.oxoniumIons };
-            
+
             //Used for testing ScottPlot
             //for(int i = 0; i < spectrumData.Count(); i++)
             //{
@@ -1490,7 +1562,7 @@ namespace _20190618_GlycoTools_V2
             //    writer2.WriteLine("{0},{1},", mzs[i], intensities[i]);
             //}
             //writer2.Close();
-            
+
             var brushes = new List<System.Windows.Media.Brush>() { System.Windows.Media.Brushes.Red,
                                                                    System.Windows.Media.Brushes.Blue,
                                                                    System.Windows.Media.Brushes.Green,
@@ -1499,18 +1571,18 @@ namespace _20190618_GlycoTools_V2
             var j = 0;
             foreach (var spec in spectrumData)
             {
-                
+
                 var specIntensities = spec.Select(x => x.fragmentSignal).ToList();
                 var specMZs = spec.Select(x => x.fragmentMZ).ToList();
                 var labels = spec.Select(x => x.label).ToList();
 
                 var specData = new ChartValues<ObservablePoint>();
-                for(int i = 0; i < specMZs.Count(); i++)
+                for (int i = 0; i < specMZs.Count(); i++)
                 {
                     specData.Add(new ObservablePoint
                     {
                         X = specMZs[i],
-                        Y = specIntensities[i]     
+                        Y = specIntensities[i]
                     });
 
                     var label = new VisualElement
@@ -1519,12 +1591,12 @@ namespace _20190618_GlycoTools_V2
                         Y = specIntensities[i],
                         VerticalAlignment = System.Windows.VerticalAlignment.Top,
                         HorizontalAlignment = System.Windows.HorizontalAlignment.Right,
-                        UIElement = new TextBlock { Text = labels[i], RenderTransformOrigin = new System.Windows.Point(0.0,0.9), RenderTransform = new RotateTransform(-90) }, // , LayoutTransform = new RotateTransform(-90)},                        
+                        UIElement = new TextBlock { Text = labels[i], RenderTransformOrigin = new System.Windows.Point(0.0, 0.9), RenderTransform = new RotateTransform(-90) }, // , LayoutTransform = new RotateTransform(-90)},                        
                         //UIElement.RenderTransform = new RotateTransform(-90),
                         //LayoutTransform = new RotateTransform(-90),
                     };
                     spectrumPlot.VisualElements.Add(label);
-                }                
+                }
 
                 spectrumPlot.Series.Add(new ColumnSeries
                 {
@@ -1548,7 +1620,7 @@ namespace _20190618_GlycoTools_V2
             **/
 
         }
-        
+
         private void BatchAnnotateSpectra()
         {
             var sqlPath = string.Format("Data Source={0}\\MyDatabase.sqlite; Version=3;", outputPath.Text);
@@ -1567,7 +1639,7 @@ namespace _20190618_GlycoTools_V2
             }
 
             //var tasks = new List<Task>();            
-            foreach(var file in uniqueFiles)
+            foreach (var file in uniqueFiles)
             {
                 AddProgressText(string.Format("Annotating spectra from {0}", file));
                 var rawFilePath = "";
@@ -1617,9 +1689,9 @@ namespace _20190618_GlycoTools_V2
                 var prot = e.Node.Parent.Text;
                 var file = e.Node.Parent.Parent.Text;
                 getPlotDataFromDataTree(sequence, prot, file);
-               
+
             }
-    
+
         }
 
         // Return is [0] List of intact peptide frags [1] Neutral loss peptide frags [2] PepHexMatches [3] Y ions [4] oxonium ions
@@ -1631,7 +1703,7 @@ namespace _20190618_GlycoTools_V2
 
             var hexnac = new ChemicalFormula("C8O5NH13");
 
-            foreach(var mod in mods)
+            foreach (var mod in mods)
             {
                 // e.g. M3(Oxidation / 15.9949) and N5(NGlycan / 1378.4756)
                 var modMass = Double.Parse(mod.Split(' ')[2].Split(')')[0]);
@@ -1643,15 +1715,15 @@ namespace _20190618_GlycoTools_V2
                 if (mod.Contains("Glycan"))
                 {
                     peptide.AddModification(newMod, modPosition);
-                    peptideHexNAc.AddModification(new Modification(hexnac.MonoisotopicMass, "HexNAc"), modPosition);                   
+                    peptideHexNAc.AddModification(new Modification(hexnac.MonoisotopicMass, "HexNAc"), modPosition);
                 }
                 else
                 {
                     peptide.AddModification(newMod, modPosition);
                     peptideHexNAc.AddModification(newMod, modPosition);
-                    peptideNoGlycans.AddModification(newMod, modPosition);                    
+                    peptideNoGlycans.AddModification(newMod, modPosition);
                 }
-                
+
             }
 
             var peptideFragments = GeneratePeptideFragments(peptide);
@@ -1675,17 +1747,17 @@ namespace _20190618_GlycoTools_V2
 
         private List<SpectrumFragment> LookForOxoniumIons(List<string> glycans, ThermoSpectrum spectrum)
         {
-            
+
             var returnList = new List<SpectrumFragment>();
-            
-            foreach(var gly in glycans)
+
+            foreach (var gly in glycans)
             {
                 var glycan = new Glycan(gly);
                 glycan.GenerateCombinations();
                 var glycanPieces = glycan.AllFragments;
                 var filteredPieces = GlycanMethods.GetValidGlycanStructures(glycanPieces);
 
-                foreach( var piece in filteredPieces)
+                foreach (var piece in filteredPieces)
                 {
                     var matches = new List<ThermoMzPeak>();
                     for (int i = 0; i < 4; i++)
@@ -1693,17 +1765,17 @@ namespace _20190618_GlycoTools_V2
                         var mz = GlycanMethods.GetGlycanMass(piece.Value) + (i * Constants.Hydrogen);
 
                         var outpeaks = new List<ThermoMzPeak>();
-                        if(spectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 40), out outpeaks))
+                        if (spectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 40), out outpeaks))
                         {
                             matches.AddRange(outpeaks);
                         }
                     }
-                    if(matches.Count() > 0)
+                    if (matches.Count() > 0)
                     {
                         var mostIntense = matches.OrderByDescending(x => x.Intensity).ToList()[0];
                         returnList.Add(new SpectrumFragment(mostIntense.MZ, mostIntense.Intensity, piece.Key));
-                    }                    
-                }                
+                    }
+                }
             }
 
             return returnList;
@@ -1713,36 +1785,36 @@ namespace _20190618_GlycoTools_V2
         {
             var returnList = new List<SpectrumFragment>();
 
-            foreach(var gly in glycans)
+            foreach (var gly in glycans)
             {
                 var glycan = new Glycan(gly);
                 glycan.GenerateCombinations();
                 var glycanPieces = glycan.AllFragments;
                 var filteredPieces = GlycanMethods.GetValidGlycanStructures(glycanPieces);
 
-                foreach(var piece in filteredPieces)
-                {                   
-                    for(int i = charge; i > 0; i--)
+                foreach (var piece in filteredPieces)
+                {
+                    for (int i = charge; i > 0; i--)
                     {
                         var matches = new List<ThermoMzPeak>();
                         double YIonMZ = ((pep.MonoisotopicMass) + (Constants.Hydrogen * ((double)i)) + GlycanMethods.GetGlycanMass(piece.Value)) / ((double)i);
-                        if(YIonMZ < 3000)
+                        if (YIonMZ < 3000)
                         {
-                            for(int j = 0; j < 4; j++)
+                            for (int j = 0; j < 4; j++)
                             {
                                 var isotopeMZ = (YIonMZ + (j * Constants.Hydrogen)) / ((double)i);
                                 var outpeaks = new List<ThermoMzPeak>();
-                                if(spectrum.TryGetPeaks(DoubleRange.FromPPM(isotopeMZ, 40), out outpeaks))
+                                if (spectrum.TryGetPeaks(DoubleRange.FromPPM(isotopeMZ, 40), out outpeaks))
                                 {
                                     matches.AddRange(outpeaks);
                                 }
                             }
                         }
-                        if(matches.Count() > 0)
+                        if (matches.Count() > 0)
                         {
                             var mostIntense = matches.OrderByDescending(x => x.Intensity).ToList()[0];
                             returnList.Add(new SpectrumFragment(mostIntense.MZ, mostIntense.Intensity, "Pep+" + piece.Key + "_z" + i.ToString()));
-                        }                        
+                        }
                     }
                 }
             }
@@ -1754,9 +1826,9 @@ namespace _20190618_GlycoTools_V2
         {
             var returnPeaks = new List<SpectrumFragment>();
 
-            foreach(var frag in frags)
+            foreach (var frag in frags)
             {
-                for(int i = 1; i < charge; i++)
+                for (int i = 1; i < charge; i++)
                 {
                     var fragMZ = (frag.MonoisotopicMass + (Constants.Hydrogen * (double)i)) / (double)i;
 
@@ -1767,7 +1839,7 @@ namespace _20190618_GlycoTools_V2
 
                         returnPeaks.Add(new SpectrumFragment(mostIntense.MZ, mostIntense.Intensity, frag.Type.ToString() + frag.Number.ToString() + "_z" + i.ToString()));
                     }
-                }                
+                }
             }
 
             return returnPeaks;
@@ -1834,7 +1906,7 @@ namespace _20190618_GlycoTools_V2
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center
             };
-
+            
             var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
             e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
         }
@@ -2120,9 +2192,7 @@ namespace _20190618_GlycoTools_V2
                     {
                         fileIndex = column.Index;
                     }
-                } 
-
-                
+                }                
 
                 if(scanNumIndex != -1 && fileIndex != -1)
                 {
@@ -2132,9 +2202,7 @@ namespace _20190618_GlycoTools_V2
                     getPlotDataFromSQL(scanNum, file);
                 }
                     
-            }                   
-           
-
+            }
         }
 
         //First list binMid, Second list binCount
@@ -2424,6 +2492,124 @@ namespace _20190618_GlycoTools_V2
         private void button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Loss of sugar monomers from a glycopeptide during ionization and ion transmission can result in artifacts of in-source fragmentation being identified as bonafine glycopeptides. This feature will determine if an identification is the result of an in-source fragment of a larger glycopeptide by searching raw files for co-elution of a larger species.");
+        }
+
+        private void inSourceFragData_SelectionChanged(object sender, EventArgs e)
+        {
+            if (inSourceFragData.SelectedRows.Count != 1 || !dataUploaded)
+                return;
+
+            var row = inSourceFragData.SelectedRows[0];
+
+            var idRTIndex = -1;
+            var idIntIndex = -1;
+            var parentRTIndex = -1;
+            var parentIntIndex = -1;
+
+            foreach (DataGridViewColumn column in inSourceFragData.Columns)
+            {
+
+                if (column.HeaderText.Equals("ID_RTS"))
+                    idRTIndex = column.Index;
+
+                if (column.HeaderText.Equals("ID_INTENSITIES"))
+                    idIntIndex = column.Index;
+
+                if (column.HeaderText.Equals("PARENT_RTS"))
+                    parentRTIndex = column.Index;
+
+                if (column.HeaderText.Equals("PARENT_INTENSITIES"))
+                    parentIntIndex = column.Index;
+
+            }
+
+            if(idRTIndex != -1 && idIntIndex != -1 && parentRTIndex != -1 && parentIntIndex != -1)
+            {
+                var idRTs = StringListToDoubleList(row.Cells[idRTIndex].Value.ToString().Split(';').ToList());
+                var idInts = StringListToDoubleList(row.Cells[idIntIndex].Value.ToString().Split(';').ToList());
+                var parentRTs = StringListToDoubleList(row.Cells[parentRTIndex].Value.ToString().Split(';').ToList());
+                var parentInts = StringListToDoubleList(row.Cells[parentIntIndex].Value.ToString().Split(';').ToList());
+
+
+                PlotInSourceData(idRTs, idInts, parentRTs, parentInts);
+
+            }
+
+        }
+
+        private void PlotInSourceData(List<double> idRTs, List<double> idInts, List<double> parentRTs, List<double> parentInts)
+        {
+            while (inSourceFragChart.Series.Count > 0)
+                inSourceFragChart.Series.RemoveAt(inSourceFragChart.Series.Count() - 1);
+
+
+            var lineSeriesID = new SeriesCollection();
+            var elutionDataID = new ChartValues<ObservablePoint>();
+
+            var lineSeriesParent = new SeriesCollection();
+            var elutionDataParent = new ChartValues<ObservablePoint>();
+
+            for (int i = 0; i < idRTs.Count(); i++)
+            {
+                elutionDataID.Add(new ObservablePoint
+                {
+                    X = idRTs[i],
+                    Y = idInts[i]
+                });
+            }
+
+            for (int i = 0; i < parentRTs.Count(); i++)
+            {
+                elutionDataParent.Add(new ObservablePoint
+                {
+                    X = parentRTs[i],
+                    Y = parentInts[i]
+                });
+            }
+
+            lineSeriesID.Add(new LineSeries
+            {
+                Values = elutionDataID,
+                PointGeometry = DefaultGeometries.Circle,
+                PointGeometrySize = 5
+            });
+
+            lineSeriesID.Add(new LineSeries
+            {
+                Values = elutionDataParent,
+                PointGeometry = DefaultGeometries.Circle,
+                PointGeometrySize = 5
+            });
+
+            inSourceFragChart.Series = lineSeriesID;
+        }
+
+        private List<double> StringListToDoubleList(List<string> list)
+        {
+            var returnList = new List<double>();
+
+            foreach (var entry in list)
+            {
+                if (!string.IsNullOrEmpty(entry))
+                    returnList.Add(double.Parse(entry));
+            }
+
+            return returnList;
+        }
+
+        private void inSourceFragData_RowPostPaint_1(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
         }
     }
 }

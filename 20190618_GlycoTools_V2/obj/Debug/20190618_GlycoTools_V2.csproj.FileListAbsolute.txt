@@ -119,3 +119,17 @@ C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_Glyc
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Debug\20190618_GlycoTools_V2.csproj.GenerateResource.Cache
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Debug\20190618_GlycoTools_V2.exe.manifest
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Debug\20190618_GlycoTools_V2.application
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x64\libiomp5md.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x64\NMathKernelx64.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x64\nmath_native_x64.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x64\nmath_sf_x64.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x86\libiomp5md.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x86\NMathKernelx86.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x86\nmath_native_x86.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\x86\nmath_sf_x86.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\Microsoft.Solver.Foundation.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\NMath.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\NMathStats.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\Microsoft.Solver.Foundation.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\NMath.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\NMathStats.xml

@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="214952">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="219048">
       <assemblyIdentity name="20190618_GlycoTools_V2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TrLyculKKUB+H605utqIX+hBxs8E19MmaQfgfWnNXQM=</dsig:DigestValue>
+        <dsig:DigestValue>djzWMg6p6UQ9xYDQ1RaaTMgK7gWG9XRjDi+EjKOVdFk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -85,7 +85,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>IGy+SLi1Q8rnh/fu6aR/EGVwRPpo+rfhhD/ROpQVTRs=</dsig:DigestValue>
+        <dsig:DigestValue>cXWL/hOay6WywSNmqHcRTuzU7kb+5t6dTtRWzRIjmkQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -174,6 +174,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Solver.Foundation.dll" size="2606968">
+      <assemblyIdentity name="Microsoft.Solver.Foundation" version="3.0.2.10889" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>AsQkoWsZ5fwNgfCZGTBGgxRK94JvzEun9Snt2s8ZFjw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="502272">
       <assemblyIdentity name="Newtonsoft.Json" version="6.0.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -182,6 +194,30 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
         <dsig:DigestValue>Dt+sa+EXMt3ZnbZoIe5HQIwtwem+1o5e+ajhMMVlt5s=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NMath.dll" size="1860608">
+      <assemblyIdentity name="NMath" version="6.2.0.57" publicKeyToken="873235918A322639" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>9UfCyl3v0i0IUs3X15v9qR5YuK/Ia6dWGkm7kkJ+lgc=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NMathStats.dll" size="726016">
+      <assemblyIdentity name="NMathStats" version="4.2.0.57" publicKeyToken="873235918A322639" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>2lahJ1FbV+Vd23wt+RQHPOySqdN0KkaOBpJE08nNQqo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

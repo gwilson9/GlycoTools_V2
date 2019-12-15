@@ -83,6 +83,10 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.elutionPlot = new LiveCharts.WinForms.CartesianChart();
             this.spectrumPlot = new LiveCharts.WinForms.CartesianChart();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.inSourceFragData = new System.Windows.Forms.DataGridView();
+            this.inSourceFragChart = new LiveCharts.WinForms.CartesianChart();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label9 = new System.Windows.Forms.Label();
             this.statsComboBox = new System.Windows.Forms.ComboBox();
@@ -115,6 +119,12 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.inSourceFragData)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -216,6 +226,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -709,6 +720,7 @@
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.Location = new System.Drawing.Point(3, 3);
             this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer3.Panel1
             // 
@@ -726,7 +738,7 @@
             // viewPeptidesDataGrid
             // 
             this.viewPeptidesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.viewPeptidesDataGrid.Location = new System.Drawing.Point(32, 194);
+            this.viewPeptidesDataGrid.Location = new System.Drawing.Point(250, 103);
             this.viewPeptidesDataGrid.Name = "viewPeptidesDataGrid";
             this.viewPeptidesDataGrid.ReadOnly = true;
             this.viewPeptidesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -741,7 +753,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dataTree.Location = new System.Drawing.Point(32, 50);
             this.dataTree.Name = "dataTree";
-            this.dataTree.Size = new System.Drawing.Size(138, 488);
+            this.dataTree.Size = new System.Drawing.Size(138, 194);
             this.dataTree.TabIndex = 8;
             this.dataTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.dataTree_AfterSelect);
             this.dataTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.dataTree_NodeMouseClick);
@@ -755,7 +767,6 @@
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.Location = new System.Drawing.Point(0, 0);
             this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer4.Panel1
             // 
@@ -765,13 +776,13 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.spectrumPlot);
             this.splitContainer4.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer4_Panel2_Paint);
-            this.splitContainer4.Size = new System.Drawing.Size(523, 611);
-            this.splitContainer4.SplitterDistance = 300;
+            this.splitContainer4.Size = new System.Drawing.Size(844, 290);
+            this.splitContainer4.SplitterDistance = 422;
             this.splitContainer4.TabIndex = 0;
             // 
             // elutionPlot
             // 
-            this.elutionPlot.Location = new System.Drawing.Point(223, 103);
+            this.elutionPlot.Location = new System.Drawing.Point(106, 68);
             this.elutionPlot.Name = "elutionPlot";
             this.elutionPlot.Size = new System.Drawing.Size(200, 100);
             this.elutionPlot.TabIndex = 0;
@@ -780,11 +791,63 @@
             // 
             // spectrumPlot
             // 
-            this.spectrumPlot.Location = new System.Drawing.Point(208, 81);
+            this.spectrumPlot.Location = new System.Drawing.Point(122, 58);
             this.spectrumPlot.Name = "spectrumPlot";
             this.spectrumPlot.Size = new System.Drawing.Size(200, 100);
             this.spectrumPlot.TabIndex = 1;
             this.spectrumPlot.Text = "cartesianChart1";
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.splitContainer6);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(850, 617);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "View In-source Fragent IDs";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer6
+            // 
+            this.splitContainer6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.splitContainer6.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.inSourceFragData);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.inSourceFragChart);
+            this.splitContainer6.Size = new System.Drawing.Size(844, 611);
+            this.splitContainer6.SplitterDistance = 281;
+            this.splitContainer6.TabIndex = 0;
+            // 
+            // inSourceFragData
+            // 
+            this.inSourceFragData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.inSourceFragData.Location = new System.Drawing.Point(126, 85);
+            this.inSourceFragData.Name = "inSourceFragData";
+            this.inSourceFragData.ReadOnly = true;
+            this.inSourceFragData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.inSourceFragData.Size = new System.Drawing.Size(240, 150);
+            this.inSourceFragData.TabIndex = 0;
+            this.inSourceFragData.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.inSourceFragData_RowPostPaint_1);
+            this.inSourceFragData.SelectionChanged += new System.EventHandler(this.inSourceFragData_SelectionChanged);
+            // 
+            // inSourceFragChart
+            // 
+            this.inSourceFragChart.Location = new System.Drawing.Point(236, 83);
+            this.inSourceFragChart.Name = "inSourceFragChart";
+            this.inSourceFragChart.Size = new System.Drawing.Size(200, 100);
+            this.inSourceFragChart.TabIndex = 2;
+            this.inSourceFragChart.Text = "cartesianChart1";
             // 
             // tabPage3
             // 
@@ -952,6 +1015,12 @@
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
+            this.splitContainer6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.inSourceFragData)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1038,6 +1107,10 @@
         private System.Windows.Forms.Label fastaLabel;
         private System.Windows.Forms.ComboBox miscleaveCB;
         private System.Windows.Forms.Label miscleaveLabel;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.SplitContainer splitContainer6;
+        private System.Windows.Forms.DataGridView inSourceFragData;
+        private LiveCharts.WinForms.CartesianChart inSourceFragChart;
     }
 }
 
