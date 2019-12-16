@@ -39,6 +39,8 @@ namespace _20190618_GlycoTools_V2
         private SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter();
         private bool dataUploaded = false;
         private BindingSource inSourceFragBindingSource = new BindingSource();
+        private BindingSource dataUploadBindingSouce = new BindingSource();
+        private bool dataFromDB = false;
 
         public GlycoTools()
         {
@@ -49,9 +51,16 @@ namespace _20190618_GlycoTools_V2
             this.modCountFilter.DataSource = comboboxOptions;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             dataTree.Tag = false;
+            InitializePlots();
+        }
+
+        private void InitializePlots()
+        {
             inSourceFragData.Dock = DockStyle.Fill;
             inSourceFragData.DataSource = inSourceFragBindingSource;
             inSourceFragChart.Dock = DockStyle.Fill;
+
+            
 
             inSourceFragChart.AxisY.Clear();
             inSourceFragChart.AxisY.Add(new LiveCharts.Wpf.Axis
@@ -304,34 +313,32 @@ namespace _20190618_GlycoTools_V2
             dataTree.Visible = false;
             viewPeptidesDataGrid.Dock = DockStyle.Fill;
             viewPeptidesDataGrid.DataSource = bindingSource2;
-
         }
 
         private void byrstLoad_Click(object sender, EventArgs e)
         {
-            //Read in data and store in new SQLite DB
+            //Read in data and store in new SQLite DB'
 
-
-            BuildSQLiteResults();
-                        
-
-            //ToSkip Data upload, comment out BuildSQLiteResults() and uncomment below
-            //ChangeButtonStatus(true);
-            ////populateTreeView(e.data);
-            //fillTableNames();
-            //resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
-            //fillStatsComboBox();
-            //statsComboBox.SelectedItem = statsComboBox.Items[statsComboBox.Items.IndexOf("All Files")];
-            //fillResultTable("SELECT * FROM AllGlycoPSMs");
-            //fillViewPeptidesDataGrid("SELECT * FROM AllGlycoPSMs");
-            ////BatchAnnotateSpectra();            
-            //fillFragHistPlot("", true);
-            //fillSeqCoveragePlot("", true);
-            //fillPrecursorMassErrorPlot("", true);
-            //fillGlycanTypePieChart("", true);
-            //dataUploaded = true;
-            //fillInSourceFragData();
-            //AddProgressText("\nFinished Reading Data.");
+            if (!dataFromDB)
+            {
+                BuildSQLiteResults();
+            }
+            else
+            {
+                fillTableNames();
+                resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
+                fillStatsComboBox();
+                statsComboBox.SelectedItem = statsComboBox.Items[statsComboBox.Items.IndexOf("All Files")];
+                fillResultTable("SELECT * FROM AllGlycoPSMs");
+                fillViewPeptidesDataGrid("SELECT * FROM AllGlycoPSMs");          
+                fillFragHistPlot("", true);
+                fillSeqCoveragePlot("", true);
+                fillPrecursorMassErrorPlot("", true);
+                fillGlycanTypePieChart("", true);
+                dataUploaded = true;
+                fillInSourceFragData();
+                AddProgressText("\nFinished reading data from database.");
+            }
         }
 
         private void byrsltFiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -445,8 +452,9 @@ namespace _20190618_GlycoTools_V2
 
         private void HandleFinishedUpload(object sender, DataReturnArgs e)
         {
-            ChangeButtonStatus(true);
-            //populateTreeView(e.data);            
+
+            //Consider putting these into a task
+            AddExperimenDesignTableToSQLDB();
             fillTableNames();
             resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
             fillStatsComboBox();
@@ -463,7 +471,38 @@ namespace _20190618_GlycoTools_V2
             if (IdentifyInsourceFragments.Checked)
             {
                 fillInSourceFragData();
+            }           
+
+            ChangeButtonStatus(true);
+        }
+
+        private void AddExperimenDesignTableToSQLDB()
+        {
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\MyDatabase.sqlite"));
+            connection.Open();
+            using (var transaction1 = connection.BeginTransaction())
+            {
+                var commandString = "CREATE TABLE IF NOT EXISTS ExperimentDesign (Byrslt STRING, Raw STRING, Condition STRING, Replicate STRING, IsControl BOOL)";
+                var command = new SQLiteCommand(commandString, connection);
+                command.ExecuteNonQuery();
+
+                foreach (DataGridViewRow row in dataUpload.Rows)
+                {
+                    var byrslt = row.Cells[0].Value.ToString();
+                    var raw = row.Cells[1].Value.ToString();
+                    var condition = row.Cells[2].Value.ToString();
+                    var replicate = row.Cells[3].Value.ToString();
+                    var isControl = Convert.ToBoolean(row.Cells[4].Value);
+
+                    var insertString = string.Format("INSERT INTO ExperimentDesign('Byrslt', 'Raw', 'Condition', 'Replicate', 'IsControl') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')", byrslt, raw, condition, replicate, isControl);
+                    var insertCommand = new SQLiteCommand(insertString, connection);
+                    var reader = insertCommand.ExecuteReader();
+                }
+                transaction1.Commit();
             }
+            
+            connection.Close();
+
         }
 
         private void fillInSourceFragData()
@@ -481,8 +520,8 @@ namespace _20190618_GlycoTools_V2
             dataAdapter.Fill(table);
             inSourceFragBindingSource.DataSource = table;
             inSourceFragData.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            connection.Close();
         }
-
 
         private void fillFragHistPlot(string file, bool allFiles)
         {
@@ -1127,6 +1166,54 @@ namespace _20190618_GlycoTools_V2
             {
                 AssociateRawFile(file);
             }
+
+            foreach(string file in files.Where(f => Path.GetExtension(f).Equals(".sqlite")))
+            {                
+                ExperimentDesignFromSQLDB(file);
+                dataFromDB = true;
+                dataUpload.ReadOnly = true;
+
+                if (String.IsNullOrEmpty(outputPath.Text))
+                {
+                    outputPath.Text = Path.GetDirectoryName(file);
+                }
+            }
+        }
+
+        private void ExperimentDesignFromSQLDB(string file)
+        {
+            if (InvokeRequired)
+            {
+                dataUpload.Invoke(new Action<string>(ExperimentDesignFromSQLDB), file);
+                return;
+            }
+
+            try
+            {
+                dataUpload.DataSource = dataUploadBindingSouce;
+                dataUpload.Columns.Clear();
+                dataUpload.Refresh();
+
+                var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", file));
+
+                var selectCommand = "SELECT Byrslt as 'Byonic Results (.byrslt)', Raw as 'Raw Files', Condition as 'Condition', Replicate as 'Replicate', IsControl as 'Control' FROM ExperimentDesign";
+
+                dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
+
+                DataTable table = new DataTable
+                {
+                    Locale = CultureInfo.InvariantCulture
+                };
+
+                dataAdapter.Fill(table);
+                dataUploadBindingSouce.DataSource = null;
+                dataUploadBindingSouce.DataSource = table;
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                AddProgressText("Failed to get data from database.");
+            }
         }
 
         private void dataUpload_DragEnter(object sender, DragEventArgs e)
@@ -1144,6 +1231,9 @@ namespace _20190618_GlycoTools_V2
                 e.Effect = DragDropEffects.Link;
 
             if (files.Any(f => Path.GetExtension(f).Equals(".raw")))
+                e.Effect = DragDropEffects.Link;
+
+            if (files.Any(f => Path.GetExtension(f).Equals(".sqlite")))
                 e.Effect = DragDropEffects.Link;
         }
 
@@ -1233,7 +1323,6 @@ namespace _20190618_GlycoTools_V2
                 charge = Int32.Parse(reader["Charge"].ToString());
                 RTs = reader["RetentionTimes"].ToString().Split(',').ToList();
                 elutionIntensities = reader["Intensities"].ToString().Split(',').ToList();
-
                 break;
             }
             sqlReader.Close();
@@ -2539,6 +2628,12 @@ namespace _20190618_GlycoTools_V2
 
         private void PlotInSourceData(List<double> idRTs, List<double> idInts, List<double> parentRTs, List<double> parentInts)
         {
+            if (InvokeRequired)
+            {
+                inSourceFragChart.Invoke(new Action<List<double>, List<double>, List<double>, List<double>>(PlotInSourceData), idRTs, idInts, parentRTs, parentInts);
+                return;
+            }
+
             while (inSourceFragChart.Series.Count > 0)
                 inSourceFragChart.Series.RemoveAt(inSourceFragChart.Series.Count() - 1);
 

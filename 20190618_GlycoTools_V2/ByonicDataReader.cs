@@ -208,7 +208,7 @@ namespace _20190618_GlycoTools_V2
                     if (IdentifyForInsourceFragments)
                     {
 
-                        SearchForSourceFrags(filteredGlycoPSMs);                        
+                        SearchForSourceFrags(filteredGlycoPSMs, writer);                        
 
                     }
 
@@ -278,13 +278,13 @@ namespace _20190618_GlycoTools_V2
             }
         }
 
-        private void SearchForSourceFrags(List<PSM> psms)
+        private void SearchForSourceFrags(List<PSM> psms, SQLiteConnection writer)
         {
             //var insourceFragsFound = 0;
             var searchResults = new Dictionary<PSM, List<PSM>>();
             foreach (var psm in psms)
             {
-                OnUpdateProgress(string.Format("Working on {0}", psm.sequence));
+                //OnUpdateProgress(string.Format("Working on {0}", psm.sequence));
                 var searcher = new InsourceFragSearcher(psm);
                 searcher.fillPossibleParents();
                 searcher.getPeakElutions();
@@ -303,44 +303,33 @@ namespace _20190618_GlycoTools_V2
                 }
             }
 
-
             /////TEMP FOR VIEWING POSSIBLE INSOURCE FRAGS///////
             if (true)
             {
-                SQLiteConnection.CreateFile(outputPath + "\\InsourceFragView.sqlite");
-                SQLiteConnection sqlWriter2 = new SQLiteConnection("Data Source=" + outputPath + "\\InsourceFragView.sqlite; Version=3;");
-                sqlWriter2.Open();
-                using (var transaction1 = sqlWriter2.BeginTransaction())
+                var commandString = "CREATE TABLE IF NOT EXISTS InSourceFragData (FILE STRING, ID STRING,ID_Glycan STRING, ID_GlycanType STRING,RT STRING,ID_MZ STRING,ID_SCANNUM STRING,ID_RTS STRING, ID_INTENSITIES STRING,PARENT STRING, PARENT_GLYCAN STRING, PARENT_GLYCANTYPE STRING, PARENT_MZ STRING, PARENT_RTS STRING, PARENT_INTENSITIES STRING)";
+                var command = new SQLiteCommand(commandString, writer);
+                command.ExecuteNonQuery();
+
+
+                foreach (var result in searchResults)
                 {
-                    var commandString = "CREATE TABLE IF NOT EXISTS Data (FILE STRING, ID STRING,ID_Glycan STRING, ID_GlycanType STRING,RT STRING,ID_MZ STRING,ID_SCANNUM STRING,ID_RTS STRING, ID_INTENSITIES STRING,PARENT STRING, PARENT_GLYCAN STRING, PARENT_GLYCANTYPE STRING, PARENT_MZ STRING, PARENT_RTS STRING, PARENT_INTENSITIES STRING)";
-                    var command = new SQLiteCommand(commandString, sqlWriter2);
-                    command.ExecuteNonQuery();
-
-
-                    foreach (var result in searchResults)
+                    foreach (var parent in result.Value)
                     {
-                        foreach (var parent in result.Value)
-                        {
-                            var idRTs = string.Join(";", result.Key.peakElution.Select(x => x.RT).ToList());
-                            var parentRTs = string.Join(";", parent.peakElution.Select(x => x.RT).ToList());
-                            var idInts = string.Join(";", result.Key.peakElution.Select(x => x.Intensity).ToList());
-                            var parentInts = string.Join(";", parent.peakElution.Select(x => x.Intensity).ToList());
+                        var idRTs = string.Join(";", result.Key.peakElution.Select(x => x.RT).ToList());
+                        var parentRTs = string.Join(";", parent.peakElution.Select(x => x.RT).ToList());
+                        var idInts = string.Join(";", result.Key.peakElution.Select(x => x.Intensity).ToList());
+                        var parentInts = string.Join(";", parent.peakElution.Select(x => x.Intensity).ToList());
 
-                            var idGlycanTypes = string.Join(";", result.Key.glycans.Select(x => x.glycanType).ToArray());
+                        var idGlycanTypes = string.Join(";", result.Key.glycans.Select(x => x.glycanType).ToArray());
 
-                            var parentGlycan = new Glycan(parent.sequence.Split('[')[1].Split(']')[0]);
+                        var parentGlycan = new Glycan(parent.sequence.Split('[')[1].Split(']')[0]);
 
-                            var insertCommandString = string.Format("INSERT into Data ('FILE', `ID`, `ID_Glycan`, 'ID_GlycanType', `RT`, `ID_MZ`, `ID_SCANNUM`,'ID_RTS','ID_INTENSITIES', `PARENT`, 'PARENT_GLYCAN', 'PARENT_GLYCANTYPE', `PARENT_MZ`, 'PARENT_RTS', 'PARENT_INTENSITIES') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}')", result.Key.File, result.Key.sequence, result.Key.glycansToBeParsed, idGlycanTypes, (Double.Parse(result.Key.scanTime) / 60).ToString(), result.Key.mzObs, result.Key.scanNumber, idRTs, idInts, parent.sequence, parentGlycan.CoreStructure, parentGlycan.glycanType, parent.mzObs, parentRTs, parentInts);
-                            var insertCommand = new SQLiteCommand(insertCommandString, sqlWriter2);
-                            var reader = insertCommand.ExecuteReader();
-                        }
+                        var insertCommandString = string.Format("INSERT into InSourceFragData ('FILE', `ID`, `ID_Glycan`, 'ID_GlycanType', `RT`, `ID_MZ`, `ID_SCANNUM`,'ID_RTS','ID_INTENSITIES', `PARENT`, 'PARENT_GLYCAN', 'PARENT_GLYCANTYPE', `PARENT_MZ`, 'PARENT_RTS', 'PARENT_INTENSITIES') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}')", result.Key.File, result.Key.sequence, result.Key.glycansToBeParsed, idGlycanTypes, (Double.Parse(result.Key.scanTime) / 60).ToString(), result.Key.mzObs, result.Key.scanNumber, idRTs, idInts, parent.sequence, parentGlycan.CoreStructure, parentGlycan.glycanType, parent.mzObs, parentRTs, parentInts);
+                        var insertCommand = new SQLiteCommand(insertCommandString, writer);
+                        var reader = insertCommand.ExecuteReader();
                     }
-                    transaction1.Commit();
                 }
-                sqlWriter2.Close();
-            }
-
-            ////////////////////////////////////////////////////////////////////
+            }            
         }
 
         private void GlycoFragDataHandler(object sender, FragmentDataReturnArgs e)
