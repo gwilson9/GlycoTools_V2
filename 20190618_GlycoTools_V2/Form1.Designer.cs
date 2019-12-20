@@ -39,6 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.miscleaveCB = new System.Windows.Forms.ComboBox();
             this.miscleaveLabel = new System.Windows.Forms.Label();
@@ -98,6 +99,8 @@
             this.statsPlot2 = new LiveCharts.WinForms.CartesianChart();
             this.statsPlot4 = new LiveCharts.WinForms.PieChart();
             this.splitter1 = new System.Windows.Forms.Splitter();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataUpload)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -155,9 +158,9 @@
             // 
             this.outputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.outputPath.Location = new System.Drawing.Point(75, 462);
+            this.outputPath.Location = new System.Drawing.Point(83, 462);
             this.outputPath.Name = "outputPath";
-            this.outputPath.Size = new System.Drawing.Size(381, 20);
+            this.outputPath.Size = new System.Drawing.Size(373, 20);
             this.outputPath.TabIndex = 3;
             // 
             // dataUpload
@@ -215,7 +218,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 466);
+            this.label1.Location = new System.Drawing.Point(6, 466);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 7;
@@ -237,6 +240,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.textBox3);
+            this.tabPage1.Controls.Add(this.textBox2);
+            this.tabPage1.Controls.Add(this.textBox1);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.organismText);
             this.tabPage1.Controls.Add(this.label2);
@@ -253,6 +259,18 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Data Upload";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.SystemColors.Menu;
+            this.textBox1.Location = new System.Drawing.Point(231, 94);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(386, 19);
+            this.textBox1.TabIndex = 14;
+            this.textBox1.Text = "Drop 1) Byonic Results and 2) .RAW Files Here";
             // 
             // groupBox2
             // 
@@ -791,7 +809,7 @@
             // 
             // spectrumPlot
             // 
-            this.spectrumPlot.Location = new System.Drawing.Point(122, 58);
+            this.spectrumPlot.Location = new System.Drawing.Point(104, 81);
             this.spectrumPlot.Name = "spectrumPlot";
             this.spectrumPlot.Size = new System.Drawing.Size(200, 100);
             this.spectrumPlot.TabIndex = 1;
@@ -978,6 +996,30 @@
             this.splitter1.TabIndex = 0;
             this.splitter1.TabStop = false;
             // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.ForeColor = System.Drawing.SystemColors.Menu;
+            this.textBox2.Location = new System.Drawing.Point(408, 126);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(32, 19);
+            this.textBox2.TabIndex = 15;
+            this.textBox2.Text = "OR";
+            // 
+            // textBox3
+            // 
+            this.textBox3.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox3.ForeColor = System.Drawing.SystemColors.Menu;
+            this.textBox3.Location = new System.Drawing.Point(207, 158);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(435, 19);
+            this.textBox3.TabIndex = 16;
+            this.textBox3.Text = "Drop the MyDatabase.sqlite from a previous instance.";
+            // 
             // GlycoTools
             // 
             this.AllowDrop = true;
@@ -1073,7 +1115,6 @@
         private System.Windows.Forms.ComboBox resultViewBox;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TreeView dataTree;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private LiveCharts.WinForms.CartesianChart elutionPlot;
         private LiveCharts.WinForms.CartesianChart spectrumPlot;
@@ -1111,6 +1152,10 @@
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.DataGridView inSourceFragData;
         private LiveCharts.WinForms.CartesianChart inSourceFragChart;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TreeView dataTree;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 

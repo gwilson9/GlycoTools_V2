@@ -507,9 +507,9 @@ namespace _20190618_GlycoTools_V2
 
         private void fillInSourceFragData()
         {
-            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\InsourceFragView.sqlite"));
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\MyDatabase.sqlite"));
 
-            var selectCommand = "SELECT * FROM Data";
+            var selectCommand = "SELECT * FROM InSourceFragData";
             dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
 
             DataTable table = new DataTable
@@ -1160,6 +1160,12 @@ namespace _20190618_GlycoTools_V2
                 {
                     outputPath.Text = Path.GetDirectoryName(file);
                 }
+
+                textBox1.Visible = false;
+                textBox2.Visible = false;
+                textBox3.Visible = false;
+                //textBox4.Visible = false;
+                //textBox5.Visible = false;
             }
 
             foreach (string file in files.Where(f => Path.GetExtension(f).Equals(".raw")))
@@ -1168,15 +1174,29 @@ namespace _20190618_GlycoTools_V2
             }
 
             foreach(string file in files.Where(f => Path.GetExtension(f).Equals(".sqlite")))
-            {                
-                ExperimentDesignFromSQLDB(file);
-                dataFromDB = true;
-                dataUpload.ReadOnly = true;
-
-                if (String.IsNullOrEmpty(outputPath.Text))
+            {
+                try
                 {
-                    outputPath.Text = Path.GetDirectoryName(file);
+                    ExperimentDesignFromSQLDB(file);
+
+                    textBox1.Visible = false;
+                    textBox2.Visible = false;
+                    textBox3.Visible = false;
+                    //textBox4.Visible = false;
+                    //textBox5.Visible = false;
+
+                    dataFromDB = true;
+                    dataUpload.ReadOnly = true;
+
+                    if (String.IsNullOrEmpty(outputPath.Text))
+                    {
+                        outputPath.Text = Path.GetDirectoryName(file);
+                    }
                 }
+                catch(Exception exc)
+                {
+                    AddProgressText("Failed to read data from " + Path.GetFileName(file));
+                }                
             }
         }
 
@@ -1212,7 +1232,7 @@ namespace _20190618_GlycoTools_V2
             }
             catch (Exception e)
             {
-                AddProgressText("Failed to get data from database.");
+                //AddProgressText("Failed to get data from database.");
             }
         }
 
@@ -2705,6 +2725,11 @@ namespace _20190618_GlycoTools_V2
 
             var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
             e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void splitContainer7_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

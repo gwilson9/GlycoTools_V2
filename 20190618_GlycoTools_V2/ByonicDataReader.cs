@@ -212,6 +212,8 @@ namespace _20190618_GlycoTools_V2
 
                     }
 
+                    OnUpdateProgress("Finished in-source frag detection.");
+
                     if (string.IsNullOrEmpty(organism))
                     {
                         OnUpdateProgress("No uniprot taxanomic ID provided. Skipping step.");
@@ -284,7 +286,11 @@ namespace _20190618_GlycoTools_V2
             var searchResults = new Dictionary<PSM, List<PSM>>();
             foreach (var psm in psms)
             {
-                //OnUpdateProgress(string.Format("Working on {0}", psm.sequence));
+                OnUpdateProgress(string.Format("Working on {0}", psm.sequence));
+
+                if (psm.sequence.Equals("LLNINPN[+1216.42286]K"))
+                    psm.sequence = psm.sequence;
+
                 var searcher = new InsourceFragSearcher(psm);
                 searcher.fillPossibleParents();
                 searcher.getPeakElutions();
@@ -302,6 +308,8 @@ namespace _20190618_GlycoTools_V2
                     }                    
                 }
             }
+
+            OnUpdateProgress("Writing In-source frag data to sql.");
 
             /////TEMP FOR VIEWING POSSIBLE INSOURCE FRAGS///////
             if (true)

@@ -13,13 +13,21 @@ namespace _20190618_GlycoTools_V2
 
         public static List<RTPeak> SavitskyGolaySmooth(LFPeptide targetPeptide, int left, int right, int polyN)
         {
+            var copyPeaks = new List<RTPeak>();
+            foreach(var peak in targetPeptide.XICLibrary)
+            {
+                copyPeaks.Add(peak);
+            }
+
+            copyPeaks = FillInXICGaps(copyPeaks);
+
             var c = MovingWindowFilter.SavitzkyGolayCoefficients(left, right, polyN);
 
             var filter = new MovingWindowFilter(left, right, c);
 
-            var x = new DoubleVector(targetPeptide.XICLibrary.Select(a => a.RT).ToList().ToArray());
+            var x = new DoubleVector(copyPeaks.Select(a => a.RT).ToList().ToArray());
 
-            var y = new DoubleVector(targetPeptide.XICLibrary.Select(a => a.Intensity).ToList().ToArray());
+            var y = new DoubleVector(copyPeaks.Select(a => a.Intensity).ToList().ToArray());
 
             var yFiltered = filter.Filter(y, MovingWindowFilter.BoundaryOption.PadWithZeros);
 
@@ -36,11 +44,8 @@ namespace _20190618_GlycoTools_V2
         }
 
         public static List<RTPeak> GetRollingAveragePeaks(LFPeptide targetPeptide, int period, bool isLibrary = true)
-        {
-            return new List<RTPeak>(targetPeptide.XICLibrary); ////TEMP!!!!///
-
-            //add three null points to the beginning and end of the peptide
-            //you should update this so you can change the smoothing
+        {    
+           
             RTPeak start = new RTPeak(0, 0, 0);
             RTPeak end = new RTPeak(0, 0, 100000);
             List<RTPeak> copyPeaks = new List<RTPeak>();

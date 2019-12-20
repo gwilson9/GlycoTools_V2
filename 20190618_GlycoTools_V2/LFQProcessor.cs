@@ -74,8 +74,8 @@ namespace _20190618_GlycoTools_V2
 
                 foreach (var pep in targetPeptides)
                 {
-                    var startTime = Math.Max(pep.parentMS1Time - 2, firstSpectrumRT);
-                    var stopTime = Math.Min(pep.parentMS1Time + 2, lastSpectrumRT);
+                    var startTime = Math.Max(pep.parentMS1Time - 0.5, firstSpectrumRT);
+                    var stopTime = Math.Min(pep.parentMS1Time + 0.5, lastSpectrumRT);
                     pep.startLookupTime = startTime;
                     pep.stopLookupTime = stopTime;
                     pep.FirstScan = rawFile.GetSpectrumNumber(pep.startLookupTime);
@@ -106,14 +106,15 @@ namespace _20190618_GlycoTools_V2
                     {
                         try
                         {
-                            pep.SmoothLibrary = Smoothing.GetRollingAveragePeaks(pep, 7, true);
+                            pep.SmoothLibrary = Smoothing.SavitskyGolaySmooth(pep, 1, 1, 2);
                             if (pep.SmoothLibrary.Count != 0)
                             {
-                                ExtractFeatures.GetApexPeak(pep, true);
-                                ExtractFeatures.GetFWHMWindow(pep);
+                                //ExtractFeatures.GetApexPeak(pep, true);
+                                //ExtractFeatures.GetFWHMWindow(pep);
                                 LFPeptide pepSmooth = (LFPeptide)pep.Clone();
                                 //pepSmooth.SmoothLibrary = pep.XICLibrary; /////TEMP!!!//////
                                 pepsWithSmooth.Add(pepSmooth);
+                                pep.extractedXIC = true;
                                 pep.XICLibrary.Clear();
                             }
 
@@ -128,7 +129,7 @@ namespace _20190618_GlycoTools_V2
                     }
                 }
 
-                List<LFPeptide> peptidesToWrite = targetPeptides.Where(x => x.doneBuildingXIC && !x.extractedXIC).ToList();
+                List<LFPeptide> peptidesToWrite = targetPeptides.Where(x => x.doneBuildingXIC && x.extractedXIC).ToList();
 
                 //Changed from psms.Count to pepswithsmooth.Count
                 //for(int i = 0; i < psms.Count; i++)
@@ -187,9 +188,7 @@ namespace _20190618_GlycoTools_V2
         }
 
         public static void GetXICs(ThermoSpectrum currentSpectrum, int specNumber, double rt)
-        {
-            
-
+        {       
             List<LFPeptide> currPeptides = targetPeptides.Where(x => x.FirstScan <= specNumber && x.LastScan >= specNumber).ToList();
             foreach (var pep in currPeptides)
             {
