@@ -49,7 +49,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>nupHypvL/eks8MjJQHSY1cjqRnIroqVXnRGf6epeHDg=</dsig:DigestValue>
+        <dsig:DigestValue>uzFtRzSMcvNctjyah/+wsqEHZUJv7NAIidEXYlh6voE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -66,26 +66,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSMSL.dll" size="318464">
-      <assemblyIdentity name="CSMSL" version="0.3.7306.27669" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSMSL.dll" size="288256">
+      <assemblyIdentity name="CSMSL" version="0.3.7306.29133" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TvBmZlZ/oMJ2lfQwPUGbPbXTn0Ik1ycObbHmzylip64=</dsig:DigestValue>
+        <dsig:DigestValue>m3kriz48nZQEqsoI9ta/MTziCWrqNS8tU4NKp4J8Nf0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSMSL.Thermo.dll" size="21504">
-      <assemblyIdentity name="CSMSL.Thermo" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="CSMSL.Thermo" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>//4A9KFMD1re6ObPpwHzhF5a9j3+d6SQyOATUl9eAc8=</dsig:DigestValue>
+        <dsig:DigestValue>7WugcTRVmwSN0m4fkA6+Yr4+pFHMJvoHzfQscJ189dk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

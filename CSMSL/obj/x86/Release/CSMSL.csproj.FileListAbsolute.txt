@@ -3,3 +3,8 @@ D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenera
 D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\obj\x86\Release\CSMSL.csprojResolveAssemblyReference.cache
 D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\obj\x86\Release\CSMSL.dll
 D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\obj\x86\Release\CSMSL.pdb
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\bin\x64\Debug\CSMSL.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\bin\x64\Debug\CSMSL.pdb
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\obj\x86\Release\CSMSL.csprojResolveAssemblyReference.cache
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\obj\x86\Release\CSMSL.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\obj\x86\Release\CSMSL.pdb

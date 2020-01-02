@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:GlycoToolsSetup"
+"ProjectName" = "8:GlycoTools"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -40,6 +40,12 @@
         "Entry"
         {
         "MsmKey" = "8:_1CF8CA39412D4DE1E8CC77250C3F5577"
+        "OwnerKey" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1F0E6B8C4F79025DB9B9D4CB1F194C45"
         "OwnerKey" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -100,7 +106,7 @@
         "Entry"
         {
         "MsmKey" = "8:_83F3706B76D152CE45088214D74611C8"
-        "OwnerKey" = "8:_DD459620C4573A7DAA52A97DCFFEED55"
+        "OwnerKey" = "8:_1F0E6B8C4F79025DB9B9D4CB1F194C45"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -189,14 +195,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_DD459620C4573A7DAA52A97DCFFEED55"
+        "MsmKey" = "8:_EAFBADB1FE30EDAF2873F68B034DD623"
         "OwnerKey" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EAFBADB1FE30EDAF2873F68B034DD623"
-        "OwnerKey" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
+        "MsmKey" = "8:_F1B730F2F92E4A57BD34E9CF4D2BB8AB"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -220,7 +226,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DD459620C4573A7DAA52A97DCFFEED55"
+        "OwnerKey" = "8:_1F0E6B8C4F79025DB9B9D4CB1F194C45"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -524,6 +530,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1F0E6B8C4F79025DB9B9D4CB1F194C45"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CSMSL.Thermo, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_1F0E6B8C4F79025DB9B9D4CB1F194C45"
+                    {
+                    "Name" = "8:CSMSL.Thermo.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CSMSL.Thermo.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_351A073F6A945A7CB34C271FE56402E8"
             {
             "AssemblyRegister" = "3:1"
@@ -652,7 +689,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CSMSL, Version=0.3.7269.21460, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:CSMSL, Version=0.3.7306.28436, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                     "_83F3706B76D152CE45088214D74611C8"
@@ -927,37 +964,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DD459620C4573A7DAA52A97DCFFEED55"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CSMSL.Thermo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_DD459620C4573A7DAA52A97DCFFEED55"
-                    {
-                    "Name" = "8:CSMSL.Thermo.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:CSMSL.Thermo.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EAFBADB1FE30EDAF2873F68B034DD623"
             {
             "AssemblyRegister" = "3:1"
@@ -987,6 +993,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F1B730F2F92E4A57BD34E9CF4D2BB8AB"
+            {
+            "SourcePath" = "8:..\\20190618_GlycoTools_V2\\bin\\Release\\x86\\SQLite.Interop.dll"
+            "TargetName" = "8:SQLite.Interop.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F6BC706A99FF34BECAF6FF0A266136EA"
@@ -1077,7 +1103,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GlycoToolsSetup"
         "ProductCode" = "8:{EB8383C6-FD40-4FFD-A609-36230BEE8D9B}"
-        "PackageCode" = "8:{8C05442D-CA8C-4CC1-8548-8C0D4726FA74}"
+        "PackageCode" = "8:{BDBC4D44-3DC7-491C-BCFF-9407C446F8B9}"
         "UpgradeCode" = "8:{7618F324-7648-4829-B866-A877E17F08B2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1085,12 +1111,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Default Company Name"
+        "Manufacturer" = "8:CoonLabs"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:GlycoToolsSetup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:CoonLabs"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"

@@ -8,3 +8,13 @@ D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenera
 D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Release\Thermo.csproj.ResolveComReference.cache
 D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Release\CSMSL.Thermo.dll
 D:\Documents\Documents\Visual Studio 2015\Projects\GlycoTools_WithLFQandDBgenerator\CSMSL\IO\Thermo\obj\x86\Release\CSMSL.Thermo.pdb
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Release\CSMSL.Thermo.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Release\CSMSL.Thermo.pdb
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Release\CSMSL.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Release\CSMSL.pdb
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\bin\x86\Release\CSMSL.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Release\Thermo.csprojResolveAssemblyReference.cache
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Release\Interop.MSFileReaderLib.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Release\Thermo.csproj.ResolveComReference.cache
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Release\CSMSL.Thermo.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\IO\Thermo\obj\x86\Release\CSMSL.Thermo.pdb
