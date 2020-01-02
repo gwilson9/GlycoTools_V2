@@ -150,6 +150,7 @@ namespace _20190618_GlycoTools_V2
                     int modPosition = GetModPosition(mod);
                     if (modName.Contains("Glycan"))
                     {
+                        //Defined position here
                         if (!peptide.Sequence[glycanPosition - 1].Equals('N'))
                         {
                             modName = "OGlycan";                            
@@ -159,11 +160,14 @@ namespace _20190618_GlycoTools_V2
                             modName = "NGlycan";
                         }
 
+                        //Defined position here
                         var newVarMod = peptide.Sequence[glycanPosition-1].ToString() + glycanPosition.ToString() + '(' + modName + " / " + modMass + ')';
                         formattedVarMods += ";" + newVarMod;
                         formattedVarMods = formattedVarMods.Trim(';');
                         modName = modName + "_" + modMass;
                         glycanMasses.Add(modMass);
+
+                        //Defined position here
                         modPosition = glycanPosition;
                     }
                     else

@@ -60,7 +60,7 @@ namespace _20190618_GlycoTools_V2
             inSourceFragData.DataSource = inSourceFragBindingSource;
             inSourceFragChart.Dock = DockStyle.Fill;
 
-            
+            splitContainer7.Dock = DockStyle.Fill;
 
             inSourceFragChart.AxisY.Clear();
             inSourceFragChart.AxisY.Add(new LiveCharts.Wpf.Axis
@@ -1523,7 +1523,7 @@ namespace _20190618_GlycoTools_V2
             spectrumPlot.AxisY[0].MaxValue = spectrumPlot.AxisY[0].MaxValue * 1500;
 
         }
-
+        
         private void getPlotDataFromDataTree(string sequence, string protein, string file)
         {
             while (elutionPlot.Series.Count > 0)
@@ -1589,7 +1589,7 @@ namespace _20190618_GlycoTools_V2
 
 
         }
-
+        
         private void HandleFragmentMatchDataReturn(object sender, FragmentDataReturnArgs e)
         {
             switch (e.returnType)
@@ -1617,6 +1617,7 @@ namespace _20190618_GlycoTools_V2
             var mzs = data.spectrum.GetMasses();
 
             spectrumPlot.Series = new SeriesCollection();
+            spectrumPlot.VisualElements.Clear();
 
             //Live Charts Implementation
             //var data = new ChartValues<ObservablePoint>();
@@ -1789,7 +1790,7 @@ namespace _20190618_GlycoTools_V2
             }
             //Task.WaitAll(tasks.ToArray());
         }
-
+        
         private void dataTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Level == 2)
@@ -1798,10 +1799,8 @@ namespace _20190618_GlycoTools_V2
                 var prot = e.Node.Parent.Text;
                 var file = e.Node.Parent.Parent.Text;
                 getPlotDataFromDataTree(sequence, prot, file);
-
             }
-
-        }
+        }    
 
         // Return is [0] List of intact peptide frags [1] Neutral loss peptide frags [2] PepHexMatches [3] Y ions [4] oxonium ions
         private List<List<SpectrumFragment>> GetSpectrumAnnotations(string pep, ThermoSpectrum spectrum, List<string> mods, List<string> glycans, int charge)
@@ -1963,7 +1962,7 @@ namespace _20190618_GlycoTools_V2
 
             return pepFrags;
         }
-
+        
         private void dataTree_MouseUp(object sender, MouseEventArgs e)
         {
 
@@ -2002,7 +2001,7 @@ namespace _20190618_GlycoTools_V2
         private void processPSMs()
         {
 
-        }
+        }    
 
         //Adds Row numbers to DataGridView
         private void dataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -2283,12 +2282,42 @@ namespace _20190618_GlycoTools_V2
             return lineSeries;
         }
 
+        private void PopulateGlycanPosComboBox(string peptideSequence, string originalPositionString)
+        {
+            glycanPosComboBox.Items.Clear();
+            var position = Int32.Parse(originalPositionString.Split(';')[0]);
+            glycanPosComboBox.Items.Add(peptideSequence[position - 1] + position.ToString() + "*");
+            glycanPosComboBox.SelectedIndex = 0;
+
+            for(int i = 0; i < peptideSequence.Length; i++)
+            {
+                try
+                {
+                    if ("ST".Contains(peptideSequence[i]) && (i + 1) != position)
+                    {
+                        glycanPosComboBox.Items.Add(peptideSequence[i] + (i + 1).ToString());
+                    }
+
+                    if ("N".Contains(peptideSequence[i]) && (i + 1) != position && "ST".Contains(peptideSequence[i + 2]) && !peptideSequence[i + 1].Equals("P"))
+                    {
+                        glycanPosComboBox.Items.Add(peptideSequence[i] + (i + 1).ToString());
+                    }
+                }catch(Exception e)
+                {
+
+                }
+                
+            }
+        }
+
         private void viewPeptidesDataGrid_SelectionChanged(object sender, EventArgs e)
         {
             if(viewPeptidesDataGrid.SelectedRows.Count == 1 && dataUploaded)
             {
                 var scanNumIndex = -1;
                 var fileIndex = -1;
+                var sequenceIndex = -1;
+                var modsIndex = -1;
                 
                 foreach(DataGridViewColumn column in viewPeptidesDataGrid.Columns)
                 {
@@ -2301,6 +2330,17 @@ namespace _20190618_GlycoTools_V2
                     {
                         fileIndex = column.Index;
                     }
+
+                    if (column.HeaderText.Equals("Peptide"))
+                    {
+                        sequenceIndex = column.Index;
+                    }
+
+                    if (column.HeaderText.Equals("ModsVar"))
+                    {
+                        modsIndex = column.Index;
+                    }
+                    
                 }                
 
                 if(scanNumIndex != -1 && fileIndex != -1)
@@ -2310,7 +2350,21 @@ namespace _20190618_GlycoTools_V2
                     var file = row.Cells[fileIndex].Value.ToString();
                     getPlotDataFromSQL(scanNum, file);
                 }
-                    
+
+                if(sequenceIndex != -1 && modsIndex != -1)
+                {
+                    var row = viewPeptidesDataGrid.SelectedRows[0];
+                    var mods = row.Cells[modsIndex].Value.ToString().Split(';');
+                    var position = 0;
+                    foreach(var mod in mods)
+                    {
+                        if (mod.Contains("Glycan"))
+                        {
+                            position = Int32.Parse(mod.Split('(')[0].Substring(1));
+                        }
+                    }
+                    PopulateGlycanPosComboBox(row.Cells[sequenceIndex].Value.ToString(), position.ToString());
+                }                    
             }
         }
 
@@ -2729,6 +2783,282 @@ namespace _20190618_GlycoTools_V2
 
         private void splitContainer7_Panel1_Paint(object sender, PaintEventArgs e)
         {
+
+        }
+
+        private GlycoPSM SQLiteStringToGlycoPSM(SQLiteDataReader reader, int glycanPosition)
+        {
+            var sequence = reader["Sequence"].ToString();
+            var peptidesToBeParsed = reader["PeptideParseFriendly"].ToString();
+            var peptideStartPosition = Int32.Parse(reader["Position"].ToString());
+            var modsToBeParsed = reader["ModsVar"].ToString();
+            var glycansToBeParsed = reader["Glycans"].ToString();
+            var PEP2D = double.Parse(reader["PEP2D"].ToString());
+            var logProb = double.Parse(reader["logProb"].ToString());
+            var score = double.Parse(reader["Score"].ToString());
+            var deltaScore = double.Parse(reader["DeltaScore"].ToString());
+            var deltaModScore = double.Parse(reader["DeltaModScore"].ToString());
+            var charge = Int32.Parse(reader["Charge"].ToString());
+            var mzObs = double.Parse(reader["ObsMZ"].ToString());
+            var ppmError = double.Parse(reader["ppmerr"].ToString());
+            var obsMH = double.Parse(reader["ObsMH"].ToString());
+            var cleavage = reader["Cleavage"].ToString();
+            var glycanPositions = reader["GlycansPos"].ToString();
+            var proteinName = reader["ProteinFasta"].ToString();
+            var scanTime = double.Parse(reader["ScanTime"].ToString());
+            var scanNumber = Int32.Parse(reader["ScanNum"].ToString());
+            var modsFixed = reader["ModsFixed"].ToString();
+            var FDR2D = double.Parse(reader["FDR2D"].ToString());
+            var FDR2Dunique = double.Parse(reader["FDRuniq2d"].ToString());
+            var qvalue2D = double.Parse(reader["qValue2D"].ToString());
+            var isGlycoPeptide = true;
+            //var test1 = reader["isGlycoPeptide"].ToString(); // 'True' in SQLite Table reads in '0', should be '1'. Not a big issue because all psms are already filtered for glycopeptides at this point
+            //var test = reader["isGlycoPeptide"]; //.Equals("True") ? true : false;
+            var fragmentation = reader["DissociationType"].ToString();
+
+            List<int> glycanPositionsList = new List<int>();
+            List<string> mods = new List<string>();
+            List<string> glycans = new List<string>();
+
+            bool seenWithHCD = false;
+            bool seenWithETD = false;
+            bool NXSmotif = false;
+            bool NXTmotif = false;
+            bool isLocalized = false;
+            bool Nlinked = false;
+            bool Olinked = false;
+
+            List<double> glycanMasses = new List<double>();
+
+            bool matchedToUniprot = false;
+            string uniprotEvidenceType = "None";
+            int uniprotEvidenceNumber = 0;
+
+            string[] parsedPeptide = peptidesToBeParsed.Split(',');
+            Peptide peptide = new Peptide(parsedPeptide[0]);
+            Peptide peptideNoGlycan = new Peptide(parsedPeptide[0]);
+            double peptideMonoMass = peptide.MonoisotopicMass;
+
+            char[] peptideTermini = parsedPeptide[1].ToCharArray();
+            char peptideCterminusNextResidue = peptideTermini[1];
+
+            string[] parsedSequenceWithMods = sequence.Split('.');
+            string sequenceWithMods = parsedSequenceWithMods[1];
+
+            string[] parsedProteinName = proteinName.Split('|');
+            string uniprotID = parsedProteinName[1];
+
+            if (fragmentation.Equals("HCD"))
+                seenWithHCD = true;
+
+            if (fragmentation.Equals("ETD"))
+                seenWithETD = true;
+
+            if (!String.IsNullOrEmpty(glycanPositions))
+            {
+                string[] glycansPosParsedArray = glycanPositions.Split(';');
+                for (int i = 0; i < glycansPosParsedArray.Length; i++)
+                {
+                    int glycanPos = Convert.ToInt32(glycansPosParsedArray[i]);
+                    glycanPositionsList.Add(glycanPos);
+                }
+            }
+
+            if (!String.IsNullOrEmpty(glycansToBeParsed))
+            {
+                string[] glycansParsedArrary = glycansToBeParsed.Split(';');
+
+                for (int i = 0; i < glycansParsedArrary.Length; i++)
+                {
+                    string glycan = glycansParsedArrary[i];
+                    if (glycan[0].Equals(' '))
+                    {
+                        glycan = glycan.Substring(1);
+                    }
+                    glycans.Add(glycan);
+                }
+            }
+
+            int numberOfSites = glycans.Count;
+
+            if (!String.IsNullOrEmpty(modsToBeParsed))
+            {
+                string[] modsParsedArrary = modsToBeParsed.Split(';');
+                for (int i = 0; i < modsParsedArrary.Length; i++)
+                {
+                    string mod = modsParsedArrary[i];
+                    if (mod[0].Equals(' '))
+                    {
+                        mod = mod.Substring(1);
+                    }
+
+                    mods.Add(mod);
+                    string modName = GetModName(mod);
+                    double modMass = GetModMass(mod);
+                    
+                    int modPosition = GetModPosition(mod);
+                    if (modName.Contains("Glycan"))
+                    {
+                        // Hard code glycan mod position here
+                        modPosition = glycanPosition;
+                        if (!peptide.Sequence[modPosition - 1].Equals('N'))
+                        {
+                            modName = "OGlycan";
+                        }
+                        else
+                        {
+                            modName = "NGlycan";
+                        }
+                        modName = modName + "_" + modMass;
+                        glycanMasses.Add(modMass);
+                    }
+
+                    if (modName.Contains("NGlycan"))
+                        Nlinked = true;
+
+                    if (modName.Contains("OGlycan"))
+                        Olinked = true;
+
+                    Modification modToAdd = new Modification(modMass, modName);
+                    peptide.AddModification(modToAdd, modPosition);
+
+                    if (modName.Contains("NGlycan"))
+                    {
+                        if ((modPosition + 2) > peptide.Length)
+                        {
+                            if (!peptide.GetResidue(peptide.Length - 1).Equals('P'))
+                            {
+                                if (peptideCterminusNextResidue.Equals('S'))
+                                {
+                                    NXSmotif = true;
+                                }
+                                if (peptideCterminusNextResidue.Equals('T'))
+                                {
+                                    NXTmotif = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (!peptide.GetResidue(modPosition).Letter.Equals('P'))
+                            {
+                                if (peptide.GetResidue(modPosition + 1).Letter.Equals('S'))
+                                {
+                                    NXSmotif = true;
+                                }
+                                if (peptide.GetResidue(modPosition + 1).Letter.Equals('T'))
+                                {
+                                    NXTmotif = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!String.IsNullOrEmpty(modsFixed))
+            {
+                string[] modsParsedArrary = modsFixed.Split(';');
+                for (int i = 0; i < modsParsedArrary.Length; i++)
+                {
+                    string mod = modsParsedArrary[i];
+                    if (mod[0].Equals(' '))
+                    {
+                        mod = mod.Substring(1);
+                    }
+                    mods.Add(mod);
+                    string modName = GetModName(mod);
+                    double modMass = GetModMass(mod);
+                    int modPosition = GetModPosition(mod);
+
+                    Modification modToAdd = new Modification(modMass, modName);
+                    peptide.AddModification(modToAdd, modPosition);
+                }
+            }
+
+            if (deltaModScore >= 10)
+                isLocalized = true;
+
+            GlycoPSM psm = new GlycoPSM(peptide, peptideMonoMass, peptide.SequenceWithModifications, mods, glycans, glycanMasses, glycanPositionsList,
+                uniprotID, PEP2D, logProb, score, deltaScore, deltaModScore, mzObs, charge, numberOfSites, ppmError, obsMH, cleavage, proteinName,
+                peptideStartPosition, scanTime, scanNumber, FDR2D, FDR2Dunique, qvalue2D, fragmentation, isGlycoPeptide, seenWithHCD, seenWithETD,
+                NXSmotif, NXTmotif, isLocalized, Nlinked, Olinked, matchedToUniprot, uniprotEvidenceType, uniprotEvidenceNumber);
+
+            psm.file = reader["File"].ToString();
+            psm.Condition = reader["Condition"].ToString();
+            psm.Replicate = reader["Replicate"].ToString();
+
+            return psm;
+
+        }
+
+        private void glycanPosComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var text = glycanPosComboBox.Text;
+                var position = Int32.Parse(text.Substring(1).Trim('*'));
+
+                var row = viewPeptidesDataGrid.SelectedRows[0];
+
+                var fileIndex = -1;
+                var scanIndex = -1;
+
+                foreach (DataGridViewColumn column in viewPeptidesDataGrid.Columns)
+                {
+                    if (column.HeaderText.Equals("ScanNum"))
+                    {
+                        scanIndex = column.Index;
+                    }
+
+                    if (column.HeaderText.Equals("File"))
+                    {
+                        fileIndex = column.Index;
+                    }
+                }
+
+                if(fileIndex != -1 && scanIndex != -1)
+                {
+                    var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\MyDatabase.sqlite"));
+                    connection.Open();
+
+                    var file = row.Cells[fileIndex].Value.ToString();
+                    var scanNum = row.Cells[scanIndex].Value.ToString();
+
+                    var rawFilePath = "";
+                    foreach (DataGridViewRow row2 in dataUpload.Rows)
+                    {
+                        if (Path.GetFileNameWithoutExtension(row2.Cells[0].Value.ToString()).Equals(file))
+                        {
+                            rawFilePath = row2.Cells[1].Value.ToString();
+                        }
+                    }
+
+                    var commandString = string.Format("SELECT * FROM AllGlycoPSMs WHERE AllGlycoPSMs.File='{0}' AND AllGlycoPSMs.ScanNum='{1}'", file, scanNum);
+                    var command = new SQLiteCommand(commandString, connection);
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var glyPsm = SQLiteStringToGlycoPSM(reader, position);
+                        var fragFinder = new glycoFragmentFinder(rawFilePath, glyPsm);
+                        fragFinder.useType = "SingleSpectrum";
+                        fragFinder.ReturnData += HandleFragmentMatchDataReturn;
+                        fragFinder.crunch();
+                        peptideLabel.Text = glyPsm.peptide.GetSequenceWithModifications();
+                        peptideLabel.Visible = true;
+                    }
+
+                    connection.Close();
+
+                }
+                
+
+            }
+            catch(Exception exc)
+            {
+
+            }            
 
         }
     }

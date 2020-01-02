@@ -147,6 +147,7 @@ namespace _20190618_GlycoTools_V2
 
                                     for(int i = 0; i < fragData.Count(); i++)
                                     {
+                                        //Best index is that with the most frags with intact glycan
                                         if(fragData[i].peptideFragmentsMustIncludeGlycan.Count() > bestMatches)
                                         {
                                             bestMatches = fragData[i].peptideFragmentsMustIncludeGlycan.Count();

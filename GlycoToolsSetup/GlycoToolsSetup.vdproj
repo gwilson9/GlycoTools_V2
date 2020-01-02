@@ -27,12 +27,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0EDC2E398FD1039EC0EAD5151481390E"
-        "OwnerKey" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0FD7993D3E30C079A0AB7451770CA579"
         "OwnerKey" = "8:_EAFBADB1FE30EDAF2873F68B034DD623"
         "MsmSig" = "8:_UNDEFINED"
@@ -106,7 +100,7 @@
         "Entry"
         {
         "MsmKey" = "8:_83F3706B76D152CE45088214D74611C8"
-        "OwnerKey" = "8:_0EDC2E398FD1039EC0EAD5151481390E"
+        "OwnerKey" = "8:_DD459620C4573A7DAA52A97DCFFEED55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -195,6 +189,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DD459620C4573A7DAA52A97DCFFEED55"
+        "OwnerKey" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_EAFBADB1FE30EDAF2873F68B034DD623"
         "OwnerKey" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
         "MsmSig" = "8:_UNDEFINED"
@@ -215,6 +215,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8F309D7A90B67EC80B6A36B39469D619"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DD459620C4573A7DAA52A97DCFFEED55"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -323,12 +329,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C6DB565FB321CE9A98981AC6CA98048F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0EDC2E398FD1039EC0EAD5151481390E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -445,37 +445,6 @@
                     }
                 }
             "SourcePath" = "8:LumenWorks.Framework.IO.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0EDC2E398FD1039EC0EAD5151481390E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CSMSL.Thermo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_0EDC2E398FD1039EC0EAD5151481390E"
-                    {
-                    "Name" = "8:CSMSL.Thermo.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:CSMSL.Thermo.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
@@ -958,6 +927,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DD459620C4573A7DAA52A97DCFFEED55"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CSMSL.Thermo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DD459620C4573A7DAA52A97DCFFEED55"
+                    {
+                    "Name" = "8:CSMSL.Thermo.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CSMSL.Thermo.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EAFBADB1FE30EDAF2873F68B034DD623"
             {
             "AssemblyRegister" = "3:1"
@@ -1077,7 +1077,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GlycoToolsSetup"
         "ProductCode" = "8:{EB8383C6-FD40-4FFD-A609-36230BEE8D9B}"
-        "PackageCode" = "8:{FA0B6237-8B50-4DF0-B811-C6024F743E84}"
+        "PackageCode" = "8:{8C05442D-CA8C-4CC1-8548-8C0D4726FA74}"
         "UpgradeCode" = "8:{7618F324-7648-4829-B866-A877E17F08B2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1197,20 +1197,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_DDD3A9E8819E4425BFA85C1C82BB4A9C"
-            {
-            "Name" = "8:Shortcut to Primary output from 20190618_GlycoTools_V2 (Active)"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
-            "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
-            "WorkingFolder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {
@@ -1612,7 +1598,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C9F3E82A6E1F4B529FA443B20F4BF5E1"
             {
-            "SourcePath" = "8:..\\20190618_GlycoTools_V2\\obj\\Debug\\20190618_GlycoTools_V2.exe"
+            "SourcePath" = "8:..\\20190618_GlycoTools_V2\\obj\\Release\\20190618_GlycoTools_V2.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B7D370BEDDC741F6BD652E98496AE91A"
