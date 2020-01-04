@@ -19,6 +19,5 @@ D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\CSMSL\
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\bin\x64\Debug\CSMSL.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\bin\x64\Debug\CSMSL.pdb
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\bin\x64\Debug\CSMSL.XML
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\obj\Release\CSMSL.csprojResolveAssemblyReference.cache
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\obj\Release\CSMSL.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\CSMSL\obj\Release\CSMSL.pdb

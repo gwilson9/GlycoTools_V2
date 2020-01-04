@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMSL", "CSMSL\CSMSL.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thermo", "CSMSL\IO\Thermo\Thermo.csproj", "{24DC85FF-E97B-4140-9614-77DD8FDDD32F}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "GlycoToolsSetup", "GlycoToolsSetup\GlycoToolsSetup.vdproj", "{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "Setup1\Setup1.vdproj", "{308B467A-2FFF-41D9-A624-76C5369D86F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,15 +78,15 @@ Global
 		{24DC85FF-E97B-4140-9614-77DD8FDDD32F}.Release|x64.Build.0 = Release|x64
 		{24DC85FF-E97B-4140-9614-77DD8FDDD32F}.Release|x86.ActiveCfg = Release|x86
 		{24DC85FF-E97B-4140-9614-77DD8FDDD32F}.Release|x86.Build.0 = Release|x86
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Automated_Build|Any CPU.ActiveCfg = Release
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Automated_Build|x64.ActiveCfg = Release
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Automated_Build|x86.ActiveCfg = Release
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Debug|Any CPU.ActiveCfg = Debug
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Debug|x64.ActiveCfg = Debug
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Debug|x86.ActiveCfg = Debug
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Release|Any CPU.ActiveCfg = Release
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Release|x64.ActiveCfg = Release
-		{4B7410E0-DAEE-473E-9A52-E7F78CC932C7}.Release|x86.ActiveCfg = Release
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Automated_Build|Any CPU.ActiveCfg = Release
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Automated_Build|x64.ActiveCfg = Release
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Automated_Build|x86.ActiveCfg = Release
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Debug|Any CPU.ActiveCfg = Debug
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Debug|x64.ActiveCfg = Debug
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Debug|x86.ActiveCfg = Debug
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Release|Any CPU.ActiveCfg = Release
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Release|x64.ActiveCfg = Release
+		{308B467A-2FFF-41D9-A624-76C5369D86F5}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

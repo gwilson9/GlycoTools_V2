@@ -57,9 +57,15 @@ D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\201906
 D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\20190618_GlycoTools_V2.application
 D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.exe.manifest
 D:\Documents\Documents\Visual Studio 2015\Projects\20190618_GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.application
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\libiomp5md.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\NMathKernelx64.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\nmath_native_x64.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\nmath_sf_x64.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\libiomp5md.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\NMathKernelx86.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\nmath_native_x86.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\nmath_sf_x86.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\20190618_GlycoTools_V2.exe.config
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.exe
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.pdb
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\20190618_GlycoTools_V2.exe.manifest
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\20190618_GlycoTools_V2.application
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\20190618_GlycoTools_V2.exe
@@ -74,7 +80,10 @@ C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_Glyc
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\LiveCharts.Wpf.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\LumenWorks.Framework.IO.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\MathNet.Numerics.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\Microsoft.Solver.Foundation.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\Newtonsoft.Json.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMath.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMathStats.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\System.Data.SQLite.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\System.Data.SQLite.EF6.dll
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\System.Data.SQLite.Linq.dll
@@ -93,7 +102,10 @@ C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_Glyc
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\LiveCharts.Wpf.xml
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\LumenWorks.Framework.IO.xml
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\MathNet.Numerics.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\Microsoft.Solver.Foundation.xml
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\Newtonsoft.Json.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMath.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMathStats.xml
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\System.Data.SQLite.xml
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\System.Net.Http.Formatting.xml
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\ZedGraph.xml
@@ -116,17 +128,5 @@ C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_Glyc
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.csproj.GenerateResource.Cache
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.exe.manifest
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.application
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\libiomp5md.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\NMathKernelx64.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\nmath_native_x64.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x64\nmath_sf_x64.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\libiomp5md.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\NMathKernelx86.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\nmath_native_x86.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\x86\nmath_sf_x86.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\Microsoft.Solver.Foundation.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMath.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMathStats.dll
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\Microsoft.Solver.Foundation.xml
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMath.xml
-C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Release\NMathStats.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.exe
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Release\20190618_GlycoTools_V2.pdb

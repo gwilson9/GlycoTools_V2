@@ -49,7 +49,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>hc9Go7Q9dbqRTp84zwddW+0QlxhOT8CTZIWO6NOyu9s=</dsig:DigestValue>
+        <dsig:DigestValue>QwSqU26GntDDKOBGMf3Zjm+KhaJDl7ewbLDYFfh05ZE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -67,13 +67,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSMSL.dll" size="318464">
-      <assemblyIdentity name="CSMSL" version="0.3.7306.27669" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="CSMSL" version="0.3.7308.24511" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TvBmZlZ/oMJ2lfQwPUGbPbXTn0Ik1ycObbHmzylip64=</dsig:DigestValue>
+        <dsig:DigestValue>g3tU8V+RZrDnIL6L/ntBWYNZ+cJRkzy38Vc6/yLnH+U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -85,7 +85,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>EoCdFPX8pCxGZZeiAsWzkhXScmlN6clK+MQS1ynAlAc=</dsig:DigestValue>
+        <dsig:DigestValue>Yr331WVz5Xuz0IEUvf/R5ZfnYXp3YYwMD0jToLVoAIo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
