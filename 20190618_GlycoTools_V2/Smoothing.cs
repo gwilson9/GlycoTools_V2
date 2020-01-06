@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CenterSpace.NMath.Core;
-using CenterSpace.NMath.Stats;
+//using CenterSpace.NMath.Core;
+//using CenterSpace.NMath.Stats;
 
 namespace _20190618_GlycoTools_V2
 {
     class Smoothing
     {
-
+        /**
         public static List<RTPeak> SavitskyGolaySmooth(LFPeptide targetPeptide, int left, int right, int polyN)
         {
             var copyPeaks = new List<RTPeak>();
@@ -42,6 +42,20 @@ namespace _20190618_GlycoTools_V2
 
             return returnList;
         }
+    **/
+
+        public static List<RTPeak> NoSmoothing(LFPeptide targetPeptide)
+        {
+            var returnList = new List<RTPeak>();
+
+            foreach(var peak in targetPeptide.XICLibrary)
+            {
+                var newPeak = new RTPeak(peak.MZ, peak.Intensity, peak.RT);
+                returnList.Add(newPeak);
+            }
+
+            return returnList;
+        }
 
         public static List<RTPeak> GetRollingAveragePeaks(LFPeptide targetPeptide, int period, bool isLibrary = true)
         {    
@@ -64,7 +78,7 @@ namespace _20190618_GlycoTools_V2
                 copyPeaks.Add(end);
                 copyPeaks.Add(end);
                 copyPeaks = FillInXICGaps(copyPeaks);
-                return GetRollingAveragePeaks(copyPeaks, 7);
+                return GetRollingAveragePeaks(copyPeaks, period);
             }
             else
             {
@@ -81,7 +95,7 @@ namespace _20190618_GlycoTools_V2
                 copyPeaks.Add(end);
                 copyPeaks.Add(end);
                 copyPeaks = FillInXICGaps(copyPeaks);
-                return GetRollingAveragePeaks(copyPeaks, 7);
+                return GetRollingAveragePeaks(copyPeaks, period);
             }
         }
 

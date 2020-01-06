@@ -2723,7 +2723,7 @@ namespace _20190618_GlycoTools_V2
                 elutionDataID.Add(new ObservablePoint
                 {
                     X = idRTs[i],
-                    Y = idInts[i]
+                    Y = idInts[i]                    
                 });
             }
 
@@ -2740,14 +2740,16 @@ namespace _20190618_GlycoTools_V2
             {
                 Values = elutionDataID,
                 PointGeometry = DefaultGeometries.Circle,
-                PointGeometrySize = 5
+                PointGeometrySize = 5,
+                LineSmoothness = 0.0               
             });
 
             lineSeriesID.Add(new LineSeries
             {
                 Values = elutionDataParent,
                 PointGeometry = DefaultGeometries.Circle,
-                PointGeometrySize = 5
+                PointGeometrySize = 5,
+                LineSmoothness = 0.0
             });
 
             inSourceFragChart.Series = lineSeriesID;

@@ -106,7 +106,9 @@ namespace _20190618_GlycoTools_V2
                     {
                         try
                         {
-                            pep.SmoothLibrary = Smoothing.SavitskyGolaySmooth(pep, 1, 1, 2);
+                            //pep.SmoothLibrary = Smoothing.SavitskyGolaySmooth(pep, 1, 1, 2);
+                            //pep.SmoothLibrary = Smoothing.GetRollingAveragePeaks(pep, 7);
+                            pep.SmoothLibrary = Smoothing.NoSmoothing(pep);
                             if (pep.SmoothLibrary.Count != 0)
                             {
                                 //ExtractFeatures.GetApexPeak(pep, true);
