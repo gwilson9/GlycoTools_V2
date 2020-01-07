@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:Setup1"
+"ProjectName" = "8:Setup"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -933,7 +933,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CSMSL, Version=0.3.7308.24636, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:CSMSL, Version=0.3.7309.23217, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_870709B6EB69BB5ACDDF0B75C77FD80A"
@@ -1336,7 +1336,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GlycoTools"
         "ProductCode" = "8:{AF5E6752-3A68-499D-86C4-1248C4CAB7BE}"
-        "PackageCode" = "8:{8968F8EF-8BA3-4F26-A58B-0E57D8DC7E34}"
+        "PackageCode" = "8:{8275B78C-484C-4AFA-BCA3-F8E41722B333}"
         "UpgradeCode" = "8:{9758974C-7EC8-4CB3-BDAD-C764A7D0623D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

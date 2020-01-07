@@ -371,14 +371,27 @@ namespace _20190618_GlycoTools_V2
             for (int i = 0; i < dataUpload.Rows.Count; i++)
             {
                 // Add checks to make sure form is filled out
-                string[] file = { dataUpload.Rows[i].Cells[0].Value.ToString(),
+                try
+                {
+                    string[] file = { dataUpload.Rows[i].Cells[0].Value.ToString(),
                                   dataUpload.Rows[i].Cells[1].Value.ToString(),
                                   dataUpload.Rows[i].Cells[2].Value.ToString(),
                                   dataUpload.Rows[i].Cells[3].Value.ToString(),
                                   (dataUpload.Rows[i].Cells[4].Value != System.DBNull.Value).ToString()
                                 };
 
-                files.Add(file);
+                    files.Add(file);
+                }catch(Exception e)
+                {
+                    AddProgressText("You must provide text in condition and replicate boxes to proceed.");
+                    return;
+                }
+            }
+
+            if(files.Count == 0)
+            {
+                AddProgressText("No data provided");
+                return;
             }
 
             // Perform SQLite Table Build in Separate Thread
@@ -405,6 +418,7 @@ namespace _20190618_GlycoTools_V2
             bynReader.UpdateProgress += HandleUpdateProgress;
             bynReader.finish += HandleFinishedUpload;
             Thread thread = new Thread(bynReader.getNewData);
+            thread.IsBackground = true;
             thread.Start();
             ChangeButtonStatus(false);
         }
@@ -413,12 +427,22 @@ namespace _20190618_GlycoTools_V2
         {
             var file = Path.GetFileNameWithoutExtension(path);
 
+            var matchedFile = false;
+
             for (int i = 0; i < dataUpload.Rows.Count; i++)
             {
-                if (dataUpload.Rows[i].Cells[0].Value.ToString().Contains(file + ".raw") || dataUpload.Rows[i].Cells[0].Value.ToString().Contains(file + ".mgf"))
+                var rawFile = Path.GetFileNameWithoutExtension(dataUpload.Rows[i].Cells[0].Value.ToString()).Split('.')[0];
+                //if (dataUpload.Rows[i].Cells[0].Value.ToString().Contains(file + ".raw") || dataUpload.Rows[i].Cells[0].Value.ToString().Contains(file + ".mgf"))
+                if(rawFile.Equals(file))
                 {
+                    matchedFile = true;
                     dataUpload.Rows[i].Cells[1].Value = path;
                 }
+            }
+
+            if (!matchedFile)
+            {
+                AddProgressText(string.Format("No result file found for {0}. Ensure that the file names without extensions match between raw file and result file, as is Byonic convention.", Path.GetFileName(path)));
             }
         }
 
@@ -1584,9 +1608,8 @@ namespace _20190618_GlycoTools_V2
 
             var fragFinder = new glycoFragmentFinder(rawFilePath, glycoPSM);
             fragFinder.ReturnData += HandleFragmentMatchDataReturn;
-            Task thread = new Task(fragFinder.crunch);
+            Task thread = new Task(fragFinder.crunch);            
             thread.Start();
-
 
         }
         
@@ -2693,9 +2716,7 @@ namespace _20190618_GlycoTools_V2
                 var parentRTs = StringListToDoubleList(row.Cells[parentRTIndex].Value.ToString().Split(';').ToList());
                 var parentInts = StringListToDoubleList(row.Cells[parentIntIndex].Value.ToString().Split(';').ToList());
 
-
                 PlotInSourceData(idRTs, idInts, parentRTs, parentInts);
-
             }
 
         }
@@ -2738,6 +2759,7 @@ namespace _20190618_GlycoTools_V2
 
             lineSeriesID.Add(new LineSeries
             {
+                Title = "In-source Fragment Ion",
                 Values = elutionDataID,
                 PointGeometry = DefaultGeometries.Circle,
                 PointGeometrySize = 5,
@@ -2746,6 +2768,7 @@ namespace _20190618_GlycoTools_V2
 
             lineSeriesID.Add(new LineSeries
             {
+                Title = "Parent Ion",
                 Values = elutionDataParent,
                 PointGeometry = DefaultGeometries.Circle,
                 PointGeometrySize = 5,
@@ -2753,6 +2776,7 @@ namespace _20190618_GlycoTools_V2
             });
 
             inSourceFragChart.Series = lineSeriesID;
+            inSourceFragChart.LegendLocation = LiveCharts.LegendLocation.Bottom;
         }
 
         private List<double> StringListToDoubleList(List<string> list)

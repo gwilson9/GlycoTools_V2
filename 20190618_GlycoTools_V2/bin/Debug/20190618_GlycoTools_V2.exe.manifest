@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="231848">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="232360">
       <assemblyIdentity name="20190618_GlycoTools_V2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>dgCWm4BXg8ZUlJ8qTq/7C3QC3RekE8NAbnMg25svo8U=</dsig:DigestValue>
+        <dsig:DigestValue>drzbUPBeeSZo31SIySFbWheSafyQg7Fj2tWh5xdCpfs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

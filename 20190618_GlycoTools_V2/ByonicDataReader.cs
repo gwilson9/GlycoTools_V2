@@ -208,12 +208,11 @@ namespace _20190618_GlycoTools_V2
 
                     if (IdentifyForInsourceFragments)
                     {
-
-                        SearchForSourceFrags(filteredGlycoPSMs, writer);                        
-
+                        SearchForSourceFrags(filteredGlycoPSMs, writer);
+                        OnUpdateProgress("Finished in-source frag detection.");
                     }
 
-                    OnUpdateProgress("Finished in-source frag detection.");
+                    
 
                     if (string.IsNullOrEmpty(organism))
                     {
@@ -285,12 +284,10 @@ namespace _20190618_GlycoTools_V2
         {
             //var insourceFragsFound = 0;
             var searchResults = new Dictionary<PSM, List<PSM>>();
+            OnUpdateProgress(string.Format("Identifying in-source fragment ions from {0}", psms[0].File));
             foreach (var psm in psms)
             {
-                OnUpdateProgress(string.Format("Working on {0}", psm.sequence));
-
-                if (psm.sequence.Equals("LLNINPN[+1216.42286]K"))
-                    psm.sequence = psm.sequence;
+                
 
                 var searcher = new InsourceFragSearcher(psm);
                 searcher.fillPossibleParents();
