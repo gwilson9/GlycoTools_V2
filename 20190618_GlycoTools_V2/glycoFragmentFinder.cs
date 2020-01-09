@@ -23,7 +23,7 @@ namespace _20190618_GlycoTools_V2
         public string outputPath { get; set; }
         public bool localizeGlycan { get; set; }
         public List<GlycoPSM> glycoPSMs { get; set; }
-        public StreamWriter outputEachFragment { get; set; }
+        //public StreamWriter outputEachFragment { get; set; }
         public SQLiteConnection sqlReader { get; set; }
         public Stopwatch watch { get; set; }
         public string useType;
@@ -42,7 +42,7 @@ namespace _20190618_GlycoTools_V2
             this.glycoPSMs = glycoPSMs;
             this.watch = new Stopwatch();
             watch.Start();
-            outputEachFragment = new StreamWriter(@outputPath + "\\" + Path.GetFileNameWithoutExtension(this.rawfilePath) + "_AnnotatedSpectra.txt");
+            //outputEachFragment = new StreamWriter(@outputPath + "\\" + Path.GetFileNameWithoutExtension(this.rawfilePath) + "_AnnotatedSpectra.txt");
             var sqlPath = string.Format("Data Source={0}\\MyDatabase.sqlite; Version=3;", outputPath);
             this.sqlReader = new SQLiteConnection(sqlPath);
             sqlReader.Open();
@@ -257,7 +257,7 @@ namespace _20190618_GlycoTools_V2
                 {
                     watch.Stop();
                     var time = Math.Round((watch.ElapsedMilliseconds / 60000.0), 2).ToString() + " minutes.";
-                    outputEachFragment.Close();
+                    //outputEachFragment.Close();
                     var updateReturnData = new FragmentDataReturnArgs(Path.GetFileName(rawfilePath), time);
                     onReturnData(updateReturnData);                    
                 }
