@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="218536">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="20190618_GlycoTools_V2.exe" size="224168">
       <assemblyIdentity name="20190618_GlycoTools_V2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TA8mKvsVY16GfQTl/3mcuNgAECT4zozBsjsr4aS5vRs=</dsig:DigestValue>
+        <dsig:DigestValue>YmnSFuv5OxAjDK5HXZE0tnE36+eXWYCVMbXcObyMlSE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSMSL.dll" size="288768">
-      <assemblyIdentity name="CSMSL" version="0.3.7311.19276" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSMSL.dll" size="318464">
+      <assemblyIdentity name="CSMSL" version="0.3.7345.27942" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>1mow5623Pujch5E9PcI439Ozzy5sDOw+LvoTGW2Cy7k=</dsig:DigestValue>
+        <dsig:DigestValue>TEo4Ej6mpuRAcaIYST5+ToICnh4LjS56M3+oO6IBBd0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -85,7 +85,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>oilh60vRvPv6qS29EL+s9Vd/6gLug4hly0BtKFXfOTE=</dsig:DigestValue>
+        <dsig:DigestValue>VKddaONgiijt8GnTnTdzV+KyOpTYIBfP2IAHgigD+iQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -32,15 +32,17 @@ namespace _20190618_GlycoTools_V2
 {
     public partial class GlycoTools : Form
     {
-        //Data tables
+        // Result tables 
         private BindingSource bindingSource1 = new BindingSource();
-        //View peptides table
+        // Inspect peptides table
         private BindingSource bindingSource2 = new BindingSource();
         private SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter();
         private bool dataUploaded = false;
         private BindingSource inSourceFragBindingSource = new BindingSource();
         private BindingSource dataUploadBindingSouce = new BindingSource();
         private bool dataFromDB = false;
+        private bool ctrlDown = false;
+        private string sqlPath = "";
 
         public GlycoTools()
         {
@@ -51,11 +53,14 @@ namespace _20190618_GlycoTools_V2
             this.modCountFilter.DataSource = comboboxOptions;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             dataTree.Tag = false;
-            InitializePlots();
+            InitializeControls();
         }
 
-        private void InitializePlots()
+        private void InitializeControls()
         {
+
+            dataUpload.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;   
+
             inSourceFragData.Dock = DockStyle.Fill;
             inSourceFragData.DataSource = inSourceFragBindingSource;
             inSourceFragChart.Dock = DockStyle.Fill;
@@ -321,10 +326,12 @@ namespace _20190618_GlycoTools_V2
 
             if (!dataFromDB)
             {
+                sqlPath = string.Format("{0}\\MyDatabase.sqlite",outputPath.Text);
                 BuildSQLiteResults();
             }
             else
             {
+                RefreshUploadData();
                 fillTableNames();
                 resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
                 fillStatsComboBox();
@@ -377,7 +384,7 @@ namespace _20190618_GlycoTools_V2
                                   dataUpload.Rows[i].Cells[1].Value.ToString(),
                                   dataUpload.Rows[i].Cells[2].Value.ToString(),
                                   dataUpload.Rows[i].Cells[3].Value.ToString(),
-                                  (dataUpload.Rows[i].Cells[4].Value != System.DBNull.Value).ToString()
+                                  //(dataUpload.Rows[i].Cells[4].Value != System.DBNull.Value).ToString()
                                 };
 
                     files.Add(file);
@@ -478,6 +485,7 @@ namespace _20190618_GlycoTools_V2
         {
 
             //Consider putting these into a task
+            RefreshUploadData();
             AddExperimenDesignTableToSQLDB();
             fillTableNames();
             resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
@@ -500,13 +508,25 @@ namespace _20190618_GlycoTools_V2
             ChangeButtonStatus(true);
         }
 
+        private void RefreshUploadData()
+        {
+            if (InvokeRequired)
+            {
+                Action refresh = () => tabControl1.Refresh();
+                tabControl1.Invoke(refresh);
+                return;
+            }
+
+            tabControl1.Refresh();
+        }
+
         private void AddExperimenDesignTableToSQLDB()
         {
-            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\MyDatabase.sqlite"));
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();
             using (var transaction1 = connection.BeginTransaction())
             {
-                var commandString = "CREATE TABLE IF NOT EXISTS ExperimentDesign (Byrslt STRING, Raw STRING, Condition STRING, Replicate STRING, IsControl BOOL)";
+                var commandString = "CREATE TABLE IF NOT EXISTS ExperimentDesign (Byrslt STRING, Raw STRING, Condition STRING, Replicate STRING)"; //, IsControl BOOL)";
                 var command = new SQLiteCommand(commandString, connection);
                 command.ExecuteNonQuery();
 
@@ -516,9 +536,9 @@ namespace _20190618_GlycoTools_V2
                     var raw = row.Cells[1].Value.ToString();
                     var condition = row.Cells[2].Value.ToString();
                     var replicate = row.Cells[3].Value.ToString();
-                    var isControl = Convert.ToBoolean(row.Cells[4].Value);
+                    var isControl = false;// Convert.ToBoolean(row.Cells[4].Value);
 
-                    var insertString = string.Format("INSERT INTO ExperimentDesign('Byrslt', 'Raw', 'Condition', 'Replicate', 'IsControl') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')", byrslt, raw, condition, replicate, isControl);
+                    var insertString = string.Format("INSERT INTO ExperimentDesign('Byrslt', 'Raw', 'Condition', 'Replicate') VALUES ('{0}', '{1}', '{2}', '{3}')", byrslt, raw, condition, replicate);
                     var insertCommand = new SQLiteCommand(insertString, connection);
                     var reader = insertCommand.ExecuteReader();
                 }
@@ -531,20 +551,26 @@ namespace _20190618_GlycoTools_V2
 
         private void fillInSourceFragData()
         {
-            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\MyDatabase.sqlite"));
-
-            var selectCommand = "SELECT * FROM InSourceFragData";
-            dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
-
-            DataTable table = new DataTable
+            try
             {
-                Locale = CultureInfo.InvariantCulture
-            };
+                var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
 
-            dataAdapter.Fill(table);
-            inSourceFragBindingSource.DataSource = table;
-            inSourceFragData.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            connection.Close();
+                var selectCommand = "SELECT * FROM InSourceFragData";
+                dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
+
+                DataTable table = new DataTable
+                {
+                    Locale = CultureInfo.InvariantCulture
+                };
+
+                dataAdapter.Fill(table);
+                inSourceFragBindingSource.DataSource = table;
+                inSourceFragData.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                connection.Close();
+            }catch(Exception e)
+            {
+                //Will fail if the data was not originally processed with in-source fragment detection
+            }
         }
 
         private void fillFragHistPlot(string file, bool allFiles)
@@ -558,7 +584,7 @@ namespace _20190618_GlycoTools_V2
             while (statsPlot1.Series.Count > 0)
                 statsPlot1.Series.RemoveAt(statsPlot1.Series.Count() - 1);
 
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();
 
             //Get min
@@ -737,7 +763,7 @@ namespace _20190618_GlycoTools_V2
             while (statsPlot2.Series.Count > 0)
                 statsPlot2.Series.RemoveAt(statsPlot2.Series.Count() - 1);
 
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();
 
             //Pep Reader
@@ -830,7 +856,7 @@ namespace _20190618_GlycoTools_V2
             while (statsPlot4.Series.Count > 0)
                 statsPlot4.Series.RemoveAt(statsPlot4.Series.Count() - 1);
 
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();
 
             var commandString = "";
@@ -976,7 +1002,7 @@ namespace _20190618_GlycoTools_V2
             while (statsPlot3.Series.Count > 0)
                 statsPlot3.Series.RemoveAt(statsPlot3.Series.Count() - 1);
 
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();
 
             var commandString = "";
@@ -1032,7 +1058,7 @@ namespace _20190618_GlycoTools_V2
             //replicateComboBox.Items.Add("All");
             //replicateComboBox.SelectedIndex = 0;
 
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();
 
             var command = new SQLiteCommand("SELECT DISTINCT Condition FROM AllGlycoPSMs", connection);
@@ -1063,7 +1089,7 @@ namespace _20190618_GlycoTools_V2
         {
             statsComboBox.Items.Add("All Files");
 
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();
 
             var command = new SQLiteCommand("SELECT DISTINCT File FROM AllGlycoPSMS", connection);
@@ -1086,7 +1112,7 @@ namespace _20190618_GlycoTools_V2
                 return;
             }
 
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
 
             DataTable table = new DataTable
@@ -1110,7 +1136,7 @@ namespace _20190618_GlycoTools_V2
 
         private void fillResultTable(string selectCommand)
         {
-            var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
 
             //SQLiteCommandBuilder commandBuilder = new SQLiteCommandBuilder(dataAdapter);
@@ -1176,6 +1202,13 @@ namespace _20190618_GlycoTools_V2
 
             foreach (string file in files.Where(f => Path.GetExtension(f).Equals(".byrslt")))
             {
+                if (file.Length > 260)
+                {
+                    AddProgressText(string.Format("File path {0} is too long.", file));
+                    continue;
+                }
+                    
+
                 string[] row = { file };
 
                 dataUpload.Rows.Add(row);
@@ -1194,11 +1227,21 @@ namespace _20190618_GlycoTools_V2
 
             foreach (string file in files.Where(f => Path.GetExtension(f).Equals(".raw")))
             {
+                if (file.Length > 260)
+                {
+                    AddProgressText(string.Format("File path {0} is too long.", file));
+                    continue;
+                }
                 AssociateRawFile(file);
             }
 
             foreach(string file in files.Where(f => Path.GetExtension(f).Equals(".sqlite")))
             {
+                if (file.Length > 260)
+                {
+                    AddProgressText(string.Format("File path {0} is too long.", file));
+                    continue;
+                }
                 try
                 {
                     ExperimentDesignFromSQLDB(file);
@@ -1210,6 +1253,8 @@ namespace _20190618_GlycoTools_V2
                     //textBox5.Visible = false;
 
                     dataFromDB = true;
+                    sqlPath = file;
+
                     dataUpload.ReadOnly = true;
 
                     if (String.IsNullOrEmpty(outputPath.Text))
@@ -1240,7 +1285,7 @@ namespace _20190618_GlycoTools_V2
 
                 var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", file));
 
-                var selectCommand = "SELECT Byrslt as 'Byonic Results (.byrslt)', Raw as 'Raw Files', Condition as 'Condition', Replicate as 'Replicate', IsControl as 'Control' FROM ExperimentDesign";
+                var selectCommand = "SELECT Byrslt as 'Byonic Results (.byrslt)', Raw as 'Raw Files', Condition as 'Condition', Replicate as 'Replicate' FROM ExperimentDesign";
 
                 dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
 
@@ -1342,8 +1387,7 @@ namespace _20190618_GlycoTools_V2
             while (spectrumPlot.VisualElements.Count() > 0)
                 spectrumPlot.VisualElements.RemoveAt(spectrumPlot.VisualElements.Count() - 1);
 
-            var sqlPath = string.Format("Data Source={0}\\MyDatabase.sqlite; Version=3;", outputPath.Text);
-            SQLiteConnection sqlReader = new SQLiteConnection(sqlPath);
+            SQLiteConnection sqlReader = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             sqlReader.Open();
 
             var query = string.Format("SELECT * FROM AllGlycoPSMs WHERE AllGlycoPSMs.ScanNum='{0}' AND AllGlycoPSMs.File='{1}' ORDER BY AllGlycoPSMs.Score DESC", scanNum, file);
@@ -1399,8 +1443,7 @@ namespace _20190618_GlycoTools_V2
             var spectrum = raw.GetSpectrum(scanNum);
             raw.Dispose();
 
-            var sqlPath = string.Format("Data Source={0}\\MyDatabase.sqlite; Version=3;", outputPath.Text);
-            SQLiteConnection sqlReader = new SQLiteConnection(sqlPath);
+            SQLiteConnection sqlReader = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             sqlReader.Open();
 
             var query = string.Format("SELECT * FROM FragmentIons WHERE FragmentIons.ScanNumber='{0}' AND FragmentIons.File='{1}'", scanNum, file);
@@ -1569,8 +1612,7 @@ namespace _20190618_GlycoTools_V2
                 }
             }
 
-            var sqlPath = string.Format("Data Source={0}\\MyDatabase.sqlite; Version=3;", outputPath.Text);
-            SQLiteConnection sqlReader = new SQLiteConnection(sqlPath);
+            SQLiteConnection sqlReader = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             sqlReader.Open();
 
             var query = string.Format("SELECT * FROM AllGlycoPSMs WHERE AllGlycoPSMs.Sequence='{0}' AND AllGlycoPSMs.ProteinFasta='{1}' AND AllGlycoPSMs.File='{2}' ORDER BY AllGlycoPSMs.Score DESC", sequence, protein, file);
@@ -1671,7 +1713,7 @@ namespace _20190618_GlycoTools_V2
             // Return is [0] List of intact peptide frags [1] Neutral loss peptide frags [2] PepHexMatches [3] Y ions [4] oxonium ions
             //var spectrumData = GetSpectrumAnnotations(pepSequence, spectrum, mods, glycans, charge);
 
-            var spectrumData = new List<List<FragmentMatch>>() { data.peptideFragments, data.peptideNeutralLossFragments, data.peptideFragmentsMustIncludeGlycan, data.YIons, data.oxoniumIons };
+            var spectrumData = new List<List<FragmentMatch>>() { data.peptideFragments, data.peptideNeutralLossFragments, data.YIons, data.oxoniumIons };
 
             //Used for testing ScottPlot
             //for(int i = 0; i < spectrumData.Count(); i++)
@@ -1720,7 +1762,7 @@ namespace _20190618_GlycoTools_V2
 
                     var label = new VisualElement
                     {
-                        X = specMZs[i] + 10,
+                        X = specMZs[i], // + 5,
                         Y = specIntensities[i],
                         VerticalAlignment = System.Windows.VerticalAlignment.Top,
                         HorizontalAlignment = System.Windows.HorizontalAlignment.Right,
@@ -1744,6 +1786,9 @@ namespace _20190618_GlycoTools_V2
                 j++;
             }
 
+            spectrumPlot.Zoom = ZoomingOptions.X;
+            spectrumPlot.Pan = PanningOptions.X;
+
             //Zed Graph Implementation
             /**
             GraphPane barPane = spectrumPlot.GraphPane;
@@ -1755,9 +1800,8 @@ namespace _20190618_GlycoTools_V2
         }
 
         private void BatchAnnotateSpectra()
-        {
-            var sqlPath = string.Format("Data Source={0}\\MyDatabase.sqlite; Version=3;", outputPath.Text);
-            SQLiteConnection sqlReader = new SQLiteConnection(sqlPath);
+        {            
+            SQLiteConnection sqlReader = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             sqlReader.Open();
 
             var uniqueFiles = new List<string>();
@@ -2504,7 +2548,7 @@ namespace _20190618_GlycoTools_V2
             }
             else
             {
-                var connection = new SQLiteConnection("Data Source=" + outputPath.Text + "\\MyDatabase.sqlite; Version=3;");
+                var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
                 connection.Open();
 
                 var command = new SQLiteCommand(string.Format("SELECT DISTINCT Replicate FROM AllGlycoPSMs WHERE AllGlycoPSMs.Condition='{0}'", conditionText), connection);
@@ -2829,7 +2873,7 @@ namespace _20190618_GlycoTools_V2
             var ppmError = double.Parse(reader["ppmerr"].ToString());
             var obsMH = double.Parse(reader["ObsMH"].ToString());
             var cleavage = reader["Cleavage"].ToString();
-            var glycanPositions = reader["GlycansPos"].ToString();
+            //var glycanPositions = reader["GlycansPos"].ToString();
             var proteinName = reader["ProteinFasta"].ToString();
             var scanTime = double.Parse(reader["ScanTime"].ToString());
             var scanNumber = Int32.Parse(reader["ScanNum"].ToString());
@@ -2842,7 +2886,7 @@ namespace _20190618_GlycoTools_V2
             //var test = reader["isGlycoPeptide"]; //.Equals("True") ? true : false;
             var fragmentation = reader["DissociationType"].ToString();
 
-            List<int> glycanPositionsList = new List<int>();
+            List<int> glycanPositionsList = new List<int>() { glycanPosition };
             List<string> mods = new List<string>();
             List<string> glycans = new List<string>();
 
@@ -2880,15 +2924,6 @@ namespace _20190618_GlycoTools_V2
             if (fragmentation.Equals("ETD"))
                 seenWithETD = true;
 
-            if (!String.IsNullOrEmpty(glycanPositions))
-            {
-                string[] glycansPosParsedArray = glycanPositions.Split(';');
-                for (int i = 0; i < glycansPosParsedArray.Length; i++)
-                {
-                    int glycanPos = Convert.ToInt32(glycansPosParsedArray[i]);
-                    glycanPositionsList.Add(glycanPos);
-                }
-            }
 
             if (!String.IsNullOrEmpty(glycansToBeParsed))
             {
@@ -3045,7 +3080,7 @@ namespace _20190618_GlycoTools_V2
 
                 if(fileIndex != -1 && scanIndex != -1)
                 {
-                    var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", outputPath.Text + "\\MyDatabase.sqlite"));
+                    var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
                     connection.Open();
 
                     var file = row.Cells[fileIndex].Value.ToString();
@@ -3085,6 +3120,174 @@ namespace _20190618_GlycoTools_V2
             {
 
             }            
+
+        }
+
+        //Export single table from result tables
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (dataUploaded)
+            {
+                var condition = conditionComboBox.SelectedItem.ToString();
+                var replicate = replicateComboBox.SelectedItem.ToString();
+                var table = resultViewBox.SelectedItem.ToString();
+
+                if (condition.Equals("All") && replicate.Equals("All"))
+                {
+                    writeResultsToCSV(string.Format("SELECT * FROM All{0}", resultViewBox.SelectedItem.ToString()));
+                    return;
+                }
+
+                if (!condition.Equals("All") && !replicate.Equals("All"))
+                {
+                    writeResultsToCSV(string.Format("SELECT * FROM {0}_Condition_{1}_Replicate_{2}", table, condition, replicate));
+                    return;
+                }
+
+                if (!condition.Equals("All") && replicate.Equals("All"))
+                {
+                    writeResultsToCSV(string.Format("SELECT * FROM {0}_Condition_{1}", table, condition));
+                }
+            }
+        }
+
+        private void writeResultsToCSV(string sqlCommand)
+        {
+            var tableName = sqlCommand.Split(' ')[3];            
+
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
+            connection.Open();
+
+            //Get Table Headers
+            string[] restrictions = new string[4] { null, null, tableName, null };
+            //conn.Open();
+            var headers = connection.GetSchema("Columns", restrictions).AsEnumerable().Select(s => s.Field<String>("Column_Name")).ToList();
+
+            // Write Table to CSV
+            var path = string.Format(@"{0}\{1}_{2}.txt", outputPath.Text, tableName, DateTime.UtcNow.ToString("yyyyMMdd", CultureInfo.InvariantCulture));
+            var writer = new StreamWriter(path);
+
+            var headerString = string.Join("\t", headers);
+            writer.WriteLine(headerString);
+
+            var command = new SQLiteCommand(sqlCommand, connection);
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var nextLine = new List<string>();
+
+                foreach(var header in headers)
+                {
+                    nextLine.Add(reader[header].ToString());
+                }
+
+                writer.WriteLine(string.Join("\t", nextLine));
+            }
+
+            writer.Close();
+            connection.Close();
+        }
+
+    
+
+        private void dataUpload_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+                ctrlDown = true;
+        }
+
+        private void dataUpload_KeyUp(object sender, KeyEventArgs e)
+        {
+            ctrlDown = false;
+        }
+
+        private void dataUpload_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(ctrlDown && e.KeyChar == (char)22)
+            {                
+                dataUpload.SelectedCells[0].Value = Clipboard.GetText().Split('\r')[0];
+                
+            }
+        }
+
+        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (!dataUploaded)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var page = tabControl1.TabPages[e.Index];
+
+            if (!dataUploaded && e.Index != 0)
+            {
+                using(SolidBrush brush = new SolidBrush(SystemColors.GrayText))
+                {
+                    //Was wrapping this text
+                    var width = 0;                    
+                    if(page.Text.Equals("View In-source Fragments  "))
+                    {
+                        width = (int)((double)e.Bounds.Width * 3);
+                        
+                    }
+                    else
+                    {
+                        width = (int)((double)e.Bounds.Width * 1.5);
+                    }
+
+                    //Used to center text in tabcontrol label
+                    var rect = new Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, width, e.Bounds.Height);
+                    e.Graphics.DrawString(page.Text, page.Font, brush, rect);
+                }
+            }
+            else
+            {
+                //Was wrapping this text
+                var width = 0;
+                if (page.Text.Equals("View In-source Fragments  "))
+                {
+                    width = (int)((double)e.Bounds.Width * 3);
+
+                }
+                else
+                {
+                    width = (int)((double)e.Bounds.Width * 1.5);
+                }
+                using (SolidBrush brush = new SolidBrush(page.ForeColor))
+                {
+                    var rect = new Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, width, e.Bounds.Height);
+                    e.Graphics.DrawString(page.Text, page.Font, brush, rect);
+                }
+            }            
+        }
+
+        private void exportAllTables_Click(object sender, EventArgs e)
+        {
+            var excludes = new List<String>() { "AnnotatedPeptides", "FragmentIons", "ExperimentDesign" };
+
+            var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
+            connection.Open();
+
+            var commandString = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name";
+            var command = new SQLiteCommand(commandString, connection);
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var tableName = reader["name"].ToString();
+
+                if (!excludes.Contains(tableName))
+                {
+                    var writeTableCommand = string.Format("SELECT * FROM {0}", tableName);
+
+                    writeResultsToCSV(writeTableCommand);
+                }
+            }
+
+            connection.Close();
 
         }
     }

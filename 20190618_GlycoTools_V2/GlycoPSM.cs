@@ -76,7 +76,7 @@ namespace _20190618_GlycoTools_V2
             var ppmError = psm.ppmError;
             var obsMH = psm.obsMH;
             var cleavage = psm.cleavage;
-            var glycanPositions = psm.glycanPositions;
+            var glycanPositions = new List<int>() { glycanPosition };
             var proteinName = psm.proteinName;
             var scanTime = psm.scanTime;
             var scanNumber = psm.scanNumber;
@@ -87,10 +87,8 @@ namespace _20190618_GlycoTools_V2
             var isGlycoPeptide = true;
             //var test1 = reader["isGlycoPeptide"].ToString(); // 'True' in SQLite Table reads in '0', should be '1'. Not a big issue because all psms are already filtered for glycopeptides at this point
             //var test = reader["isGlycoPeptide"]; //.Equals("True") ? true : false;
-            //var fragmentation = psm.DissociationType;
+            var fragmentation = psm.DissociationType;
 
-            // Manually set glycan and position here
-            List<int> glycanPositionsList = new List<int>() { glycanPosition };
             List<string> glycans = new List<string>() { glycansToBeParsed };
 
             List<string> mods = new List<string>();
@@ -248,7 +246,7 @@ namespace _20190618_GlycoTools_V2
             this.mods = mods;
             this.glycans = glycans;
             this.glycanMasses = glycanMasses;
-            this.glycanPositions = glycanPositionsList;
+            this.glycanPositions = glycanPositions;
             this.uniprotID = uniprotID;
             this.PEP2D = PEP2D;
             this.logProb = logProb;
@@ -268,7 +266,7 @@ namespace _20190618_GlycoTools_V2
             this.FDR2D = FDR2D;
             this.FDR2Dunique = FDR2Dunique;
             this.qvalue2D = qvalue2D;
-            //this.fragmentation = fragmentation;
+            this.fragmentation = fragmentation;
             this.isGlycoPeptide = isGlycoPeptide;
             this.seenWithHCD = seenWithHCD;
             this.seenWithETD = seenWithETD;
@@ -376,6 +374,11 @@ namespace _20190618_GlycoTools_V2
             }
 
             return returnString.Trim(';');
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1},{2}", peptide.SequenceWithModifications, glycanPositions, scanNumber, file);
         }
     }
 }

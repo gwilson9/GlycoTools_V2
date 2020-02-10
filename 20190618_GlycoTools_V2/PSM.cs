@@ -57,8 +57,7 @@ namespace _20190618_GlycoTools_V2
         public int MasterScan { get; set; }
         public string File { get; set; }
         public string Condition { get; set; }
-        public string Replicate { get; set; }
-        public string isControl { get; set; }
+        public string Replicate { get; set; }        
         public string rawFile { get; set; }
         public Peptide peptide { get; set; }
         public ThermoMzPeak Peak126 { get; set; }
@@ -74,6 +73,9 @@ namespace _20190618_GlycoTools_V2
         public List<double> localMaxima { get; set; }
         public List<Glycan> glycans { get; set; }
         public int scanNumberofMaxElutionIntensity { get; set; }
+        public bool isSourceFragment { get; set; }
+        public bool wasRelocalized { get; set; }
+
 
         public PSM()
         {
@@ -119,6 +121,8 @@ namespace _20190618_GlycoTools_V2
             this.evidenceType = "";
             glycans = new List<Glycan>();
             this.sequenceNoMods = peptidesToBeParsed.Split(',')[0];
+            this.wasRelocalized = false;
+            this.isSourceFragment = false;
         }
 
         public bool Equals(PSM other)
@@ -225,18 +229,14 @@ namespace _20190618_GlycoTools_V2
                                                 "'{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}'," +
                                                 "'{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}'," +
                                                 "'{28}','{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}'" +
-                                                ",'{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}', '{45}', '{46}'",
-                                                sequence, peptidesToBeParsed, sequenceNoMods, peptideStartPosition, modsToBeParsed, glycansToBeParsed, // 0-5
-                                                glycanTypes, PEP2D, PEP1D, logProb, score, deltaScore, deltaModScore, charge, mzObs, mzCalc,    // 6-15
-                                                ppmError, obsMH, calcMH, cleavage, glycanPositions, protString, scanTimeInMin, scanNumber,            // 16-23
-                                                modsFixed, FDR2D, FDR1D, FDR2Dunique, FDR1Dunique, qvalue2D, qvalue1D, isGlycopeptide,      // 24-31
-                                                modsPassedCheck, positionsPassedCheck, DissociationType, MasterScan, intensity,             // 32-36
-                                                Path.GetFileNameWithoutExtension(File), Condition, Replicate, isControl, retentionTimes,    // 37-41
-                                                intensities, evidenceType, scanNumberofMaxElutionIntensity, absoluteMaxima, string.Join(",",localMaxima));                                    // 42-45                 
-
-
-
-
+                                                ",'{37}','{38}','{39}','{40}','{41}','{42}','{43}','{44}', '{45}', '{46}', '{47}'",
+                                                sequence, peptidesToBeParsed, sequenceNoMods, peptideStartPosition, modsToBeParsed, glycansToBeParsed,             // 0-5
+                                                glycanTypes, PEP2D, PEP1D, logProb, score, deltaScore, deltaModScore, charge, mzObs, mzCalc,                       // 6-15
+                                                ppmError, obsMH, calcMH, cleavage, glycanPositions, protString, scanTimeInMin, scanNumber,                         // 16-23
+                                                modsFixed, FDR2D, FDR1D, FDR2Dunique, FDR1Dunique, qvalue2D, qvalue1D, isGlycopeptide,                             // 24-31
+                                                modsPassedCheck, positionsPassedCheck, DissociationType, MasterScan, intensity,                                    // 32-36
+                                                Path.GetFileNameWithoutExtension(File), Condition, Replicate, isSourceFragment.ToString(), wasRelocalized.ToString(),  // 37-41
+                                                retentionTimes, intensities, evidenceType, scanNumberofMaxElutionIntensity, absoluteMaxima, string.Join(",", localMaxima));   // 42-47                                                                                                                                                                                             
 
             return returnString;
         }        

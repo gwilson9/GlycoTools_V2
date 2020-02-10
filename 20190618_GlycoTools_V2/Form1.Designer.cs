@@ -43,6 +43,10 @@
             this.byrsltLoad = new System.Windows.Forms.Button();
             this.outputPath = new System.Windows.Forms.TextBox();
             this.dataUpload = new System.Windows.Forms.DataGridView();
+            this.byrslt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RawFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.condition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.replicate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -79,6 +83,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.progressText = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.exportAllTables = new System.Windows.Forms.Button();
+            this.exportTable = new System.Windows.Forms.Button();
             this.replicateComboBox = new System.Windows.Forms.ComboBox();
             this.conditionComboBox = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -112,11 +118,6 @@
             this.statsPlot2 = new LiveCharts.WinForms.CartesianChart();
             this.statsPlot4 = new LiveCharts.WinForms.PieChart();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.byrslt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RawFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.condition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.replicate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isControl = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataUpload)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -204,8 +205,7 @@
             this.byrslt,
             this.RawFile,
             this.condition,
-            this.replicate,
-            this.isControl});
+            this.replicate});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -230,6 +230,30 @@
             this.dataUpload.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataUpload_DragDrop);
             this.dataUpload.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataUpload_DragEnter);
             this.dataUpload.DragLeave += new System.EventHandler(this.dataUpload_DragLeave);
+            this.dataUpload.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataUpload_KeyDown);
+            this.dataUpload.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataUpload_KeyPress);
+            this.dataUpload.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dataUpload_KeyUp);
+            // 
+            // byrslt
+            // 
+            this.byrslt.HeaderText = "Byonic Results (.byrslt)";
+            this.byrslt.Name = "byrslt";
+            // 
+            // RawFile
+            // 
+            this.RawFile.HeaderText = "Raw File";
+            this.RawFile.Name = "RawFile";
+            // 
+            // condition
+            // 
+            this.condition.HeaderText = "Condition";
+            this.condition.Name = "condition";
+            // 
+            // replicate
+            // 
+            this.replicate.FillWeight = 150F;
+            this.replicate.HeaderText = "Replicate";
+            this.replicate.Name = "replicate";
             // 
             // label1
             // 
@@ -249,11 +273,16 @@
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.tabControl1.ItemSize = new System.Drawing.Size(150, 18);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(858, 643);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 8;
+            this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
+            this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
             // 
             // tabPage1
             // 
@@ -674,12 +703,15 @@
             this.progressText.Location = new System.Drawing.Point(6, 490);
             this.progressText.Multiline = true;
             this.progressText.Name = "progressText";
+            this.progressText.ReadOnly = true;
             this.progressText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.progressText.Size = new System.Drawing.Size(838, 119);
             this.progressText.TabIndex = 10;
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.exportAllTables);
+            this.tabPage4.Controls.Add(this.exportTable);
             this.tabPage4.Controls.Add(this.replicateComboBox);
             this.tabPage4.Controls.Add(this.conditionComboBox);
             this.tabPage4.Controls.Add(this.label11);
@@ -692,31 +724,51 @@
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(850, 617);
             this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Result Tables";
+            this.tabPage4.Text = "Result Tables  ";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // exportAllTables
+            // 
+            this.exportAllTables.Location = new System.Drawing.Point(743, 5);
+            this.exportAllTables.Name = "exportAllTables";
+            this.exportAllTables.Size = new System.Drawing.Size(100, 23);
+            this.exportAllTables.TabIndex = 8;
+            this.exportAllTables.Text = "Export All Tables";
+            this.exportAllTables.UseVisualStyleBackColor = true;
+            this.exportAllTables.Click += new System.EventHandler(this.exportAllTables_Click);
+            // 
+            // exportTable
+            // 
+            this.exportTable.Location = new System.Drawing.Point(658, 5);
+            this.exportTable.Name = "exportTable";
+            this.exportTable.Size = new System.Drawing.Size(75, 23);
+            this.exportTable.TabIndex = 7;
+            this.exportTable.Text = "Export Table";
+            this.exportTable.UseVisualStyleBackColor = true;
+            this.exportTable.Click += new System.EventHandler(this.button4_Click);
             // 
             // replicateComboBox
             // 
             this.replicateComboBox.FormattingEnabled = true;
-            this.replicateComboBox.Location = new System.Drawing.Point(545, 6);
+            this.replicateComboBox.Location = new System.Drawing.Point(495, 6);
             this.replicateComboBox.Name = "replicateComboBox";
-            this.replicateComboBox.Size = new System.Drawing.Size(181, 21);
+            this.replicateComboBox.Size = new System.Drawing.Size(149, 21);
             this.replicateComboBox.TabIndex = 6;
             this.replicateComboBox.SelectedIndexChanged += new System.EventHandler(this.replicateComboBox_SelectedIndexChanged);
             // 
             // conditionComboBox
             // 
             this.conditionComboBox.FormattingEnabled = true;
-            this.conditionComboBox.Location = new System.Drawing.Point(293, 6);
+            this.conditionComboBox.Location = new System.Drawing.Point(281, 6);
             this.conditionComboBox.Name = "conditionComboBox";
-            this.conditionComboBox.Size = new System.Drawing.Size(181, 21);
+            this.conditionComboBox.Size = new System.Drawing.Size(161, 21);
             this.conditionComboBox.TabIndex = 5;
             this.conditionComboBox.SelectedIndexChanged += new System.EventHandler(this.conditionComboBox_SelectedIndexChanged);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(484, 10);
+            this.label11.Location = new System.Drawing.Point(447, 10);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(47, 13);
             this.label11.TabIndex = 4;
@@ -725,7 +777,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(215, 10);
+            this.label10.Location = new System.Drawing.Point(209, 10);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(73, 13);
             this.label10.TabIndex = 3;
@@ -962,7 +1014,7 @@
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(850, 617);
             this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "View In-source Fragent IDs";
+            this.tabPage5.Text = "View In-source Fragments  ";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // splitContainer6
@@ -1159,33 +1211,6 @@
             this.splitter1.TabIndex = 0;
             this.splitter1.TabStop = false;
             // 
-            // byrslt
-            // 
-            this.byrslt.HeaderText = "Byonic Results (.byrslt)";
-            this.byrslt.Name = "byrslt";
-            // 
-            // RawFile
-            // 
-            this.RawFile.HeaderText = "Raw File";
-            this.RawFile.Name = "RawFile";
-            // 
-            // condition
-            // 
-            this.condition.HeaderText = "Condition";
-            this.condition.Name = "condition";
-            // 
-            // replicate
-            // 
-            this.replicate.FillWeight = 150F;
-            this.replicate.HeaderText = "Replicate";
-            this.replicate.Name = "replicate";
-            // 
-            // isControl
-            // 
-            this.isControl.HeaderText = "Control";
-            this.isControl.Name = "isControl";
-            this.isControl.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
             // GlycoTools
             // 
             this.AllowDrop = true;
@@ -1330,7 +1355,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn RawFile;
         private System.Windows.Forms.DataGridViewTextBoxColumn condition;
         private System.Windows.Forms.DataGridViewTextBoxColumn replicate;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn isControl;
+        private System.Windows.Forms.Button exportAllTables;
+        private System.Windows.Forms.Button exportTable;
     }
 }
 

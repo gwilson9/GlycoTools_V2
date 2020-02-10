@@ -150,19 +150,31 @@ namespace _20190618_GlycoTools_V2
                                         {
                                             FragmentMatch fragmentMatch = new FragmentMatch(theoFragment.ToString(), theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
                                             peptideFragments.Add(fragmentMatch);
-                                            peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
+
+                                            if (SeeIfFragmentsHaveGlycan(glycoPSM, new List<FragmentMatch>() { fragmentMatch }, ""))
+                                            {
+                                                peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
+                                            }
                                         }
                                         else if (rawFile.GetSpectrum(glycoPSM.scanNumber).TryGetPeaks(rangeForIsotope, out outPeaksIso))
                                         {
                                             FragmentMatch fragmentMatch = new FragmentMatch(theoFragment.ToString(), theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
                                             peptideFragments.Add(fragmentMatch);
-                                            peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
+
+                                            if (SeeIfFragmentsHaveGlycan(glycoPSM, new List<FragmentMatch>() { fragmentMatch }, ""))
+                                            {
+                                                peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
+                                            }
                                         }
                                         else if (intensity >= (0.01 * basePeak) && closestPeak.Charge == 0)
                                         {
                                             FragmentMatch fragmentMatch = new FragmentMatch(theoFragment.ToString(), theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
                                             peptideFragments.Add(fragmentMatch);
-                                            peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
+
+                                            if(SeeIfFragmentsHaveGlycan(glycoPSM, new List<FragmentMatch>() { fragmentMatch }, ""))
+                                            {
+                                                peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
+                                            }                                            
                                         }
                                     }
                                 }
@@ -176,19 +188,20 @@ namespace _20190618_GlycoTools_V2
                                                         glycoPSM.scanNumber, glycoPSM.peptide, fragmentation);
                         }
 
+                        foreach(FragmentMatch fragMatch in peptideNeutralLossFragments)
+                        {
+                            if(SeeIfFragmentsHaveGlycan(glycoPSM, new List<FragmentMatch>() { fragMatch }, "") && fragMatch.fragmentName.Contains("+203"))
+                            {
+                                peptideFragmentsMustIncludeGlycan.Add(fragMatch);
+                            }
+                        }
+
                         //search for glycan peaks still attached to peptide
                         GetIntactPepGlycanFragments(glycoPSM, glycoPSM.charge, hexCount, hexNAcCount, fucCount, neuAcCount,
                                                     neuGcCount, peptideIntactGlycans, spectrum, glycan, glycanMass);
                         GetOxoniumIons(glycoPSM, hexCount, hexNAcCount, fucCount, neuAcCount, neuGcCount, glycan, glycanMass, spectrum, oxoniumIons);
 
-
-
                         double sequenceCoverage = GetSequenceCoverage(glycoPSM, peptideFragments);
-                        double sequenceCoverageOnlyGlycoFragments = GetSequenceCoverage(glycoPSM, peptideFragmentsMustIncludeGlycan);
-
-                        bool anyFragmentsContainGlycan = SeeIfFragmentsHaveGlycan(glycoPSM, peptideFragmentsMustIncludeGlycan, "");
-                        bool ntermFragmentsContainGlycan = SeeIfFragmentsHaveGlycan(glycoPSM, peptideFragmentsMustIncludeGlycan, "Nterm");
-                        bool ctermFragmentsContainGlycan = SeeIfFragmentsHaveGlycan(glycoPSM, peptideFragmentsMustIncludeGlycan, "Cterm");
 
                         double glycanSequenceCoverage = GetGlycanSequenceCoverage(glycoPSM, peptideIntactGlycans, hexCount, hexNAcCount, fucCount, neuAcCount, neuGcCount);
 
@@ -211,6 +224,15 @@ namespace _20190618_GlycoTools_V2
                             foreach(FragmentMatch fragment in peptideFragments)
                             {
                                 var commandString = string.Format("INSERT INTO FragmentIons('File','Condition','Replicate','ScanNumber','Peptide','Sequence','Glycan','ByonicScore','DeltaModScore','LogProb','IonType','Fragment','FragmentNumber','MZ','Charge','Intensity') VALUES ({0})", FragToSQLString(glycoPSM, fragment, "Backbone"));
+                                var command = new SQLiteCommand(commandString, sqlReader);
+                                command.ExecuteNonQuery();
+
+                                pepFragmentIntensity += fragment.fragmentSignal;
+                            }
+
+                            foreach(FragmentMatch fragment in peptideNeutralLossFragments)
+                            {
+                                var commandString = string.Format("INSERT INTO FragmentIons('File','Condition','Replicate','ScanNumber','Peptide','Sequence','Glycan','ByonicScore','DeltaModScore','LogProb','IonType','Fragment','FragmentNumber','MZ','Charge','Intensity') VALUES ({0})", FragToSQLString(glycoPSM, fragment, "Backbone_GlycanNeutralLoss"));
                                 var command = new SQLiteCommand(commandString, sqlReader);
                                 command.ExecuteNonQuery();
 
@@ -447,19 +469,19 @@ namespace _20190618_GlycoTools_V2
                                 if (closestPeak.Charge == i)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                                 else if (rawFile.GetSpectrum(scanNumber).TryGetPeaks(rangeForIsotope, out outPeaksIso))
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                                 else if (intensity >= (0.01 * basePeak) && closestPeak.Charge == 0)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                             }
@@ -497,19 +519,20 @@ namespace _20190618_GlycoTools_V2
                                 if (closestPeak.Charge == i)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
-                                    peptideNeutralLossFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
+                                    peptideNeutralLossFragments.Add(fragmentMatch);                                    
+
                                 }
                                 else if (rawFile.GetSpectrum(scanNumber).TryGetPeaks(rangeForIsotopeHexNAc, out outPeaksIsoHexNAc))
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                                 else if (intensity >= (0.01 * basePeak) && closestPeak.Charge == 0)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                             }
@@ -602,24 +625,23 @@ namespace _20190618_GlycoTools_V2
                                 if (closestPeak.Charge == i)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                                 else if (rawFile.GetSpectrum(scanNumber).TryGetPeaks(rangeForIsotopeHexNAc, out outPeaksIsoHexNAc))
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                                 else if (intensity >= (0.01 * basePeak) && closestPeak.Charge == 0)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                             }
                         }
-
                     }
                 }
             }

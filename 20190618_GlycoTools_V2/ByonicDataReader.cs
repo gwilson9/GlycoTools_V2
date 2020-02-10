@@ -55,6 +55,14 @@ namespace _20190618_GlycoTools_V2
                 {
                     var filteredGlycoPSMs = new List<PSM>();
 
+                    //TEMP!//
+
+                    var localizationWriter = new StreamWriter(@"D:\Documents\Documents\Coon\Projects\20191216_GlycoToolsManuscripts\Data\Whole Proteome_LHS\FragsUsedForLocalization_AllBackbone.csv");
+                    localizationWriter.WriteLine("File,Condition,Replicate,ScanNumber,OriginalID,LocalizedID,DiagnosticFrags");
+                    
+                   
+                    //
+
                     foreach (var file in files)
                     {
                         var clock = new Stopwatch();
@@ -66,7 +74,7 @@ namespace _20190618_GlycoTools_V2
                         var condition = file[2];
                         var rep = file[3];
                         var rawFile = file[1];
-                        var isControl = file[4];
+                        //var isControl = file[4];
 
                         OnUpdateProgress(string.Format("Reading file: {0}", Path.GetFileName(path)));
 
@@ -81,7 +89,7 @@ namespace _20190618_GlycoTools_V2
                             psm.File = path;
                             psm.Condition = condition;
                             psm.Replicate = rep;
-                            psm.isControl = isControl;
+                            //psm.isControl = isControl;
                             psm.rawFile = rawFile;
 
                             // Adds mods to PSM
@@ -97,6 +105,8 @@ namespace _20190618_GlycoTools_V2
                             {
                                 if (performGlycanLocalization)
                                 {
+                                    
+
                                     //OnUpdateProgress("Localizing glycan modifications...");
 
                                     fragData = new List<FragmentDataReturnArgs>();
@@ -133,7 +143,7 @@ namespace _20190618_GlycoTools_V2
                                         annotator.crunch();
                                     }
 
-                                    OnUpdateProgress("Localized Spectra for " + psm.peptidesToBeParsed);
+                                    //OnUpdateProgress("Localized Spectra for " + psm.peptidesToBeParsed);
                                     
                                     var originalIndex = -1;
                                     for(int i = 0; i < fragData.Count(); i++)
@@ -143,12 +153,16 @@ namespace _20190618_GlycoTools_V2
                                     }
 
                                     var bestMatches = fragData[originalIndex].peptideFragmentsMustIncludeGlycan.Count();
-                                    var bestIndex = -1;
+                                    var bestIndex = originalIndex;
+
 
                                     for(int i = 0; i < fragData.Count(); i++)
                                     {
                                         //Best index is that with the most frags with intact glycan
-                                        if(fragData[i].peptideFragmentsMustIncludeGlycan.Count() > bestMatches)
+                                        //var NeutralLossFragsBestMatch = fragData[bestIndex].peptideFragmentsMustIncludeGlycan.Select(x => x.label.Contains("~")).ToList().Count();
+                                        //var NeutralLossFragsCandidate = fragData[i].peptideFragmentsMustIncludeGlycan.Select(x => x.label.Contains("~")).ToList().Count();
+
+                                        if (fragData[i].peptideFragmentsMustIncludeGlycan.Count() > bestMatches)  // && NeutralLossFragsBestMatch >= NeutralLossFragsCandidate)                                        
                                         {
                                             bestMatches = fragData[i].peptideFragmentsMustIncludeGlycan.Count();
                                             bestIndex = i;
@@ -156,9 +170,24 @@ namespace _20190618_GlycoTools_V2
                                     }
 
                                     // If another location has more fragment ions with intact glycan
-                                    if(bestIndex != -1)
+                                    if(bestIndex != originalIndex)
                                     {
                                         //Change relevant details of the psm to the better matching peptide
+                                        var diagnosticFrags = new List<FragmentMatch>();
+                                        foreach(FragmentMatch match in fragData[bestIndex].peptideFragments)
+                                        {
+                                            if (!fragData[originalIndex].peptideFragments.Contains(match))
+                                            {
+                                                diagnosticFrags.Add(match);
+                                            }
+                                        }
+
+                                        var matches = string.Join(";", diagnosticFrags.Select(x => x.label).ToList());
+
+                                        //Temp
+                                        localizationWriter.WriteLine("{0},{1},{2},{3},{4},{5},{6}", psm.File, psm.Condition, psm.Replicate, psm.scanNumber, psm.sequence, fragData[bestIndex], matches);
+
+                                        psm.wasRelocalized = true;
                                         psm.glycanPositions = string.Join(";", fragData[bestIndex].glycoPSM.glycanPositions);                                      
                                         psm.modsToBeParsed = fragData[bestIndex].glycoPSM.formattedVarMods;
                                         psm.sequence = fragData[bestIndex].glycoPSM.peptide.ToString();
@@ -180,7 +209,10 @@ namespace _20190618_GlycoTools_V2
                                 }
                                 else
                                 {
-                                    allFilePSMs.Add(psm);
+                                    if (!allFilePSMs.Contains(psm))
+                                    {
+                                        allFilePSMs.Add(psm);
+                                    }                                    
                                 }                                
                             }
                         }
@@ -194,6 +226,8 @@ namespace _20190618_GlycoTools_V2
                         OnUpdateProgress("Finished reading file in " + Math.Round((clock.ElapsedMilliseconds / 60000.0), 2).ToString() + " minutes.");
 
                     }
+
+                    localizationWriter.Close();
 
                     if (performProteinInference)
                     {
@@ -286,25 +320,29 @@ namespace _20190618_GlycoTools_V2
             var searchResults = new Dictionary<PSM, List<PSM>>();
             OnUpdateProgress(string.Format("Identifying in-source fragment ions from {0}", psms[0].File));
             foreach (var psm in psms)
-            {
-                
+            {              
 
                 var searcher = new InsourceFragSearcher(psm);
                 searcher.fillPossibleParents();
                 searcher.getPeakElutions();
 
-                foreach(var match in searcher.matchedParentPeaks)
+                if (searcher.matchedParentPeaks.Count() > 0)
                 {
-                    if (searchResults.ContainsKey(psm))
+                    psm.isSourceFragment = true;
+
+                    foreach (var match in searcher.matchedParentPeaks)
                     {
-                        searchResults[psm].Add(match);
+                        if (searchResults.ContainsKey(psm))
+                        {
+                            searchResults[psm].Add(match);
+                        }
+                        else
+                        {
+                            searchResults.Add(psm, new List<PSM>());
+                            searchResults[psm].Add(match);
+                        }
                     }
-                    else
-                    {
-                        searchResults.Add(psm, new List<PSM>());
-                        searchResults[psm].Add(match);
-                    }                    
-                }
+                }                    
             }
 
             OnUpdateProgress("Writing In-source frag data to sql.");
@@ -312,10 +350,9 @@ namespace _20190618_GlycoTools_V2
             /////TEMP FOR VIEWING POSSIBLE INSOURCE FRAGS///////
             if (true)
             {
-                var commandString = "CREATE TABLE IF NOT EXISTS InSourceFragData (FILE STRING, ID STRING,ID_Glycan STRING, ID_GlycanType STRING,RT STRING,ID_MZ STRING,ID_SCANNUM STRING,ID_RTS STRING, ID_INTENSITIES STRING,PARENT STRING, PARENT_GLYCAN STRING, PARENT_GLYCANTYPE STRING, PARENT_MZ STRING, PARENT_RTS STRING, PARENT_INTENSITIES STRING)";
+                var commandString = "CREATE TABLE IF NOT EXISTS InSourceFragData (FILE STRING, ID STRING,ID_Glycan STRING, ID_GlycanType STRING,RT STRING,ID_MZ STRING,ID_SCANNUM STRING,ID_RTS STRING, ID_INTENSITIES STRING,PARENT STRING, PARENT_GLYCAN STRING, PARENT_GLYCANTYPE STRING, PARENT_MZ STRING, PARENT_RTS STRING, PARENT_INTENSITIES STRING, PARENT_AUC REAL)";
                 var command = new SQLiteCommand(commandString, writer);
                 command.ExecuteNonQuery();
-
 
                 foreach (var result in searchResults)
                 {
@@ -330,7 +367,7 @@ namespace _20190618_GlycoTools_V2
 
                         var parentGlycan = new Glycan(parent.sequence.Split('[')[1].Split(']')[0]);
 
-                        var insertCommandString = string.Format("INSERT into InSourceFragData ('FILE', `ID`, `ID_Glycan`, 'ID_GlycanType', `RT`, `ID_MZ`, `ID_SCANNUM`,'ID_RTS','ID_INTENSITIES', `PARENT`, 'PARENT_GLYCAN', 'PARENT_GLYCANTYPE', `PARENT_MZ`, 'PARENT_RTS', 'PARENT_INTENSITIES') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}')", result.Key.File, result.Key.sequence, result.Key.glycansToBeParsed, idGlycanTypes, (Double.Parse(result.Key.scanTime) / 60).ToString(), result.Key.mzObs, result.Key.scanNumber, idRTs, idInts, parent.sequence, parentGlycan.CoreStructure, parentGlycan.glycanType, parent.mzObs, parentRTs, parentInts);
+                        var insertCommandString = string.Format("INSERT into InSourceFragData ('FILE', `ID`, `ID_Glycan`, 'ID_GlycanType', `RT`, `ID_MZ`, `ID_SCANNUM`,'ID_RTS','ID_INTENSITIES', `PARENT`, 'PARENT_GLYCAN', 'PARENT_GLYCANTYPE', `PARENT_MZ`, 'PARENT_RTS', 'PARENT_INTENSITIES', 'PARENT_AUC') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}')", result.Key.File, result.Key.sequence, result.Key.glycansToBeParsed, idGlycanTypes, (Double.Parse(result.Key.scanTime) / 60).ToString(), result.Key.mzObs, result.Key.scanNumber, idRTs, idInts, parent.sequence, parentGlycan.CoreStructure, parentGlycan.glycanType, parent.mzObs, parentRTs, parentInts, parent.intensity);
                         var insertCommand = new SQLiteCommand(insertCommandString, writer);
                         var reader = insertCommand.ExecuteReader();
                     }
@@ -360,9 +397,16 @@ namespace _20190618_GlycoTools_V2
                 InferencePeptide pep;
                 if(peptides.TryGetValue(psm.sequenceNoMods.Replace("I","L"), out pep))
                 {
-                    pep.ProteinGroups.Sort(InferenceProteinGroup.CompareIncreasing);
-                    pep.BestPG = pep.ProteinGroups[0];
-                    psm.proteinName = pep.BestPG.Description;
+                    try
+                    {
+                        pep.ProteinGroups.Sort(InferenceProteinGroup.CompareIncreasing);
+                        pep.BestPG = pep.ProteinGroups[0];
+                        psm.proteinName = pep.BestPG.Description;
+                    }catch(Exception e)
+                    {
+
+                    }
+                    
                 }
                 else
                 {
@@ -567,7 +611,7 @@ namespace _20190618_GlycoTools_V2
                 var upmapped = peptides.Where(x => !x.Value.IsMapped).ToList();
 
                 OnUpdateProgress("Could not map all peptides in Fasta File, skipping inference.\nVerify protein database, protease, and miscleavages.");
-                return null;
+                //return null;
             }
 
             OnUpdateProgress(string.Format("Successfully mapped {0} peptides to at least one protein.", pepsMapped));
@@ -915,7 +959,7 @@ namespace _20190618_GlycoTools_V2
                                               "`ObsMZ`, `CalcMZ`, `ppmerr`, `ObsMH`, `CalcMH`, `Cleavage`, `GlycansPos`, " +
                                               "`ProteinFasta`, `ScanTime`, `ScanNum`, `ModsFixed`, `FDR2D`, `FDR1D`, `FDRuniq2D`, " +
                                               "`FDRuniq1D`, `qValue2D`, `qValue1D`, `isGlycoPeptide`, `modsPassedCheck`, `positionPassedCheck`, " +
-                                              "`DissociationType`, `MasterScan`, `LFQIntensity`, `File`, `Condition`, `Replicate`, `isControl`, " +
+                                              "`DissociationType`, `MasterScan`, `LFQIntensity`, `File`, `Condition`, `Replicate`, `IsSourceFrag`, 'WasRelocalized', " +
                                               "'RetentionTimes', 'Intensities', 'EvidenceType', 'MS1ScanNumOfMaxIntensity', 'RTofMaxIntensity', 'RTofLocalMaxima') " +
                                           "VALUES ({1})", table, psm.ToString());
 
@@ -1228,7 +1272,8 @@ namespace _20190618_GlycoTools_V2
                                                                     "File STRING, " +
                                                                     "Condition STRING, " +
                                                                     "Replicate STRING, " +
-                                                                    "isControl INT, " +
+                                                                    "IsSourceFrag STRING, " +
+                                                                    "WasRelocalized STRING, " +
                                                                     "RetentionTimes STRING, " +
                                                                     "Intensities STRING, " +
                                                                     "EvidenceType STRING, " +
