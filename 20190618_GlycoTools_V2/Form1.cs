@@ -2377,64 +2377,6 @@ namespace _20190618_GlycoTools_V2
             }
         }
 
-        private void viewPeptidesDataGrid_SelectionChanged(object sender, EventArgs e)
-        {
-            if(viewPeptidesDataGrid.SelectedRows.Count == 1 && dataUploaded)
-            {
-                var scanNumIndex = -1;
-                var fileIndex = -1;
-                var sequenceIndex = -1;
-                var modsIndex = -1;
-                
-                foreach(DataGridViewColumn column in viewPeptidesDataGrid.Columns)
-                {
-                    if (column.HeaderText.Equals("ScanNum"))
-                    {
-                        scanNumIndex = column.Index;
-                    }
-
-                    if (column.HeaderText.Equals("File"))
-                    {
-                        fileIndex = column.Index;
-                    }
-
-                    if (column.HeaderText.Equals("Peptide"))
-                    {
-                        sequenceIndex = column.Index;
-                    }
-
-                    if (column.HeaderText.Equals("ModsVar"))
-                    {
-                        modsIndex = column.Index;
-                    }
-                    
-                }                
-
-                if(scanNumIndex != -1 && fileIndex != -1)
-                {
-                    var row = viewPeptidesDataGrid.SelectedRows[0];
-                    var scanNum = Int32.Parse(row.Cells[scanNumIndex].Value.ToString());
-                    var file = row.Cells[fileIndex].Value.ToString();
-                    getPlotDataFromSQL(scanNum, file);
-                }
-
-                if(sequenceIndex != -1 && modsIndex != -1)
-                {
-                    var row = viewPeptidesDataGrid.SelectedRows[0];
-                    var mods = row.Cells[modsIndex].Value.ToString().Split(';');
-                    var position = 0;
-                    foreach(var mod in mods)
-                    {
-                        if (mod.Contains("Glycan"))
-                        {
-                            position = Int32.Parse(mod.Split('(')[0].Substring(1));
-                        }
-                    }
-                    PopulateGlycanPosComboBox(row.Cells[sequenceIndex].Value.ToString(), position.ToString());
-                }                    
-            }
-        }
-
         //First list binMid, Second list binCount
         private List<double[]> GetBinCountsFromSqlReader(int numBins, SQLiteDataReader reader, double min, double max, string key)
         {            
@@ -3289,6 +3231,99 @@ namespace _20190618_GlycoTools_V2
 
             connection.Close();
 
+        }
+
+        private void dataGridView1_SortStringChanged(object sender, EventArgs e)
+        {
+            this.bindingSource1.Sort = this.dataGridView1.SortString;
+        }
+
+        private void dataGridView1_FilterStringChanged(object sender, EventArgs e)
+        {
+            this.bindingSource1.Filter = this.dataGridView1.FilterString;
+        }
+
+        private void dataGridView1_RowPostPaint_1(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void viewPeptidesDataGrid_SelectionChanged_1(object sender, EventArgs e)
+        {
+            if (viewPeptidesDataGrid.SelectedRows.Count == 1 && dataUploaded)
+            {
+                var scanNumIndex = -1;
+                var fileIndex = -1;
+                var sequenceIndex = -1;
+                var modsIndex = -1;
+
+                foreach (DataGridViewColumn column in viewPeptidesDataGrid.Columns)
+                {
+                    if (column.HeaderText.Equals("ScanNum"))
+                    {
+                        scanNumIndex = column.Index;
+                    }
+
+                    if (column.HeaderText.Equals("File"))
+                    {
+                        fileIndex = column.Index;
+                    }
+
+                    if (column.HeaderText.Equals("Peptide"))
+                    {
+                        sequenceIndex = column.Index;
+                    }
+
+                    if (column.HeaderText.Equals("ModsVar"))
+                    {
+                        modsIndex = column.Index;
+                    }
+
+                }
+
+                if (scanNumIndex != -1 && fileIndex != -1)
+                {
+                    var row = viewPeptidesDataGrid.SelectedRows[0];
+                    var scanNum = Int32.Parse(row.Cells[scanNumIndex].Value.ToString());
+                    var file = row.Cells[fileIndex].Value.ToString();
+                    getPlotDataFromSQL(scanNum, file);
+                }
+
+                if (sequenceIndex != -1 && modsIndex != -1)
+                {
+                    var row = viewPeptidesDataGrid.SelectedRows[0];
+                    var mods = row.Cells[modsIndex].Value.ToString().Split(';');
+                    var position = 0;
+                    foreach (var mod in mods)
+                    {
+                        if (mod.Contains("Glycan"))
+                        {
+                            position = Int32.Parse(mod.Split('(')[0].Substring(1));
+                        }
+                    }
+                    PopulateGlycanPosComboBox(row.Cells[sequenceIndex].Value.ToString(), position.ToString());
+                }
+            }
+        }
+
+        private void viewPeptidesDataGrid_FilterStringChanged(object sender, EventArgs e)
+        {
+            this.bindingSource2.Filter = this.viewPeptidesDataGrid.FilterString;
+        }
+
+        private void viewPeptidesDataGrid_SortStringChanged(object sender, EventArgs e)
+        {
+            this.bindingSource2.Sort = this.viewPeptidesDataGrid.SortString;
         }
     }
 }
