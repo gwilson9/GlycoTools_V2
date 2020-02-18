@@ -44,6 +44,19 @@ namespace _20190618_GlycoTools_V2
         private bool ctrlDown = false;
         private string sqlPath = "";
 
+        double minScore;
+        double minLogProb;
+        double minDeltaMod;
+        int minPepLen;
+        int maxGlys;
+        bool performProtInf;
+        bool performLocalization;
+        bool sourceFrags;
+        string pepFile;
+        string fastaFile;
+        int protease;
+        int miscleaved;
+
         public GlycoTools()
         {
             InitializeComponent();
@@ -323,29 +336,53 @@ namespace _20190618_GlycoTools_V2
         private void byrstLoad_Click(object sender, EventArgs e)
         {
             //Read in data and store in new SQLite DB'
+            if (!dataUploaded)
+            {
+                groupBox1.Enabled = false;
+                groupBox2.Enabled = false;
+                outputPath.Enabled = false;
+                organismText.Enabled = false;
+                label1.Enabled = false;
+                label2.Enabled = false;
+                dataUpload.ReadOnly = true;
 
-            if (!dataFromDB)
-            {
-                sqlPath = string.Format("{0}\\MyDatabase.sqlite",outputPath.Text);
-                BuildSQLiteResults();
-            }
-            else
-            {
-                RefreshUploadData();
-                fillTableNames();
-                resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
-                fillStatsComboBox();
-                statsComboBox.SelectedItem = statsComboBox.Items[statsComboBox.Items.IndexOf("All Files")];
-                fillResultTable("SELECT * FROM AllGlycoPSMs");
-                fillViewPeptidesDataGrid("SELECT * FROM AllGlycoPSMs");          
-                fillFragHistPlot("", true);
-                fillSeqCoveragePlot("", true);
-                fillPrecursorMassErrorPlot("", true);
-                fillGlycanTypePieChart("", true);
-                dataUploaded = true;
-                fillInSourceFragData();
-                AddProgressText("\nFinished reading data from database.");
-            }
+                minScore = Decimal.ToDouble(scoreFilter.Value);
+                minLogProb = Decimal.ToDouble(logProbFilter.Value);
+                minDeltaMod = Decimal.ToDouble(deltaModScoreFilter.Value);
+                minPepLen = Decimal.ToInt32(pepLengthFilter.Value);
+                maxGlys = modCountFilter.SelectedIndex;
+                performProtInf = PerformProteinInference.Checked;
+                performLocalization = PerformGlycanLocalization.Checked;
+                sourceFrags = IdentifyInsourceFragments.Checked;
+                pepFile = AdditionalPeptidesPath.Text;
+                fastaFile = fastaPath.Text;
+                protease = ProteaseCB.SelectedIndex;
+                miscleaved = miscleaveCB.SelectedIndex;
+
+                if (!dataFromDB)
+                {                    
+                    sqlPath = string.Format("{0}\\MyDatabase.sqlite", outputPath.Text);
+                    BuildSQLiteResults();
+                }
+                else
+                {                    
+                    fillTableNames();
+                    resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
+                    fillStatsComboBox();
+                    statsComboBox.SelectedItem = statsComboBox.Items[statsComboBox.Items.IndexOf("All Files")];
+                    fillResultTable("SELECT * FROM AllGlycoPSMs");
+                    fillViewPeptidesDataGrid("SELECT * FROM AllGlycoPSMs");
+                    fillFragHistPlot("", true);
+                    fillSeqCoveragePlot("", true);
+                    fillPrecursorMassErrorPlot("", true);
+                    fillGlycanTypePieChart("", true);
+                    dataUploaded = true;
+                    fillInSourceFragData();
+                    AddProgressText("\nFinished reading data from database.");
+                    RefreshTabs();
+                    ChangeButtonStatus(false);
+                }
+            }            
         }
 
         private void byrsltFiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -381,11 +418,11 @@ namespace _20190618_GlycoTools_V2
                 try
                 {
                     string[] file = { dataUpload.Rows[i].Cells[0].Value.ToString(),
-                                  dataUpload.Rows[i].Cells[1].Value.ToString(),
-                                  dataUpload.Rows[i].Cells[2].Value.ToString(),
-                                  dataUpload.Rows[i].Cells[3].Value.ToString(),
-                                  //(dataUpload.Rows[i].Cells[4].Value != System.DBNull.Value).ToString()
-                                };
+                                      dataUpload.Rows[i].Cells[1].Value.ToString(),
+                                      dataUpload.Rows[i].Cells[2].Value.ToString(),
+                                      dataUpload.Rows[i].Cells[3].Value.ToString(),
+                                      //(dataUpload.Rows[i].Cells[4].Value != System.DBNull.Value).ToString()
+                                      };
 
                     files.Add(file);
                 }catch(Exception e)
@@ -483,9 +520,8 @@ namespace _20190618_GlycoTools_V2
 
         private void HandleFinishedUpload(object sender, DataReturnArgs e)
         {
-
             //Consider putting these into a task
-            RefreshUploadData();
+            RefreshTabs();
             AddExperimenDesignTableToSQLDB();
             fillTableNames();
             resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
@@ -508,7 +544,7 @@ namespace _20190618_GlycoTools_V2
             ChangeButtonStatus(true);
         }
 
-        private void RefreshUploadData()
+        private void RefreshTabs()
         {
             if (InvokeRequired)
             {
@@ -536,12 +572,21 @@ namespace _20190618_GlycoTools_V2
                     var raw = row.Cells[1].Value.ToString();
                     var condition = row.Cells[2].Value.ToString();
                     var replicate = row.Cells[3].Value.ToString();
-                    var isControl = false;// Convert.ToBoolean(row.Cells[4].Value);
+                    //var isControl = false;// Convert.ToBoolean(row.Cells[4].Value);
 
                     var insertString = string.Format("INSERT INTO ExperimentDesign('Byrslt', 'Raw', 'Condition', 'Replicate') VALUES ('{0}', '{1}', '{2}', '{3}')", byrslt, raw, condition, replicate);
                     var insertCommand = new SQLiteCommand(insertString, connection);
                     var reader = insertCommand.ExecuteReader();
                 }
+
+                var parametersString = "CREATE TABLE IF NOT EXISTS Parameters (MinScore INT, MinLogProb INT, MinDeltaModScore INT, PepLen INT, MaxGlycansIndex INT, PerformProtInf BOOL, PerformLocalization BOOL, FindInsourceFrags BOOL, PeptidesFile STRING, FastaFile STRING, ProteaseIndex INT, MiscleavedIndex INT)";
+                var parametersCommand = new SQLiteCommand(parametersString, connection);
+                parametersCommand.ExecuteNonQuery();
+
+                var insertString2 = string.Format("INSERT INTO Parameters('MinScore', 'MinLogProb', 'MinDeltaModScore', 'PepLen', 'MaxGlycansIndex', 'PerformProtInf', 'PerformLocalization', 'FindInsourceFrags', 'PeptidesFile', 'FastaFile', 'ProteaseIndex', 'MiscleavedIndex') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}')", minScore, minLogProb, minDeltaMod, minPepLen, maxGlys, performProtInf, performLocalization, sourceFrags, pepFile, fastaFile, protease, miscleaved);
+                var insertCommand2 = new SQLiteCommand(insertString2, connection);
+                var reader2 = insertCommand2.ExecuteReader();
+
                 transaction1.Commit();
             }
             
@@ -1193,7 +1238,7 @@ namespace _20190618_GlycoTools_V2
 
         private void dataUpload_DragDrop(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop) || dataFromDB)
                 return;
 
             string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
@@ -1244,6 +1289,13 @@ namespace _20190618_GlycoTools_V2
                 }
                 try
                 {
+                    groupBox1.Enabled = false;
+                    groupBox2.Enabled = false;
+                    outputPath.Enabled = false;
+                    organismText.Enabled = false;
+                    label1.Enabled = false;
+                    label2.Enabled = false;
+                    dataUpload.ReadOnly = true;
                     ExperimentDesignFromSQLDB(file);
 
                     textBox1.Visible = false;
@@ -1284,7 +1336,7 @@ namespace _20190618_GlycoTools_V2
                 dataUpload.Refresh();
 
                 var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", file));
-
+                connection.Open();
                 var selectCommand = "SELECT Byrslt as 'Byonic Results (.byrslt)', Raw as 'Raw Files', Condition as 'Condition', Replicate as 'Replicate' FROM ExperimentDesign";
 
                 dataAdapter = new SQLiteDataAdapter(selectCommand, connection);
@@ -1297,6 +1349,29 @@ namespace _20190618_GlycoTools_V2
                 dataAdapter.Fill(table);
                 dataUploadBindingSouce.DataSource = null;
                 dataUploadBindingSouce.DataSource = table;
+
+
+                var parametersString = "SELECT * FROM Parameters";
+                var parametersCommand = new SQLiteCommand(parametersString, connection);
+                var reader = parametersCommand.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    scoreFilter.Value = Decimal.Parse(reader["MinScore"].ToString());
+                    logProbFilter.Value = Decimal.Parse(reader["MinLogProb"].ToString());
+                    deltaModScoreFilter.Value = Decimal.Parse(reader["MinDeltaModScore"].ToString());
+                    pepLengthFilter.Value = Decimal.Parse(reader["PepLen"].ToString());
+                    modCountFilter.SelectedIndex = Int32.Parse(reader["MaxGlycansIndex"].ToString());
+                    PerformProteinInference.Checked = (bool)reader["PerformProtInf"];
+                    PerformGlycanLocalization.Checked = (bool) reader["PerformLocalization"];
+                    IdentifyInsourceFragments.Checked = (bool)reader["FindInsourceFrags"];
+                    AdditionalPeptidesPath.Text = reader["PeptidesFile"].ToString();
+                    fastaPath.Text = reader["FastaFile"].ToString();
+                    ProteaseCB.SelectedIndex = Int32.Parse(reader["ProteaseIndex"].ToString());
+                    miscleaveCB.SelectedIndex = Int32.Parse(reader["MiscleavedIndex"].ToString());                    
+                }
+
+
                 connection.Close();
             }
             catch (Exception e)
@@ -3130,8 +3205,6 @@ namespace _20190618_GlycoTools_V2
             connection.Close();
         }
 
-    
-
         private void dataUpload_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control)
@@ -3208,7 +3281,7 @@ namespace _20190618_GlycoTools_V2
 
         private void exportAllTables_Click(object sender, EventArgs e)
         {
-            var excludes = new List<String>() { "AnnotatedPeptides", "FragmentIons", "ExperimentDesign" };
+            var excludes = new List<String>() { "AnnotatedPeptides", "FragmentIons", "ExperimentDesign", "Parameters" };
 
             var connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
             connection.Open();

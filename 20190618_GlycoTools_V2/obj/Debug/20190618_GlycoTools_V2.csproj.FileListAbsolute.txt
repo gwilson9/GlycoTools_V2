@@ -133,3 +133,6 @@ C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_Glyc
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Debug\20190618_GlycoTools_V2.application
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Debug\20190618_GlycoTools_V2.exe
 C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\obj\Debug\20190618_GlycoTools_V2.pdb
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\AdvancedDataGridView.xml
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\fr\AdvancedDataGridView.resources.dll
+C:\Users\gwilson\Desktop\Repo\20190618_GlycoTools_V2\GlycoTools_V2\20190618_GlycoTools_V2\bin\Debug\ru\AdvancedDataGridView.resources.dll
