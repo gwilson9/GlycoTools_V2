@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.byrsltLoad = new System.Windows.Forms.Button();
             this.outputPath = new System.Windows.Forms.TextBox();
             this.dataUpload = new System.Windows.Forms.DataGridView();
@@ -77,6 +77,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.progressText = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new ADGV.AdvancedDataGridView();
             this.exportAllTables = new System.Windows.Forms.Button();
             this.exportTable = new System.Windows.Forms.Button();
             this.replicateComboBox = new System.Windows.Forms.ComboBox();
@@ -87,6 +88,7 @@
             this.resultViewBox = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.viewPeptidesDataGrid = new ADGV.AdvancedDataGridView();
             this.dataTree = new System.Windows.Forms.TreeView();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.elutionPlot = new LiveCharts.WinForms.CartesianChart();
@@ -97,7 +99,9 @@
             this.spectrumPlot = new LiveCharts.WinForms.CartesianChart();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.inSourceFragData = new System.Windows.Forms.DataGridView();
+            this.inSourceFragData = new ADGV.AdvancedDataGridView();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.inSourceFragData_Old = new System.Windows.Forms.DataGridView();
             this.inSourceFragChart = new LiveCharts.WinForms.CartesianChart();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label9 = new System.Windows.Forms.Label();
@@ -110,8 +114,6 @@
             this.statsPlot2 = new LiveCharts.WinForms.CartesianChart();
             this.statsPlot4 = new LiveCharts.WinForms.PieChart();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.dataGridView1 = new ADGV.AdvancedDataGridView();
-            this.viewPeptidesDataGrid = new ADGV.AdvancedDataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataUpload)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -122,11 +124,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.logProbFilter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scoreFilter)).BeginInit();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.viewPeptidesDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
@@ -141,6 +145,7 @@
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inSourceFragData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inSourceFragData_Old)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -154,8 +159,6 @@
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewPeptidesDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // byrsltLoad
@@ -186,38 +189,38 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataUpload.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataUpload.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataUpload.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dataUpload.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataUpload.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.byrslt,
             this.RawFile,
             this.condition,
             this.replicate});
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataUpload.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataUpload.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataUpload.Location = new System.Drawing.Point(6, 6);
             this.dataUpload.Name = "dataUpload";
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataUpload.RowHeadersDefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataUpload.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dataUpload.Size = new System.Drawing.Size(838, 319);
             this.dataUpload.TabIndex = 4;
             this.dataUpload.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataUpload_CellContentClick);
@@ -723,6 +726,26 @@
             this.tabPage4.Text = "Result Tables  ";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.AutoGenerateContextFilters = true;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.DateWithTime = false;
+            this.dataGridView1.Location = new System.Drawing.Point(8, 33);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(834, 578);
+            this.dataGridView1.TabIndex = 9;
+            this.dataGridView1.TimeFilter = false;
+            this.dataGridView1.SortStringChanged += new System.EventHandler(this.dataGridView1_SortStringChanged);
+            this.dataGridView1.FilterStringChanged += new System.EventHandler(this.dataGridView1_FilterStringChanged);
+            this.dataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView1_RowPostPaint_1);
+            // 
             // exportAllTables
             // 
             this.exportAllTables.Location = new System.Drawing.Point(743, 5);
@@ -829,6 +852,28 @@
             this.splitContainer3.SplitterDistance = 317;
             this.splitContainer3.TabIndex = 9;
             // 
+            // viewPeptidesDataGrid
+            // 
+            this.viewPeptidesDataGrid.AllowUserToAddRows = false;
+            this.viewPeptidesDataGrid.AllowUserToDeleteRows = false;
+            this.viewPeptidesDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewPeptidesDataGrid.AutoGenerateContextFilters = true;
+            this.viewPeptidesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.viewPeptidesDataGrid.DateWithTime = false;
+            this.viewPeptidesDataGrid.Location = new System.Drawing.Point(42, 112);
+            this.viewPeptidesDataGrid.Name = "viewPeptidesDataGrid";
+            this.viewPeptidesDataGrid.ReadOnly = true;
+            this.viewPeptidesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.viewPeptidesDataGrid.Size = new System.Drawing.Size(240, 150);
+            this.viewPeptidesDataGrid.TabIndex = 10;
+            this.viewPeptidesDataGrid.TimeFilter = false;
+            this.viewPeptidesDataGrid.SortStringChanged += new System.EventHandler(this.viewPeptidesDataGrid_SortStringChanged);
+            this.viewPeptidesDataGrid.FilterStringChanged += new System.EventHandler(this.viewPeptidesDataGrid_FilterStringChanged);
+            this.viewPeptidesDataGrid.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.viewPeptidesDataGrid_RowPostPaint_1);
+            this.viewPeptidesDataGrid.SelectionChanged += new System.EventHandler(this.viewPeptidesDataGrid_SelectionChanged_1);
+            // 
             // dataTree
             // 
             this.dataTree.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -873,6 +918,7 @@
             // 
             // splitContainer7
             // 
+            this.splitContainer7.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer7.Location = new System.Drawing.Point(3, 1);
             this.splitContainer7.Name = "splitContainer7";
             this.splitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -882,19 +928,19 @@
             this.splitContainer7.Panel1.Controls.Add(this.peptideLabel);
             this.splitContainer7.Panel1.Controls.Add(this.label12);
             this.splitContainer7.Panel1.Controls.Add(this.glycanPosComboBox);
+            this.splitContainer7.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer7_Panel1_Paint_1);
             // 
             // splitContainer7.Panel2
             // 
             this.splitContainer7.Panel2.Controls.Add(this.spectrumPlot);
             this.splitContainer7.Size = new System.Drawing.Size(413, 284);
-            this.splitContainer7.SplitterDistance = 37;
             this.splitContainer7.TabIndex = 2;
             // 
             // peptideLabel
             // 
             this.peptideLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.peptideLabel.AutoSize = true;
-            this.peptideLabel.Location = new System.Drawing.Point(2, 11);
+            this.peptideLabel.Location = new System.Drawing.Point(15, 6);
             this.peptideLabel.Name = "peptideLabel";
             this.peptideLabel.Size = new System.Drawing.Size(51, 13);
             this.peptideLabel.TabIndex = 2;
@@ -903,9 +949,9 @@
             // 
             // label12
             // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(195, 11);
+            this.label12.Location = new System.Drawing.Point(15, 27);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(80, 13);
             this.label12.TabIndex = 1;
@@ -913,9 +959,9 @@
             // 
             // glycanPosComboBox
             // 
-            this.glycanPosComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.glycanPosComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.glycanPosComboBox.FormattingEnabled = true;
-            this.glycanPosComboBox.Location = new System.Drawing.Point(281, 7);
+            this.glycanPosComboBox.Location = new System.Drawing.Point(96, 24);
             this.glycanPosComboBox.Name = "glycanPosComboBox";
             this.glycanPosComboBox.Size = new System.Drawing.Size(121, 21);
             this.glycanPosComboBox.TabIndex = 0;
@@ -953,6 +999,8 @@
             // splitContainer6.Panel1
             // 
             this.splitContainer6.Panel1.Controls.Add(this.inSourceFragData);
+            this.splitContainer6.Panel1.Controls.Add(this.textBox4);
+            this.splitContainer6.Panel1.Controls.Add(this.inSourceFragData_Old);
             // 
             // splitContainer6.Panel2
             // 
@@ -963,39 +1011,69 @@
             // 
             // inSourceFragData
             // 
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle34.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inSourceFragData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle34;
+            this.inSourceFragData.AutoGenerateContextFilters = true;
             this.inSourceFragData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle35.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.inSourceFragData.DefaultCellStyle = dataGridViewCellStyle35;
-            this.inSourceFragData.Location = new System.Drawing.Point(126, 85);
+            this.inSourceFragData.DateWithTime = false;
+            this.inSourceFragData.Location = new System.Drawing.Point(410, 85);
             this.inSourceFragData.Name = "inSourceFragData";
             this.inSourceFragData.ReadOnly = true;
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle36.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle36.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle36.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inSourceFragData.RowHeadersDefaultCellStyle = dataGridViewCellStyle36;
             this.inSourceFragData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.inSourceFragData.Size = new System.Drawing.Size(240, 150);
-            this.inSourceFragData.TabIndex = 0;
-            this.inSourceFragData.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.inSourceFragData_RowPostPaint_1);
-            this.inSourceFragData.SelectionChanged += new System.EventHandler(this.inSourceFragData_SelectionChanged);
+            this.inSourceFragData.TabIndex = 16;
+            this.inSourceFragData.TimeFilter = false;
+            this.inSourceFragData.SortStringChanged += new System.EventHandler(this.inSourceFragData_SortStringChanged_1);
+            this.inSourceFragData.FilterStringChanged += new System.EventHandler(this.inSourceFragData_FilterStringChanged_1);
+            this.inSourceFragData.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.inSourceFragData_RowPostPaint);
+            this.inSourceFragData.SelectionChanged += new System.EventHandler(this.inSourceFragData_SelectionChanged_1);
+            // 
+            // textBox4
+            // 
+            this.textBox4.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox4.ForeColor = System.Drawing.SystemColors.Menu;
+            this.textBox4.Location = new System.Drawing.Point(105, 136);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(616, 19);
+            this.textBox4.TabIndex = 15;
+            this.textBox4.Text = "In-source fragment identifcation feature was not enabled, no data available.";
+            // 
+            // inSourceFragData_Old
+            // 
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inSourceFragData_Old.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            this.inSourceFragData_Old.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.inSourceFragData_Old.DefaultCellStyle = dataGridViewCellStyle11;
+            this.inSourceFragData_Old.Location = new System.Drawing.Point(126, 85);
+            this.inSourceFragData_Old.Name = "inSourceFragData_Old";
+            this.inSourceFragData_Old.ReadOnly = true;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inSourceFragData_Old.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            this.inSourceFragData_Old.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.inSourceFragData_Old.Size = new System.Drawing.Size(240, 150);
+            this.inSourceFragData_Old.TabIndex = 0;
+            this.inSourceFragData_Old.Visible = false;
+            this.inSourceFragData_Old.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.inSourceFragData_RowPostPaint_1);
+            this.inSourceFragData_Old.SelectionChanged += new System.EventHandler(this.inSourceFragData_SelectionChanged);
             // 
             // inSourceFragChart
             // 
@@ -1032,7 +1110,7 @@
             this.statsComboBox.FormattingEnabled = true;
             this.statsComboBox.Location = new System.Drawing.Point(99, 6);
             this.statsComboBox.Name = "statsComboBox";
-            this.statsComboBox.Size = new System.Drawing.Size(213, 21);
+            this.statsComboBox.Size = new System.Drawing.Size(745, 21);
             this.statsComboBox.TabIndex = 1;
             this.statsComboBox.SelectedValueChanged += new System.EventHandler(this.statsComboBox_SelectedValueChanged);
             // 
@@ -1134,47 +1212,6 @@
             this.splitter1.TabIndex = 0;
             this.splitter1.TabStop = false;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.AutoGenerateContextFilters = true;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.DateWithTime = false;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 33);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(834, 578);
-            this.dataGridView1.TabIndex = 9;
-            this.dataGridView1.TimeFilter = false;
-            this.dataGridView1.SortStringChanged += new System.EventHandler(this.dataGridView1_SortStringChanged);
-            this.dataGridView1.FilterStringChanged += new System.EventHandler(this.dataGridView1_FilterStringChanged);
-            this.dataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView1_RowPostPaint_1);
-            // 
-            // viewPeptidesDataGrid
-            // 
-            this.viewPeptidesDataGrid.AllowUserToAddRows = false;
-            this.viewPeptidesDataGrid.AllowUserToDeleteRows = false;
-            this.viewPeptidesDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewPeptidesDataGrid.AutoGenerateContextFilters = true;
-            this.viewPeptidesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.viewPeptidesDataGrid.DateWithTime = false;
-            this.viewPeptidesDataGrid.Location = new System.Drawing.Point(42, 112);
-            this.viewPeptidesDataGrid.Name = "viewPeptidesDataGrid";
-            this.viewPeptidesDataGrid.ReadOnly = true;
-            this.viewPeptidesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.viewPeptidesDataGrid.Size = new System.Drawing.Size(240, 150);
-            this.viewPeptidesDataGrid.TabIndex = 10;
-            this.viewPeptidesDataGrid.TimeFilter = false;
-            this.viewPeptidesDataGrid.SortStringChanged += new System.EventHandler(this.viewPeptidesDataGrid_SortStringChanged);
-            this.viewPeptidesDataGrid.FilterStringChanged += new System.EventHandler(this.viewPeptidesDataGrid_FilterStringChanged);
-            this.viewPeptidesDataGrid.SelectionChanged += new System.EventHandler(this.viewPeptidesDataGrid_SelectionChanged_1);
-            // 
             // GlycoTools
             // 
             this.AllowDrop = true;
@@ -1201,11 +1238,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.scoreFilter)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.viewPeptidesDataGrid)).EndInit();
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
@@ -1217,10 +1256,12 @@
             this.splitContainer7.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel1.PerformLayout();
             this.splitContainer6.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.inSourceFragData)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inSourceFragData_Old)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1235,8 +1276,6 @@
             this.splitContainer5.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewPeptidesDataGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1303,7 +1342,7 @@
         private System.Windows.Forms.Label miscleaveLabel;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.SplitContainer splitContainer6;
-        private System.Windows.Forms.DataGridView inSourceFragData;
+        private System.Windows.Forms.DataGridView inSourceFragData_Old;
         private LiveCharts.WinForms.CartesianChart inSourceFragChart;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TreeView dataTree;
@@ -1321,6 +1360,8 @@
         private System.Windows.Forms.Button exportTable;
         private ADGV.AdvancedDataGridView dataGridView1;
         private ADGV.AdvancedDataGridView viewPeptidesDataGrid;
+        private System.Windows.Forms.TextBox textBox4;
+        private ADGV.AdvancedDataGridView inSourceFragData;
     }
 }
 

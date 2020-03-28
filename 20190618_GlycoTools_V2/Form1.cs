@@ -338,14 +338,6 @@ namespace _20190618_GlycoTools_V2
             //Read in data and store in new SQLite DB'
             if (!dataUploaded)
             {
-                groupBox1.Enabled = false;
-                groupBox2.Enabled = false;
-                outputPath.Enabled = false;
-                organismText.Enabled = false;
-                label1.Enabled = false;
-                label2.Enabled = false;
-                dataUpload.ReadOnly = true;
-
                 minScore = Decimal.ToDouble(scoreFilter.Value);
                 minLogProb = Decimal.ToDouble(logProbFilter.Value);
                 minDeltaMod = Decimal.ToDouble(deltaModScoreFilter.Value);
@@ -365,7 +357,19 @@ namespace _20190618_GlycoTools_V2
                     BuildSQLiteResults();
                 }
                 else
-                {                    
+                {
+                    groupBox1.Enabled = false;
+                    groupBox2.Enabled = false;
+                    outputPath.Enabled = false;
+                    organismText.Enabled = false;
+                    label1.Enabled = false;
+                    label2.Enabled = false;
+                    dataUpload.ReadOnly = true;
+                    if (IdentifyInsourceFragments.Checked)
+                    {
+                        textBox4.Visible = false;
+                    }
+
                     fillTableNames();
                     resultViewBox.SelectedItem = resultViewBox.Items[resultViewBox.Items.IndexOf("GlycoPSMs")];
                     fillStatsComboBox();
@@ -436,6 +440,18 @@ namespace _20190618_GlycoTools_V2
             {
                 AddProgressText("No data provided");
                 return;
+            }
+
+            groupBox1.Enabled = false;
+            groupBox2.Enabled = false;
+            outputPath.Enabled = false;
+            organismText.Enabled = false;
+            label1.Enabled = false;
+            label2.Enabled = false;
+            dataUpload.ReadOnly = true;
+            if (IdentifyInsourceFragments.Checked)
+            {
+                textBox4.Visible = false;
             }
 
             // Perform SQLite Table Build in Separate Thread
@@ -1191,6 +1207,8 @@ namespace _20190618_GlycoTools_V2
                 Locale = CultureInfo.InvariantCulture
             };
 
+            bindingSource1.Sort = string.Empty;
+
             dataAdapter.Fill(table);
             bindingSource1.DataSource = table;
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -1766,24 +1784,31 @@ namespace _20190618_GlycoTools_V2
 
             for (int i = 0; i < mzs.Count(); i++)
             {
-                plotData.Add(new ObservablePoint
-                {
-                    X = mzs[i],
-                    Y = intensities[i],
+                if (mzs[i] > 1595.6 && mzs[i] < 1595.7)
+                    i = i;
 
-                });
+                if(!data.oxoniumIons.Select(x=>Math.Round(x.fragmentMZ, 3)).ToList().Contains(Math.Round(mzs[i], 3)) 
+                    && !data.peptideFragments.Select(x => Math.Round(x.fragmentMZ, 3)).ToList().Contains(Math.Round(mzs[i], 3))
+                    && !data.peptideNeutralLossFragments.Select(x => Math.Round(x.fragmentMZ, 3)).ToList().Contains(Math.Round(mzs[i], 3))
+                    && !data.YIons.Select(x => Math.Round(x.fragmentMZ, 3)).ToList().Contains(Math.Round(mzs[i], 3)))
+                    {
+                        plotData.Add(new ObservablePoint
+                        {
+                            X = mzs[i],
+                            Y = intensities[i],
+                        });
+                    }
             }
 
             spectrumPlot.Series.Add(new ColumnSeries
             {
                 Values = plotData,
                 ColumnPadding = -0.2,
-                Stroke = System.Windows.Media.Brushes.Black,
+                Stroke = System.Windows.Media.Brushes.Gray,
                 StrokeThickness = 1000,
                 Width = 100,
 
             });
-
 
             // Return is [0] List of intact peptide frags [1] Neutral loss peptide frags [2] PepHexMatches [3] Y ions [4] oxonium ions
             //var spectrumData = GetSpectrumAnnotations(pepSequence, spectrum, mods, glycans, charge);
@@ -1851,16 +1876,15 @@ namespace _20190618_GlycoTools_V2
                 spectrumPlot.Series.Add(new ColumnSeries
                 {
                     Values = specData,
-                    ColumnPadding = -2,
+                    ColumnPadding = -1,
                     Stroke = brushes[j],
-                    StrokeThickness = 1000,
-                    Width = 1000,
-
+                    StrokeThickness = 1000,     
                 });
 
                 j++;
             }
 
+            //spectrumPlot.Series[0].CustomPro
             spectrumPlot.Zoom = ZoomingOptions.X;
             spectrumPlot.Pan = PanningOptions.X;
 
@@ -1890,6 +1914,8 @@ namespace _20190618_GlycoTools_V2
                 uniqueFiles.Add(fileReader["File"].ToString());
             }
 
+            sqlReader.Close();
+
             //var tasks = new List<Task>();            
             foreach (var file in uniqueFiles)
             {
@@ -1903,8 +1929,11 @@ namespace _20190618_GlycoTools_V2
                     }
                 }
 
+                SQLiteConnection connection = new SQLiteConnection(string.Format("Data Source={0}; Version=3;", sqlPath));
+                connection.Open();
+
                 var query = string.Format("SELECT * FROM AllGlycoPSMs WHERE AllGlycoPSMs.File='{0}'", file);
-                var command = new SQLiteCommand(query, sqlReader);
+                var command = new SQLiteCommand(query, connection);
                 var reader = command.ExecuteReader();
 
                 var psms = new List<GlycoPSM>();
@@ -1913,6 +1942,8 @@ namespace _20190618_GlycoTools_V2
                     var glycoPSM = SQLiteStringToGlycoPSM(reader);
                     psms.Add(glycoPSM);
                 }
+
+                connection.Close();
 
                 //var watch = new Stopwatch();
                 //watch.Start();
@@ -3181,7 +3212,7 @@ namespace _20190618_GlycoTools_V2
             var headers = connection.GetSchema("Columns", restrictions).AsEnumerable().Select(s => s.Field<String>("Column_Name")).ToList();
 
             // Write Table to CSV
-            var path = string.Format(@"{0}\{1}_{2}.txt", outputPath.Text, tableName, DateTime.UtcNow.ToString("yyyyMMdd", CultureInfo.InvariantCulture));
+            var path = string.Format(@"{0}\{1}_{2}.txt", outputPath.Text, tableName, DateTime.UtcNow.ToString("yyyyMMddhhmmss", CultureInfo.InvariantCulture));
             var writer = new StreamWriter(path);
 
             var headerString = string.Join("\t", headers);
@@ -3397,6 +3428,91 @@ namespace _20190618_GlycoTools_V2
         private void viewPeptidesDataGrid_SortStringChanged(object sender, EventArgs e)
         {
             this.bindingSource2.Sort = this.viewPeptidesDataGrid.SortString;
+        }
+
+        private void splitContainer7_Panel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void viewPeptidesDataGrid_RowPostPaint_1(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void inSourceFragData_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            var rowIdx = (e.RowIndex + 1).ToString();
+
+            var centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            var headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void inSourceFragData_SelectionChanged_1(object sender, EventArgs e)
+        {
+            if (inSourceFragData.SelectedRows.Count != 1 || !dataUploaded)
+                return;
+
+            var row = inSourceFragData.SelectedRows[0];
+
+            var idRTIndex = -1;
+            var idIntIndex = -1;
+            var parentRTIndex = -1;
+            var parentIntIndex = -1;
+
+            foreach (DataGridViewColumn column in inSourceFragData.Columns)
+            {
+
+                if (column.HeaderText.Equals("ID_RTS"))
+                    idRTIndex = column.Index;
+
+                if (column.HeaderText.Equals("ID_INTENSITIES"))
+                    idIntIndex = column.Index;
+
+                if (column.HeaderText.Equals("PARENT_RTS"))
+                    parentRTIndex = column.Index;
+
+                if (column.HeaderText.Equals("PARENT_INTENSITIES"))
+                    parentIntIndex = column.Index;
+
+            }
+
+            if (idRTIndex != -1 && idIntIndex != -1 && parentRTIndex != -1 && parentIntIndex != -1)
+            {
+                var idRTs = StringListToDoubleList(row.Cells[idRTIndex].Value.ToString().Split(';').ToList());
+                var idInts = StringListToDoubleList(row.Cells[idIntIndex].Value.ToString().Split(';').ToList());
+                var parentRTs = StringListToDoubleList(row.Cells[parentRTIndex].Value.ToString().Split(';').ToList());
+                var parentInts = StringListToDoubleList(row.Cells[parentIntIndex].Value.ToString().Split(';').ToList());
+
+                PlotInSourceData(idRTs, idInts, parentRTs, parentInts);
+            }
+        }
+
+        private void inSourceFragData_SortStringChanged_1(object sender, EventArgs e)
+        {
+            this.inSourceFragBindingSource.Sort = this.inSourceFragData.SortString;
+        }
+
+        private void inSourceFragData_FilterStringChanged_1(object sender, EventArgs e)
+        {
+            this.inSourceFragBindingSource.Filter = this.inSourceFragData.FilterString;
         }
     }
 }

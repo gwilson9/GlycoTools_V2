@@ -138,10 +138,12 @@ namespace _20190618_GlycoTools_V2
 
                                         var rangeForIsotope = DoubleRange.FromPPM(theoFragmentIsoMZ, 20);
                                         List<ThermoMzPeak> outPeaksIso = new List<ThermoMzPeak>();
+                                        var intensityPlusIsoPeakIntensity = 0.0;
+
                                         if (spectrum.TryGetPeaks(rangeForIsotope, out outPeaksIso))
                                         {
                                             var closestPeakIso = GetClosestPeak(outPeaksIso, theoFragmentIsoMZ);
-                                            intensity += closestPeakIso.Intensity;
+                                            intensityPlusIsoPeakIntensity = intensity +  closestPeakIso.Intensity;
                                         }
 
                                         double basePeak = spectrum.GetBasePeakIntensity();
@@ -166,7 +168,7 @@ namespace _20190618_GlycoTools_V2
                                                 peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
                                             }
                                         }
-                                        else if (intensity >= (0.01 * basePeak) && closestPeak.Charge == 0)
+                                        else if (intensityPlusIsoPeakIntensity >= (0.01 * basePeak) && closestPeak.Charge == 0)
                                         {
                                             FragmentMatch fragmentMatch = new FragmentMatch(theoFragment.ToString(), theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
                                             peptideFragments.Add(fragmentMatch);
@@ -174,7 +176,7 @@ namespace _20190618_GlycoTools_V2
                                             if(SeeIfFragmentsHaveGlycan(glycoPSM, new List<FragmentMatch>() { fragmentMatch }, ""))
                                             {
                                                 peptideFragmentsMustIncludeGlycan.Add(fragmentMatch);
-                                            }                                            
+                                            }
                                         }
                                     }
                                 }
@@ -575,19 +577,19 @@ namespace _20190618_GlycoTools_V2
                                 if (closestPeak.Charge == i)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                                 else if (rawFile.GetSpectrum(scanNumber).TryGetPeaks(rangeForIsotope, out outPeaksIso))
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                                 else if (intensity >= (0.01 * basePeak) && closestPeak.Charge == 0)
                                 {
                                     FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, theoFragment.Type.ToString(), theoFragment.Number, i, closestPeak.MZ, intensity);
-                                    peptideFragments.Add(fragmentMatch);
+                                    //peptideFragments.Add(fragmentMatch);
                                     peptideNeutralLossFragments.Add(fragmentMatch);
                                 }
                             }
@@ -715,17 +717,17 @@ namespace _20190618_GlycoTools_V2
 
                             if (closestPeak.Charge == i)
                             {
-                                FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, "Glyco", sugarFragmentNumber, i, peptidePlusGlycan_MZ, intensity);
+                                FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, "Glyco", sugarFragmentNumber, i, closestPeak.MZ, intensity); // peptidePlusGlycan_MZ, intensity);
                                 peptideIntactGlycanFragments.Add(fragmentMatch);
                             }
                             else if (spectrum.TryGetPeaks(rangeIso1, out outpeaksIso1))
                             {
-                                FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, "Glyco", sugarFragmentNumber, i, peptidePlusGlycan_MZ, intensity);
+                                FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, "Glyco", sugarFragmentNumber, i, closestPeak.MZ, intensity); //peptidePlusGlycan_MZ, intensity);
                                 peptideIntactGlycanFragments.Add(fragmentMatch);
                             }
                             else if (intensity > (basePeak * 0.01) && closestPeak.Charge == 0)
                             {
-                                FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, "Glyco", sugarFragmentNumber, i, peptidePlusGlycan_MZ, intensity);
+                                FragmentMatch fragmentMatch = new FragmentMatch(fragmentName, "Glyco", sugarFragmentNumber, i, closestPeak.MZ, intensity); //peptidePlusGlycan_MZ, intensity);
                                 peptideIntactGlycanFragments.Add(fragmentMatch);
                             }
                         }
@@ -808,7 +810,7 @@ namespace _20190618_GlycoTools_V2
 
                 if (intensity > (0.01 * basePeak))
                 {
-                    FragmentMatch match = new FragmentMatch(name, "Oxonium", 0, 1, mz, intensity);
+                    FragmentMatch match = new FragmentMatch(name, "Oxonium", 0, 1, closestPeak.MZ, intensity); // mz, intensity);
                     list.Add(match);
                 }
             }

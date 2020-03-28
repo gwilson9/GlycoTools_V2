@@ -123,10 +123,22 @@ namespace _20190618_GlycoTools_V2
                                     {
                                         //Offset 0 vs 1 indexing
                                         if (i + 1 != originalPosition)
-                                        {                                            
+                                        {
                                             if ("ST".Contains(psm.sequenceNoMods[i]))
-                                                possiblePositions.Add(i + 1);
+                                            {
+                                                //Added that the sequon O-site cannot be considered
+                                                if(i > 1)
+                                                {
+                                                    if(!"N".Contains(psm.sequenceNoMods[i - 2]))
+                                                        possiblePositions.Add(i + 1);
+                                                }
+                                                else
+                                                {
+                                                    possiblePositions.Add(i + 1);
+                                                }        
+                                            }
 
+                                            //Check to see if the peptide is long enough to check that a sequon is verifiable
                                             if (psm.sequenceNoMods.Length - 1 > (i + 2))
                                             {
                                                 if ("N".Contains(psm.sequenceNoMods[i]) && "ST".Contains(psm.sequenceNoMods[i + 2]) && !"P".Contains(psm.sequenceNoMods[i + 1]))
@@ -159,10 +171,10 @@ namespace _20190618_GlycoTools_V2
                                     for(int i = 0; i < fragData.Count(); i++)
                                     {
                                         //Best index is that with the most frags with intact glycan
-                                        //var NeutralLossFragsBestMatch = fragData[bestIndex].peptideFragmentsMustIncludeGlycan.Select(x => x.label.Contains("~")).ToList().Count();
-                                        //var NeutralLossFragsCandidate = fragData[i].peptideFragmentsMustIncludeGlycan.Select(x => x.label.Contains("~")).ToList().Count();
+                                        var NeutralLossFragsBestMatch = fragData[bestIndex].peptideNeutralLossFragments.Count();
+                                        var NeutralLossFragsCandidate = fragData[i].peptideNeutralLossFragments.Count();                                        
 
-                                        if (fragData[i].peptideFragmentsMustIncludeGlycan.Count() > bestMatches)  // && NeutralLossFragsBestMatch >= NeutralLossFragsCandidate)                                        
+                                        if (fragData[i].peptideFragmentsMustIncludeGlycan.Count() > bestMatches && NeutralLossFragsBestMatch >= NeutralLossFragsCandidate)                                        
                                         {
                                             bestMatches = fragData[i].peptideFragmentsMustIncludeGlycan.Count();
                                             bestIndex = i;
@@ -318,7 +330,7 @@ namespace _20190618_GlycoTools_V2
         {
             //var insourceFragsFound = 0;
             var searchResults = new Dictionary<PSM, List<PSM>>();
-            OnUpdateProgress(string.Format("Identifying in-source fragment ions from {0}", psms[0].File));
+            OnUpdateProgress("Identifying artefacts of in-source fragmentation.");
             foreach (var psm in psms)
             {              
 
@@ -365,7 +377,8 @@ namespace _20190618_GlycoTools_V2
 
                         var idGlycanTypes = string.Join(";", result.Key.glycans.Select(x => x.glycanType).ToArray());
 
-                        var parentGlycan = new Glycan(parent.sequence.Split('[')[1].Split(']')[0]);
+                        //var parentGlycan = new Glycan(parent.sequence.Split('[')[1].Split(']')[0]);
+                        var parentGlycan = parent.glycans[0];
 
                         var insertCommandString = string.Format("INSERT into InSourceFragData ('FILE', `ID`, `ID_Glycan`, 'ID_GlycanType', `RT`, `ID_MZ`, `ID_SCANNUM`,'ID_RTS','ID_INTENSITIES', `PARENT`, 'PARENT_GLYCAN', 'PARENT_GLYCANTYPE', `PARENT_MZ`, 'PARENT_RTS', 'PARENT_INTENSITIES', 'PARENT_AUC') VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}')", result.Key.File, result.Key.sequence, result.Key.glycansToBeParsed, idGlycanTypes, (Double.Parse(result.Key.scanTime) / 60).ToString(), result.Key.mzObs, result.Key.scanNumber, idRTs, idInts, parent.sequence, parentGlycan.CoreStructure, parentGlycan.glycanType, parent.mzObs, parentRTs, parentInts, parent.intensity);
                         var insertCommand = new SQLiteCommand(insertCommandString, writer);

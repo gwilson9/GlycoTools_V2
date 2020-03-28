@@ -80,7 +80,7 @@ namespace _20190618_GlycoTools_V2
                     pep.stopLookupTime = stopTime;
                     pep.FirstScan = rawFile.GetSpectrumNumber(pep.startLookupTime);
                     pep.LastScan = rawFile.GetSpectrumNumber(pep.stopLookupTime);
-                    pep.lookupRange = DoubleRange.FromPPM(pep.UserMZ, 20);
+                    pep.lookupRange = DoubleRange.FromPPM(pep.UserMZ, 20); // Math.Abs(pep.ppmError)*1.5);
                 }
 
                 var minScan = targetPeptides.OrderBy(x => x.FirstScan).ToList()[0].FirstScan;
@@ -233,7 +233,8 @@ namespace _20190618_GlycoTools_V2
                 ms2ScanNumber = psm.scanNumber,
                 sequence = psm.peptide.Sequence,
                 charge = psm.charge,
-                TheoreticalMZ = psm.mzCalc
+                TheoreticalMZ = psm.mzCalc,
+                ppmError = psm.ppmError
             };
 
             var parentScan = rawFile.GetParentSpectrumNumber(pep.ms2ScanNumber);

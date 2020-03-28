@@ -96,7 +96,8 @@ namespace _20190618_GlycoTools_V2
                                 var modMass = Double.Parse(mod.Split(' ')[2].Trim(')'));
                                 var modName = mod.Split('(')[1].Split(' ')[0];
                                 var newMod = new Modification(modMass, modName);
-                                pep.AddModification(newMod);
+                                var modPosition = Int32.Parse(mod.Split('(')[0].Substring(1));
+                                pep.AddModification(newMod, modPosition);
                             }
                         }
                         foreach (var mod in idPSM.modsFixed.Split(';'))
@@ -107,14 +108,28 @@ namespace _20190618_GlycoTools_V2
                                 var modMass = Double.Parse(massString);
                                 var modName = mod.Split('(')[1].Split(' ')[0];
                                 var newMod = new Modification(modMass, modName);
-                                pep.AddModification(newMod);
+                                var modPosition = Int32.Parse(mod.Split('(')[0].Substring(1));
+                                pep.AddModification(newMod, modPosition);
                             }
                         }
 
                         var glyMod = new Modification(glycan.mass, glycan._coreStructure);
                         pep.AddModification(glyMod, Int32.Parse(idPSM.glycanPositions));
 
-                        pepsToSearch.Add(pep);
+                        //Temp//
+                        var mz = (pep.MonoisotopicMass + (idPSM.charge * Constants.Hydrogen)) / idPSM.charge;
+
+                        var searchPSM = new PSM();
+                        searchPSM.scanNumber = idPSM.scanNumber;
+                        searchPSM.peptide = idPSM.peptide;
+                        searchPSM.sequence = pep.SequenceWithModifications;
+                        searchPSM.charge = idPSM.charge;
+                        searchPSM.mzCalc = idPSM.mzCalc;
+                        searchPSM.mzObs = mz;
+                        possibleParentPeaks.Add(searchPSM);
+                        searchPSM.glycans = new List<Glycan>() { glycan };
+
+                        //pepsToSearch.Add(pep);
                     }
                 }
             }
@@ -123,8 +138,10 @@ namespace _20190618_GlycoTools_V2
             //var raw = new ThermoRawFile(psm.rawFile);
             //raw.Open();
 
+            /**
             pepsToSearch = pepsToSearch.OrderByDescending(x => x.MonoisotopicMass).ToList();
 
+            
             foreach (var pep in pepsToSearch)
             {
                 //OnUpdateProgress("Still working...");
@@ -140,112 +157,107 @@ namespace _20190618_GlycoTools_V2
 
                 possibleParentPeaks.Add(searchPSM);
             }
+            **/
 
-
-                /**
-                var lastSpectrum = raw.LastSpectrumNumber;
-                
-                var centerSpectrum = raw.GetSpectrum(psm.scanNumberofMaxElutionIntensity);
-
-                var left = psm.scanNumberofMaxElutionIntensity;
-                while (true)
-                {
-                    if (raw.GetMsnOrder(--left) == 1)
-                        break;
-                }
-
-                var right = psm.scanNumberofMaxElutionIntensity;
-                while (true)
-                {
-                    if (raw.GetMsnOrder(++right) == 1)
-                        break;
-                }
-
-                var leftSpectrum = raw.GetSpectrum(left);
-                var rightSpectrum = raw.GetSpectrum(right);
-
-
-                
-                var centerIntensity = 0.0;
-                var leftIntensity = 0.0;
-                var rightIntensity = 0.0;
-
-                var outpeaks = new List<ThermoMzPeak>();
-                if(centerSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks))
-                {
-                    if(outpeaks.Count() > 0)
-                    {
-                        centerIntensity = outpeaks.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }                                
-
-                var outpeaks2 = new List<ThermoMzPeak>();
-                if (leftSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks2))
-                {
-                    if(outpeaks2.Count() > 0)
-                    {
-                        leftIntensity = outpeaks2.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }                                
-
-                var outpeaks3 = new List<ThermoMzPeak>();
-                if (rightSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks3))
-                {
-                    if(outpeaks3.Count() > 0)
-                    {
-                        rightIntensity = outpeaks3.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-               
-
-
-                var maxIntensity = psm.peakElution.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).Intensity;
-                if (centerIntensity > maxIntensity && centerIntensity > leftIntensity && centerIntensity > rightIntensity)
-                {
-                    if (psm.sequence.Equals("N[+1540.52851]ATLAEQAK") && pep.SequenceWithModifications.Equals("N[HexNAc(2)Hex(8)]ATLAEQAK"))
-                    {                                        
-                        var peaks = psm.peakElution.OrderByDescending(x=>x.Intensity).ToList()[0];
-                    }
-
-                    insourceFragsFound++;
-
-                    if (searchResults.ContainsKey(psm))
-                    {
-                        searchResults[psm].Add(pep);
-                    }
-                    else
-                    {
-                        searchResults.Add(psm, new List<Peptide>());
-                        searchResults[psm].Add(pep);
-                    }
-                    
-                    //break;
-                }
-**/
+            /**
+            var lastSpectrum = raw.LastSpectrumNumber;
             
+            var centerSpectrum = raw.GetSpectrum(psm.scanNumberofMaxElutionIntensity);
+
+            var left = psm.scanNumberofMaxElutionIntensity;
+            while (true)
+            {
+                if (raw.GetMsnOrder(--left) == 1)
+                    break;
+            }
+
+            var right = psm.scanNumberofMaxElutionIntensity;
+            while (true)
+            {
+                if (raw.GetMsnOrder(++right) == 1)
+                    break;
+            }
+
+            var leftSpectrum = raw.GetSpectrum(left);
+            var rightSpectrum = raw.GetSpectrum(right);
+
+
+            
+            var centerIntensity = 0.0;
+            var leftIntensity = 0.0;
+            var rightIntensity = 0.0;
+
+            var outpeaks = new List<ThermoMzPeak>();
+            if(centerSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks))
+            {
+                if(outpeaks.Count() > 0)
+                {
+                    centerIntensity = outpeaks.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
+                }
+                else
+                {
+                    continue;
+                }
+            }                                
+
+            var outpeaks2 = new List<ThermoMzPeak>();
+            if (leftSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks2))
+            {
+                if(outpeaks2.Count() > 0)
+                {
+                    leftIntensity = outpeaks2.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
+                }
+                else
+                {
+                    continue;
+                }
+            }                                
+
+            var outpeaks3 = new List<ThermoMzPeak>();
+            if (rightSpectrum.TryGetPeaks(DoubleRange.FromPPM(mz, 20), out outpeaks3))
+            {
+                if(outpeaks3.Count() > 0)
+                {
+                    rightIntensity = outpeaks3.OrderByDescending(x => x.Intensity).ToList()[0].Intensity;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+           
+
+
+            var maxIntensity = psm.peakElution.Aggregate((i1, i2) => i1.Intensity > i2.Intensity ? i1 : i2).Intensity;
+            if (centerIntensity > maxIntensity && centerIntensity > leftIntensity && centerIntensity > rightIntensity)
+            {
+                if (psm.sequence.Equals("N[+1540.52851]ATLAEQAK") && pep.SequenceWithModifications.Equals("N[HexNAc(2)Hex(8)]ATLAEQAK"))
+                {                                        
+                    var peaks = psm.peakElution.OrderByDescending(x=>x.Intensity).ToList()[0];
+                }
+
+                insourceFragsFound++;
+
+                if (searchResults.ContainsKey(psm))
+                {
+                    searchResults[psm].Add(pep);
+                }
+                else
+                {
+                    searchResults.Add(psm, new List<Peptide>());
+                    searchResults[psm].Add(pep);
+                }
+                
+                //break;
+            }
+**/
+
             //raw.Dispose(); 
         }
 
         public void getPeakElutions()
         {
             var lfqProcessor = new LFQProcessor(idPSM.rawFile);
-
-            if (idPSM.sequence.Equals("GPGIKPN[+1458.44202]QTSK"))
-            {
-                var a = 0;
-            }
 
             if(possibleParentPeaks.Count() > 0)
             {
